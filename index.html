@@ -18,6 +18,8 @@
             --prex-purple: #743c8f;
             --btn-border: #30363d;
             --highlight-green: #4ade80;
+            --whatsapp-green: #25D366;
+            --whatsapp-hover: #128c7e;
         }
 
         body {
@@ -84,7 +86,8 @@
             border-radius: 12px;
             padding: 25px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         .card-header {
@@ -111,6 +114,7 @@
         }
         .badge-santander { background-color: var(--santander-red); }
         .badge-prex { background-color: var(--prex-purple); }
+        .badge-transport { background-color: var(--highlight-green); color: #000; }
 
         .card-section-title {
             font-size: 11px; text-transform: uppercase;
@@ -147,18 +151,52 @@
 
         .divider { border-top: 1px dashed var(--border-color); margin: 20px 0; }
 
-        .contact-highlight {
-            background: rgba(48, 54, 61, 0.3); padding: 15px;
-            border-radius: 8px; margin-top: 10px;
+        /* Estilos específicos para la tarjeta de Transporte */
+        .transport-card {
+            border: 1px solid rgba(74, 222, 128, 0.2); /* Borde sutil verde */
+        }
+
+        .contact-number-large {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            font-family: 'Inter', monospace;
+            margin-bottom: 10px;
         }
         
         .contact-locations {
-            font-size: 12px; color: var(--highlight-green); margin-top: 8px;
+            font-size: 13px; color: var(--highlight-green);
             display: flex; flex-wrap: wrap; gap: 10px; line-height: 1.4;
+            margin-bottom: 20px;
         }
 
         .contact-locations span {
-            display: flex; align-items: center; gap: 4px;
+            display: flex; align-items: center; gap: 5px;
+            background: rgba(74, 222, 128, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* Botón WhatsApp */
+        .btn-whatsapp {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: var(--whatsapp-green);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            width: 100%; /* Ocupa todo el ancho */
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: var(--whatsapp-hover);
         }
 
         /* Footer Copyright */
@@ -200,6 +238,35 @@
             <div class="lang-column">
                 <span class="lang-title"><i class="fa-solid fa-language"></i> Español</span>
 
+                <div class="card transport-card">
+                    <div class="card-header">
+                        <div class="bank-info">
+                            <div class="bank-icon" style="color: #4ade80;"><i class="fa-solid fa-car"></i></div>
+                            <div>
+                                <span class="bank-name">Traslados</span>
+                                <span class="bank-sub">Contacto Directo</span>
+                            </div>
+                        </div>
+                        <span class="badge badge-transport">Info</span>
+                    </div>
+
+                    <div class="contact-number-large">+598 99 774 019</div>
+                    
+                    <div class="contact-locations">
+                        <span><i class="fa-solid fa-location-dot"></i> Punta del Este</span>
+                        <span><i class="fa-solid fa-location-dot"></i> Colonia</span>
+                        <span><i class="fa-solid fa-champagne-glasses"></i> Fiestas/Eventos</span>
+                    </div>
+
+                    <a href="https://wa.me/59899774019" target="_blank" class="btn-whatsapp">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Enviar WhatsApp
+                    </a>
+                    
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button class="btn-copy" onclick="copiar('+59899774019')" style="width: 100%;">Copiar Número</button>
+                    </div>
+                </div>
+
                 <div class="card">
                     <div class="card-header">
                         <div class="bank-info">
@@ -212,8 +279,6 @@
                         <span class="badge badge-santander">Santander</span>
                     </div>
                     
-                    <div class="card-section-title">TITULAR</div>
-                    <div class="titular-name">Adrian Pereda</div>
                     <div class="branch-info"><i class="fa-solid fa-building-columns"></i> Sucursal 60 - Puerto del Buceo</div>
                     <div class="divider"></div>
 
@@ -244,43 +309,49 @@
                         </div>
                         <span class="badge badge-prex">Prex</span>
                     </div>
-
-                    <div class="card-section-title">TITULAR</div>
-                    <div class="titular-name">Adrian Pereda</div>
-                    <div class="divider"></div>
                     
                     <div class="card-section-title">CUENTA PREX</div>
-                    <div class="account-row">
+                    <div class="account-row" style="margin-bottom: 0;">
                         <div class="account-details">
                             <label>Número</label>
                             <div class="account-number">35815</div>
                         </div>
                         <button class="btn-copy" onclick="copiar('35815')">Copiar</button>
                     </div>
-
-                    <div class="divider"></div>
-
-                    <div class="contact-highlight">
-                        <div class="card-section-title" style="margin-top: 0; color: #fff;">
-                            <i class="fa-solid fa-car"></i> TRASLADOS Y CONTACTO
-                        </div>
-                        <div class="account-row" style="margin-bottom: 0;">
-                            <div class="account-details">
-                                <div class="account-number" style="font-size: 20px;">099 774 019</div>
-                                <div class="contact-locations">
-                                    <span><i class="fa-solid fa-location-dot"></i> Punta del Este</span>
-                                    <span><i class="fa-solid fa-location-dot"></i> Colonia</span>
-                                    <span><i class="fa-solid fa-champagne-glasses"></i> Fiestas/Eventos</span>
-                                </div>
-                            </div>
-                            <button class="btn-copy" onclick="copiar('099774019')">Copiar</button>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="lang-column">
                 <span class="lang-title"><i class="fa-solid fa-globe"></i> English</span>
+
+                <div class="card transport-card">
+                    <div class="card-header">
+                        <div class="bank-info">
+                            <div class="bank-icon" style="color: #4ade80;"><i class="fa-solid fa-car"></i></div>
+                            <div>
+                                <span class="bank-name">Transport</span>
+                                <span class="bank-sub">Direct Contact</span>
+                            </div>
+                        </div>
+                        <span class="badge badge-transport">Info</span>
+                    </div>
+
+                    <div class="contact-number-large">+598 99 774 019</div>
+                    
+                    <div class="contact-locations">
+                        <span><i class="fa-solid fa-location-dot"></i> Punta del Este</span>
+                        <span><i class="fa-solid fa-location-dot"></i> Colonia</span>
+                        <span><i class="fa-solid fa-champagne-glasses"></i> Parties/Events</span>
+                    </div>
+
+                    <a href="https://wa.me/59899774019" target="_blank" class="btn-whatsapp">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> Send Message
+                    </a>
+
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button class="btn-copy" onclick="copiar('+59899774019')" style="width: 100%;">Copy Number</button>
+                    </div>
+                </div>
 
                 <div class="card">
                     <div class="card-header">
@@ -294,8 +365,6 @@
                         <span class="badge badge-santander">Santander</span>
                     </div>
                     
-                    <div class="card-section-title">ACCOUNT HOLDER</div>
-                    <div class="titular-name">Adrian Pereda</div>
                     <div class="branch-info"><i class="fa-solid fa-building-columns"></i> Branch 60 - Puerto del Buceo</div>
                     <div class="divider"></div>
 
@@ -326,37 +395,14 @@
                         </div>
                         <span class="badge badge-prex">Prex</span>
                     </div>
-
-                    <div class="card-section-title">ACCOUNT HOLDER</div>
-                    <div class="titular-name">Adrian Pereda</div>
-                    <div class="divider"></div>
                     
                     <div class="card-section-title">PREX ACCOUNT</div>
-                    <div class="account-row">
+                    <div class="account-row" style="margin-bottom: 0;">
                         <div class="account-details">
                             <label>Number</label>
                             <div class="account-number">35815</div>
                         </div>
                         <button class="btn-copy" onclick="copiar('35815')">Copy</button>
-                    </div>
-
-                    <div class="divider"></div>
-
-                    <div class="contact-highlight">
-                        <div class="card-section-title" style="margin-top: 0; color: #fff;">
-                            <i class="fa-solid fa-car"></i> TRANSPORT & CONTACT
-                        </div>
-                        <div class="account-row" style="margin-bottom: 0;">
-                            <div class="account-details">
-                                <div class="account-number" style="font-size: 20px;">099 774 019</div>
-                                <div class="contact-locations">
-                                    <span><i class="fa-solid fa-location-dot"></i> Punta del Este</span>
-                                    <span><i class="fa-solid fa-location-dot"></i> Colonia</span>
-                                    <span><i class="fa-solid fa-champagne-glasses"></i> Parties/Events</span>
-                                </div>
-                            </div>
-                            <button class="btn-copy" onclick="copiar('099774019')">Copy</button>
-                        </div>
                     </div>
                 </div>
             </div>
