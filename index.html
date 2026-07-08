@@ -76,11 +76,14 @@
 
         .language-selector {
             display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: center;
             border-radius: 999px;
             border: 1px solid rgba(139, 150, 167, 0.28);
             background: rgba(18, 24, 32, 0.85);
             padding: 4px;
             gap: 4px;
+            max-width: 100%;
         }
 
         .lang-btn {
@@ -393,8 +396,14 @@
                 align-items: flex-start;
             }
 
+            .language-selector {
+                border-radius: 14px;
+                padding: 3px;
+            }
+
             .lang-btn {
-                padding: 8px 12px;
+                padding: 8px 10px;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -410,6 +419,7 @@
             <div class="language-selector" role="group" aria-label="Language selector">
                 <button class="lang-btn" id="lang-es" aria-pressed="true" onclick="setLanguage('es')">Español</button>
                 <button class="lang-btn" id="lang-en" aria-pressed="false" onclick="setLanguage('en')">English</button>
+                <button class="lang-btn" id="lang-pt" aria-pressed="false" onclick="setLanguage('pt')">Português</button>
             </div>
         </div>
 
@@ -558,6 +568,32 @@
                 copyBtn: 'Copy',
                 copySuccess: 'Copied',
                 copyError: 'Could not copy'
+            },
+            pt: {
+                subtitle: 'Informações de contato e contas',
+                langTitle: 'Português',
+                langBadge: 'PT',
+                transport: {
+                    name: 'Transporte',
+                    sub: 'Contato Direto',
+                    badge: 'Info',
+                    whatsapp: 'Enviar WhatsApp',
+                    copyPhone: 'Copiar Número',
+                    locations: ['Punta del Este', 'Colonia', 'Eventos', 'Aeroporto/Traslados']
+                },
+                santander: {
+                    sub: 'Contas USD e UYU',
+                    branch: 'Agência 60 - Puerto del Buceo',
+                    usdLabel: 'Conta poupança em dólares',
+                    uyuLabel: 'Conta poupança em pesos'
+                },
+                prex: {
+                    sub: 'Conta digital',
+                    label: 'Número da conta Prex'
+                },
+                copyBtn: 'Copiar',
+                copySuccess: 'Copiado',
+                copyError: 'Não foi possível copiar'
             }
         };
 
@@ -597,6 +633,7 @@
 
             document.getElementById('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
             document.getElementById('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
+            document.getElementById('lang-pt').setAttribute('aria-pressed', String(lang === 'pt'));
         }
 
         function copiar(texto) {
