@@ -24,10 +24,9 @@
       brandName: 'Adrián Pereda',
       headerSubtitle: 'Traslados',
       vehicleBadge: '100% Eléctrico',
-      vehicleColor: 'Blanco',
       comfortSubtitle: 'Por qué viajar en Bestune',
       driverName: 'Adrián',
-      driverRole: 'Conductor profesional · Montevideo y costa',
+      driverRole: 'Conductor Profesional. Montevideo y La Costa',
       uberLabel: 'Valoración Uber',
       uberRating: '4.99',
       tripsLabel: 'Viajes realizados',
@@ -89,10 +88,9 @@
       brandName: 'Adrián Pereda',
       headerSubtitle: 'Transport',
       vehicleBadge: '100% Electric',
-      vehicleColor: 'White',
       comfortSubtitle: 'Why ride in a Bestune',
       driverName: 'Adrián',
-      driverRole: 'Professional driver · Montevideo and coast',
+      driverRole: 'Professional Driver. Montevideo and the Coast',
       uberLabel: 'Uber rating',
       uberRating: '4.99',
       tripsLabel: 'Trips completed',
@@ -154,10 +152,9 @@
       brandName: 'Adrián Pereda',
       headerSubtitle: 'Transporte',
       vehicleBadge: '100% Elétrico',
-      vehicleColor: 'Branco',
       comfortSubtitle: 'Por que viajar na Bestune',
       driverName: 'Adrián',
-      driverRole: 'Motorista profissional · Montevidéu e litoral',
+      driverRole: 'Motorista Profissional. Montevidéu e o Litoral',
       uberLabel: 'Avaliação Uber',
       uberRating: '4.99',
       tripsLabel: 'Viagens realizadas',
@@ -256,7 +253,6 @@
     $('brand-name').textContent = t.brandName;
     $('header-subtitle').textContent = t.headerSubtitle;
     $('vehicle-badge').textContent = t.vehicleBadge;
-    $('vehicle-color').textContent = t.vehicleColor;
     $('comfort-subtitle').textContent = t.comfortSubtitle;
 
     $('driver-name').textContent = t.driverName;
@@ -292,7 +288,7 @@
     showReview(0, false);
 
     if (activeSpotDestination >= 0) {
-      renderInlineSpots(activeSpotDestination);
+      renderSpotsBlur(activeSpotDestination);
     }
 
     $('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
@@ -437,10 +433,10 @@
     reviewTimer = null;
   }
 
-  function renderInlineSpots(index) {
+  function renderSpotsBlur(index) {
     var t = translations[activeLang];
-    var container = $('spot-bubbles-' + index);
-    if (!container || !t.destinationSpots || !t.destinationSpots[index]) {
+    var cluster = $('spots-blur-cluster');
+    if (!cluster || !t.destinationSpots || !t.destinationSpots[index]) {
       return;
     }
 
@@ -450,24 +446,12 @@
         '<div class="spot-bubble-inline" style="--bubble-i:' + i + '">' +
           '<div class="spot-bubble-photo-wrap">' +
             '<img src="' + spot.image + '" alt="" class="spot-bubble-photo" loading="lazy">' +
-            '<span class="spot-bubble-stem" aria-hidden="true"></span>' +
           '</div>' +
           '<span class="spot-bubble-label">' + spot.name + '</span>' +
         '</div>'
       );
     }).join('');
-    container.innerHTML = '<div class="spot-bubbles-row">' + bubblesHtml + '</div>';
-  }
-
-  function setSpotsOpenState(isOpen) {
-    var grid = document.querySelector('.services-grid');
-    var slide = document.querySelector('.slide-card.services-slide');
-    if (grid) {
-      grid.classList.toggle('has-spots-open', isOpen);
-    }
-    if (slide) {
-      slide.classList.toggle('has-spots-open', isOpen);
-    }
+    cluster.innerHTML = '<div class="spot-bubbles-row">' + bubblesHtml + '</div>';
   }
 
   function openDestinationSpots(index) {
@@ -479,23 +463,17 @@
     closeDestinationSpots();
     activeSpotDestination = index;
 
-    var container = $('spot-bubbles-' + index);
+    var overlay = $('spots-blur-overlay');
     var wrap = document.querySelector('.service-card-wrap[data-destination="' + index + '"]');
-    if (container) {
-      renderInlineSpots(index);
-      container.classList.add('is-open');
-      container.setAttribute('aria-hidden', 'false');
+    if (overlay) {
+      renderSpotsBlur(index);
+      overlay.classList.add('is-open');
+      overlay.hidden = false;
+      overlay.setAttribute('aria-hidden', 'false');
     }
     if (wrap) {
       wrap.classList.add('is-spots-open');
-      var dim = wrap.querySelector('.service-card-dim');
-      if (dim) {
-        dim.classList.add('is-visible');
-        dim.setAttribute('aria-hidden', 'false');
-      }
     }
-
-    setSpotsOpenState(true);
 
     document.querySelectorAll('.service-card-btn').forEach(function (btn) {
       var isActive = parseInt(btn.dataset.destination, 10) === index;
@@ -513,22 +491,20 @@
 
     activeSpotDestination = -1;
 
-    document.querySelectorAll('.spot-bubbles-inline').forEach(function (container) {
-      container.classList.remove('is-open');
-      container.setAttribute('aria-hidden', 'true');
-      container.innerHTML = '';
-    });
+    var overlay = $('spots-blur-overlay');
+    var cluster = $('spots-blur-cluster');
+    if (overlay) {
+      overlay.classList.remove('is-open');
+      overlay.hidden = true;
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+    if (cluster) {
+      cluster.innerHTML = '';
+    }
 
     document.querySelectorAll('.service-card-wrap.is-spots-open').forEach(function (wrap) {
       wrap.classList.remove('is-spots-open');
-      var dim = wrap.querySelector('.service-card-dim');
-      if (dim) {
-        dim.classList.remove('is-visible');
-        dim.setAttribute('aria-hidden', 'true');
-      }
     });
-
-    setSpotsOpenState(false);
 
     document.querySelectorAll('.service-card-btn').forEach(function (btn) {
       btn.classList.remove('is-active');
@@ -600,6 +576,24 @@
     }
   }
 
+  function requestAppFullscreen() {
+    var el = document.documentElement;
+    var req = el.requestFullscreen || el.webkitRequestFullscreen;
+    if (!req || document.fullscreenElement || document.webkitFullscreenElement) {
+      return;
+    }
+    try {
+      var promise = req.call(el);
+      if (promise && promise.catch) {
+        promise.catch(function () {
+          /* blocked by browser */
+        });
+      }
+    } catch (error) {
+      /* blocked by browser */
+    }
+  }
+
   function bindEvents() {
     $('nav-prev').addEventListener('click', prevSlide);
     $('nav-next').addEventListener('click', nextSlide);
@@ -626,6 +620,11 @@
         openDestinationSpots(parseInt(btn.dataset.destination, 10));
       });
     });
+
+    var spotsBackdrop = $('spots-blur-backdrop');
+    if (spotsBackdrop) {
+      spotsBackdrop.addEventListener('click', closeDestinationSpots);
+    }
 
     var servicesSlide = document.querySelector('.services-slide');
     if (servicesSlide) {
@@ -672,6 +671,13 @@
     ['click', 'touchstart', 'keydown'].forEach(function (eventName) {
       document.addEventListener(eventName, resetIdleTimer, { passive: true });
     });
+
+    var app = document.querySelector('.app');
+    if (app) {
+      ['click', 'touchstart'].forEach(function (eventName) {
+        app.addEventListener(eventName, requestAppFullscreen, { once: true, passive: true });
+      });
+    }
   }
 
   function init() {
@@ -679,6 +685,7 @@
     goToSlide(0);
     bindEvents();
     setupPwa();
+    requestAppFullscreen();
   }
 
   init();
