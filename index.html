@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adrian Pereda - Info</title>
+    <meta name="description" content="Contact and bank account information for Adrian Pereda. Transfers, Santander and Prex accounts in Uruguay.">
+    <meta property="og:title" content="Adrian Pereda - Info">
+    <meta property="og:description" content="Contact and bank account information for Adrian Pereda. Transfers, Santander and Prex accounts.">
+    <meta property="og:url" content="https://maarteeno.github.io/Pereda/">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#0f131a">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f131a'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='Arial,sans-serif' font-size='24' font-weight='700' fill='%23e7ecf2'%3EAP%3C/text%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -237,6 +244,29 @@
             margin-bottom: 10px;
         }
 
+        .phone-link {
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .phone-link:hover {
+            color: #95b89f;
+        }
+
+        .section-actions {
+            margin-top: 10px;
+        }
+
+        .btn-copy-all {
+            width: 100%;
+        }
+
+        .btn-copy.copied {
+            border-color: rgba(122, 156, 132, 0.45);
+            background: rgba(122, 156, 132, 0.18);
+            color: #b8d4be;
+        }
+
         .contact-locations {
             display: flex;
             flex-wrap: wrap;
@@ -442,7 +472,7 @@
                         <span class="badge badge-transport" id="transport-badge"></span>
                     </div>
 
-                    <div class="contact-number-large">+598 99 774 019</div>
+                    <a href="tel:+59899774019" class="contact-number-large phone-link">+598 99 774 019</a>
                     <div class="contact-locations">
                         <span><i class="fa-solid fa-location-dot"></i> <span id="location-1"></span></span>
                         <span><i class="fa-solid fa-location-dot"></i> <span id="location-2"></span></span>
@@ -453,7 +483,7 @@
                         <a href="https://wa.me/59899774019" target="_blank" class="btn-whatsapp" id="whatsapp-btn">
                             <i class="fa-brands fa-whatsapp"></i> <span id="whatsapp-text"></span>
                         </a>
-                        <button class="btn-copy" onclick="copiar('+59899774019')" id="copy-phone-btn"></button>
+                        <button class="btn-copy" onclick="copiar('+59899774019', this)" id="copy-phone-btn"></button>
                     </div>
                 </section>
 
@@ -475,15 +505,18 @@
                                 <span class="account-label" id="usd-label"></span>
                                 <div class="account-number">005201484920</div>
                             </div>
-                            <button class="btn-copy" onclick="copiar('005201484920')" id="copy-btn-1"></button>
+                            <button class="btn-copy" onclick="copiar('005201484920', this)" id="copy-btn-1"></button>
                         </div>
                         <div class="account-row">
                             <div>
                                 <span class="account-label" id="uyu-label"></span>
                                 <div class="account-number">001201340671</div>
                             </div>
-                            <button class="btn-copy" onclick="copiar('001201340671')" id="copy-btn-2"></button>
+                            <button class="btn-copy" onclick="copiar('001201340671', this)" id="copy-btn-2"></button>
                         </div>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-copy btn-copy-all" id="copy-santander-all" onclick="copiarSeccion('santander', this)"></button>
                     </div>
                 </section>
 
@@ -503,7 +536,10 @@
                             <span class="account-label" id="prex-label"></span>
                             <div class="account-number">35815</div>
                         </div>
-                        <button class="btn-copy" onclick="copiar('35815')" id="copy-btn-3"></button>
+                        <button class="btn-copy" onclick="copiar('35815', this)" id="copy-btn-3"></button>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-copy btn-copy-all" id="copy-prex-all" onclick="copiarSeccion('prex', this)"></button>
                     </div>
                 </section>
             </article>
@@ -515,6 +551,7 @@
     <div id="toast" class="toast" aria-live="polite"></div>
 
     <script>
+        var LANG_STORAGE_KEY = 'pereda-lang';
         var activeLang = 'es';
         var translations = {
             es: {
@@ -540,6 +577,8 @@
                     label: 'Número de cuenta Prex'
                 },
                 copyBtn: 'Copiar',
+                copyAllBtn: 'Copiar todo',
+                accountPrefix: 'Cuenta:',
                 copySuccess: 'Copiado',
                 copyError: 'No se pudo copiar'
             },
@@ -566,6 +605,8 @@
                     label: 'Prex account number'
                 },
                 copyBtn: 'Copy',
+                copyAllBtn: 'Copy all',
+                accountPrefix: 'Account:',
                 copySuccess: 'Copied',
                 copyError: 'Could not copy'
             },
@@ -592,13 +633,37 @@
                     label: 'Número da conta Prex'
                 },
                 copyBtn: 'Copiar',
+                copyAllBtn: 'Copiar tudo',
+                accountPrefix: 'Conta:',
                 copySuccess: 'Copiado',
                 copyError: 'Não foi possível copiar'
             }
         };
 
+        function detectLanguage() {
+            var saved = localStorage.getItem(LANG_STORAGE_KEY);
+            if (saved && translations[saved]) {
+                return saved;
+            }
+
+            var browserLang = (navigator.language || 'es').toLowerCase();
+            if (browserLang.indexOf('pt') === 0) {
+                return 'pt';
+            }
+            if (browserLang.indexOf('en') === 0) {
+                return 'en';
+            }
+            return 'es';
+        }
+
         function setLanguage(lang) {
+            if (!translations[lang]) {
+                return;
+            }
+
             activeLang = lang;
+            localStorage.setItem(LANG_STORAGE_KEY, lang);
+            document.documentElement.lang = lang;
             renderCard(lang);
         }
 
@@ -630,19 +695,61 @@
             document.getElementById('copy-btn-1').textContent = t.copyBtn;
             document.getElementById('copy-btn-2').textContent = t.copyBtn;
             document.getElementById('copy-btn-3').textContent = t.copyBtn;
+            document.getElementById('copy-santander-all').textContent = t.copyAllBtn;
+            document.getElementById('copy-prex-all').textContent = t.copyAllBtn;
 
             document.getElementById('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
             document.getElementById('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
             document.getElementById('lang-pt').setAttribute('aria-pressed', String(lang === 'pt'));
         }
 
-        function copiar(texto) {
+        function copiar(texto, button) {
             navigator.clipboard.writeText(texto).then(function() {
                 showToast(translations[activeLang].copySuccess + ': ' + texto);
+                if (button) {
+                    showButtonCopied(button);
+                }
             }, function(err) {
                 console.error('Error: ', err);
                 showToast(translations[activeLang].copyError);
             });
+        }
+
+        function copiarSeccion(section, button) {
+            var t = translations[activeLang];
+            var text = '';
+
+            if (section === 'santander') {
+                text = [
+                    'Santander',
+                    t.santander.usdLabel,
+                    t.accountPrefix + ' 005201484920',
+                    t.santander.uyuLabel,
+                    t.accountPrefix + ' 001201340671',
+                    t.santander.branch
+                ].join('\n');
+            } else if (section === 'prex') {
+                text = [
+                    'Prex',
+                    t.prex.label,
+                    t.accountPrefix + ' 35815'
+                ].join('\n');
+            }
+
+            copiar(text, button);
+        }
+
+        function showButtonCopied(button) {
+            var originalText = button.dataset.originalText || button.textContent;
+            button.dataset.originalText = originalText;
+            button.textContent = translations[activeLang].copySuccess;
+            button.classList.add('copied');
+
+            clearTimeout(button.copyTimer);
+            button.copyTimer = setTimeout(function() {
+                button.textContent = originalText;
+                button.classList.remove('copied');
+            }, 1500);
         }
 
         function showToast(message) {
@@ -655,7 +762,7 @@
             }, 1700);
         }
 
-        renderCard(activeLang);
+        setLanguage(detectLanguage());
     </script>
 </body>
 </html>
