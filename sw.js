@@ -1,4 +1,4 @@
-var CACHE_NAME = 'pereda-tablet-v16';
+var CACHE_NAME = 'pereda-tablet-v17';
 var ASSETS = [
   './',
   './index.html',

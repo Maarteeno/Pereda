@@ -70,12 +70,6 @@
                     <span class="stat-value" id="years-value">9,5</span>
                   </div>
                 </div>
-                <div class="review-rotator" id="review-rotator" aria-live="polite">
-                  <p class="review-label" id="review-label">Lo dicen los pasajeros</p>
-                  <span class="review-stars" aria-hidden="true">★★★★★</span>
-                  <p class="review-text" id="review-text">Excelente conductor, muy puntual y amable.</p>
-                  <p class="review-author" id="review-author">— Lucía M.</p>
-                </div>
               </aside>
               <div class="vehicle-details">
                 <h1 class="slide-title">Bestune NAT</h1>
@@ -88,92 +82,75 @@
                   <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">💺</span><span id="comfort-5">Asientos amplios · viaje relajado</span></article>
                   <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">🌿</span><span id="comfort-6">100% eléctrico · aire limpio a bordo</span></article>
                 </div>
+                <div class="vehicle-qr">
+                  <p class="vehicle-qr-label" id="qr-label">Escribile por WhatsApp</p>
+                  <a href="https://wa.me/59899774019" class="vehicle-qr-link" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Adrián Pereda">
+                    <img src="assets/whatsapp-qr.png" alt="QR WhatsApp Adrián Pereda" class="vehicle-qr-image" width="100" height="100" loading="lazy">
+                  </a>
+                  <p class="vehicle-qr-phone" id="vehicle-qr-phone">+598 99 774 019</p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Slide 2: Servicios -->
+        <!-- Slide 2: Traslados -->
         <section class="slide" data-slide="1" aria-label="Servicios">
           <div class="slide-card services-slide" id="services-slide">
             <div class="slide-head">
               <h2 class="slide-title" id="services-title">Traslados</h2>
-              <p class="slide-subtitle" id="services-subtitle">Contacto directo</p>
-              <p class="services-intro" id="services-intro">Viajes seguros, cómodos y directos en vehículo eléctrico. Tocá un destino para ver sugerencias.</p>
+              <p class="slide-subtitle" id="services-subtitle">Destinos desde Montevideo</p>
+              <p class="services-intro" id="services-intro">Deslizá para conocer cada destino</p>
             </div>
-            <div class="services-grid">
-              <div class="service-card-wrap" data-destination="0">
-                <button type="button" class="service-card service-card-btn" data-destination="0" aria-expanded="false">
-                  <img src="assets/destinations/punta-del-este.jpg" alt="" class="service-photo" loading="lazy">
-                  <span class="service-plus" aria-hidden="true">+</span>
-                  <span class="service-card-info">
-                    <span class="service-name" id="service-1">Punta del Este</span>
-                    <span class="service-desc" id="service-desc-1">Traslados puerta a puerta desde Montevideo</span>
-                  </span>
+            <div class="dest-carousel" id="dest-carousel">
+              <div class="dest-tabs" id="dest-tabs" role="tablist"></div>
+              <div class="dest-viewport" id="dest-viewport">
+                <button type="button" class="dest-arrow dest-arrow-prev" id="dest-prev" aria-label="Destino anterior">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <div class="dest-slide" id="dest-slide">
+                  <div class="dest-hero">
+                    <img src="assets/destinations/punta-del-este.jpg" alt="" class="dest-hero-img" id="dest-hero-img" loading="lazy">
+                    <div class="dest-hero-overlay">
+                      <h3 class="dest-name" id="dest-name">Punta del Este</h3>
+                      <span class="dest-trip-badge" id="dest-trip-badge">~130 km · ~1h 45min</span>
+                    </div>
+                  </div>
+                  <div class="dest-spots" id="dest-spots"></div>
+                </div>
+                <button type="button" class="dest-arrow dest-arrow-next" id="dest-next" aria-label="Destino siguiente">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
                 </button>
               </div>
-              <div class="service-card-wrap" data-destination="1">
-                <button type="button" class="service-card service-card-btn" data-destination="1" aria-expanded="false">
-                  <img src="assets/destinations/colonia.jpg" alt="" class="service-photo" loading="lazy">
-                  <span class="service-plus" aria-hidden="true">+</span>
-                  <span class="service-card-info">
-                    <span class="service-name" id="service-2">Colonia</span>
-                    <span class="service-desc" id="service-desc-2">Viajes regionales con horario a convenir</span>
-                  </span>
-                </button>
-              </div>
-              <div class="service-card-wrap" data-destination="2">
-                <button type="button" class="service-card service-card-btn" data-destination="2" aria-expanded="false">
-                  <img src="assets/destinations/eventos.jpg" alt="" class="service-photo" loading="lazy">
-                  <span class="service-plus" aria-hidden="true">+</span>
-                  <span class="service-card-info">
-                    <span class="service-name" id="service-3">Eventos</span>
-                    <span class="service-desc" id="service-desc-3">Bodas, corporativos y ocasiones especiales</span>
-                  </span>
-                </button>
-              </div>
-              <div class="service-card-wrap" data-destination="3">
-                <button type="button" class="service-card service-card-btn" data-destination="3" aria-expanded="false">
-                  <img src="assets/destinations/aeropuerto.jpg" alt="" class="service-photo" loading="lazy">
-                  <span class="service-plus" aria-hidden="true">+</span>
-                  <span class="service-card-info">
-                    <span class="service-name" id="service-4">Aeropuerto / Traslados</span>
-                    <span class="service-desc" id="service-desc-4">Carrasco, puerto y hoteles · puntualidad</span>
-                  </span>
-                </button>
-              </div>
-            </div>
-            <div class="spots-panel" id="spots-panel" hidden aria-hidden="true">
-              <div class="spots-panel-head">
-                <h3 class="spots-panel-title" id="spots-panel-title"></h3>
-                <button type="button" class="spots-panel-close" id="spots-panel-close" aria-label="Cerrar">✕</button>
-              </div>
-              <div class="spots-panel-list" id="spots-panel-list"></div>
+              <div class="dest-dots" id="dest-dots" role="tablist"></div>
+              <p class="dest-trip-note" id="dest-trip-note">Tiempos estimados sin tráfico</p>
             </div>
           </div>
         </section>
 
-        <!-- Slide 3: Contacto -->
-        <section class="slide" data-slide="2" aria-label="Contacto">
-          <div class="slide-card contact-slide">
-            <div class="slide-head">
-              <h2 class="slide-title" id="contact-title">Contacto</h2>
-              <p class="slide-subtitle" id="contact-subtitle">Estamos para ayudarte</p>
+        <!-- Slide 3: Reseñas y FAQ -->
+        <section class="slide" data-slide="2" aria-label="Reseñas y FAQ">
+          <div class="slide-card info-slide">
+            <div class="review-gallery" id="review-gallery" aria-live="polite">
+              <h2 class="review-gallery-title" id="review-gallery-title">Lo dicen los pasajeros</h2>
+              <div class="review-gallery-card">
+                <span class="review-gallery-stars" aria-hidden="true">★★★★★</span>
+                <p class="review-gallery-text" id="gallery-review-text">Excelente conductor, muy puntual y amable.</p>
+                <p class="review-gallery-author" id="gallery-review-author">— Lucía M.</p>
+              </div>
+              <div class="review-gallery-nav">
+                <button type="button" class="gallery-arrow gallery-arrow-prev" id="gallery-prev" aria-label="Reseña anterior">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <div class="gallery-dots" id="gallery-dots"></div>
+                <button type="button" class="gallery-arrow gallery-arrow-next" id="gallery-next" aria-label="Reseña siguiente">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </button>
+              </div>
             </div>
-            <div class="contact-panel">
-              <p class="contact-label" id="contact-phone-label">Teléfono</p>
-              <a href="tel:+59899774019" class="contact-number" id="contact-number">+598 99 774 019</a>
-              <div class="contact-actions">
-                <a href="https://wa.me/59899774019" class="btn btn-whatsapp" id="whatsapp-btn" target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                  <span id="whatsapp-text">Enviar WhatsApp</span>
-                </a>
-                <button type="button" class="btn btn-copy" id="copy-phone-btn">Copiar Número</button>
-              </div>
-              <div class="qr-section">
-                <p class="qr-label" id="qr-label">O escaneá el código QR</p>
-                <img src="assets/whatsapp-qr.png" alt="QR WhatsApp Adrián Pereda" class="qr-image" width="110" height="110" loading="lazy">
-              </div>
+            <div class="faq-section">
+              <h2 class="faq-title" id="faq-title">Preguntas frecuentes</h2>
+              <div class="faq-list" id="faq-list"></div>
             </div>
           </div>
         </section>

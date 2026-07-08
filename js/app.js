@@ -4,6 +4,16 @@
   var LANG_STORAGE_KEY = 'pereda-lang';
   var IDLE_RESET_MS = 60000;
   var SWIPE_THRESHOLD = 50;
+  var REVIEW_INTERVAL_MS = 4500;
+  var DEST_INTERVAL_MS = 8000;
+  var TOTAL_DESTINATIONS = 4;
+
+  var DEST_IMAGES = [
+    'assets/destinations/punta-del-este.jpg',
+    'assets/destinations/colonia.jpg',
+    'assets/destinations/eventos.jpg',
+    'assets/destinations/aeropuerto.jpg'
+  ];
 
   var activeLang = 'es';
   var currentSlide = 0;
@@ -11,13 +21,14 @@
   var idleTimer = null;
   var touchStartX = 0;
   var touchStartY = 0;
-  var reviewIndex = 0;
   var reviewTimer = null;
-  var REVIEW_INTERVAL_MS = 4500;
+  var destTimer = null;
   var shuffledReviews = [];
   var shuffleIndex = 0;
   var lastReviewText = '';
-  var activeSpotDestination = -1;
+  var currentDest = 0;
+  var destTouchStartX = 0;
+  var openFaqIndex = -1;
 
   var translations = {
     es: {
@@ -41,9 +52,12 @@
         'Asientos amplios · viaje relajado',
         '100% eléctrico · aire limpio a bordo'
       ],
+      qrLabel: 'Escribile por WhatsApp',
+      phoneNumber: '+598 99 774 019',
       servicesTitle: 'Traslados',
-      servicesSubtitle: 'Contacto directo',
-      servicesIntro: 'Viajes seguros, cómodos y directos en vehículo eléctrico. Tocá un destino para ver sugerencias.',
+      servicesSubtitle: 'Destinos desde Montevideo',
+      servicesIntro: 'Deslizá para conocer cada destino',
+      tripNote: 'Tiempos estimados sin tráfico',
       destinationSpots: [
         [
           { name: 'La Mano', desc: 'Escultura icónica en Playa Brava', image: 'assets/spots/la-mano.jpg' },
@@ -67,22 +81,22 @@
         ]
       ],
       services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeropuerto / Traslados'],
-      serviceDescs: [
-        'Traslados puerta a puerta desde Montevideo',
-        'Viajes regionales con horario a convenir',
-        'Bodas, corporativos y ocasiones especiales',
-        'Carrasco, puerto y hoteles · puntualidad'
+      tripInfo: [
+        { distance: '~130 km', duration: '~1h 45min' },
+        { distance: '~180 km', duration: '~2h 15min' },
+        { distance: 'A convenir', duration: 'Según ubicación del evento' },
+        { distance: '~20 km', duration: '~25 min' }
       ],
-      contactTitle: 'Contacto',
-      contactSubtitle: 'Estamos para ayudarte',
-      contactPhoneLabel: 'Teléfono',
-      whatsapp: 'Enviar WhatsApp',
-      copyPhone: 'Copiar Número',
-      qrLabel: 'O escaneá el código QR',
-      copySuccess: 'Copiado',
-      copyError: 'No se pudo copiar',
-      phoneNumber: '+598 99 774 019',
-      reviewLabel: 'Lo dicen los pasajeros'
+      reviewLabel: 'Lo dicen los pasajeros',
+      faqTitle: 'Preguntas frecuentes',
+      faqItems: [
+        { q: '¿Cómo reservo un traslado?', a: 'Escribile por WhatsApp o escaneá el código QR en la primera pantalla.' },
+        { q: '¿Aceptan equipaje grande?', a: 'Sí, el Bestune NAT tiene maletero amplio para valijas y equipaje.' },
+        { q: '¿Viajan con mascotas?', a: 'Consultá por WhatsApp según el tamaño y tipo de mascota.' },
+        { q: '¿Formas de pago?', a: 'Efectivo, transferencia bancaria y tarjeta.' },
+        { q: '¿Seguimiento de vuelo?', a: 'Sí, incluido en traslados al aeropuerto de Carrasco.' },
+        { q: '¿Cancelaciones?', a: 'Avisá con anticipación para reprogramar sin inconvenientes.' }
+      ]
     },
     en: {
       brandName: 'Adrián Pereda',
@@ -105,9 +119,12 @@
         'Spacious seats · relaxed trip',
         '100% electric · clean air onboard'
       ],
+      qrLabel: 'Message on WhatsApp',
+      phoneNumber: '+598 99 774 019',
       servicesTitle: 'Transport',
-      servicesSubtitle: 'Direct contact',
-      servicesIntro: 'Safe, comfortable and direct trips in an electric vehicle. Tap a destination for suggestions.',
+      servicesSubtitle: 'Destinations from Montevideo',
+      servicesIntro: 'Swipe to explore each destination',
+      tripNote: 'Estimated times without traffic',
       destinationSpots: [
         [
           { name: 'La Mano', desc: 'Iconic sculpture on Brava Beach', image: 'assets/spots/la-mano.jpg' },
@@ -131,22 +148,22 @@
         ]
       ],
       services: ['Punta del Este', 'Colonia', 'Events', 'Airport / Transfers'],
-      serviceDescs: [
-        'Door-to-door transfers from Montevideo',
-        'Regional trips at your preferred schedule',
-        'Weddings, corporate and special occasions',
-        'Carrasco, port and hotels · on time'
+      tripInfo: [
+        { distance: '~130 km', duration: '~1h 45min' },
+        { distance: '~180 km', duration: '~2h 15min' },
+        { distance: 'By arrangement', duration: 'Depends on event location' },
+        { distance: '~20 km', duration: '~25 min' }
       ],
-      contactTitle: 'Contact',
-      contactSubtitle: 'We are here to help',
-      contactPhoneLabel: 'Phone',
-      whatsapp: 'Send Message',
-      copyPhone: 'Copy Number',
-      qrLabel: 'Or scan the QR code',
-      copySuccess: 'Copied',
-      copyError: 'Could not copy',
-      phoneNumber: '+598 99 774 019',
-      reviewLabel: 'What passengers say'
+      reviewLabel: 'What passengers say',
+      faqTitle: 'Frequently asked questions',
+      faqItems: [
+        { q: 'How do I book a transfer?', a: 'Message on WhatsApp or scan the QR code on the first screen.' },
+        { q: 'Do you accept large luggage?', a: 'Yes, the Bestune NAT has ample trunk space for suitcases.' },
+        { q: 'Do you travel with pets?', a: 'Ask via WhatsApp depending on size and type of pet.' },
+        { q: 'Payment methods?', a: 'Cash, bank transfer and card.' },
+        { q: 'Flight tracking?', a: 'Yes, included for Carrasco airport transfers.' },
+        { q: 'Cancellations?', a: 'Let us know in advance to reschedule without issues.' }
+      ]
     },
     pt: {
       brandName: 'Adrián Pereda',
@@ -169,9 +186,12 @@
         'Assentos amplos · viagem relaxada',
         '100% elétrico · ar limpo a bordo'
       ],
+      qrLabel: 'Escreva no WhatsApp',
+      phoneNumber: '+598 99 774 019',
       servicesTitle: 'Transporte',
-      servicesSubtitle: 'Contato direto',
-      servicesIntro: 'Viagens seguras, confortáveis e diretas em veículo elétrico. Toque em um destino para ver sugestões.',
+      servicesSubtitle: 'Destinos desde Montevidéu',
+      servicesIntro: 'Deslize para conhecer cada destino',
+      tripNote: 'Tempos estimados sem trânsito',
       destinationSpots: [
         [
           { name: 'La Mano', desc: 'Escultura icônica na Playa Brava', image: 'assets/spots/la-mano.jpg' },
@@ -195,22 +215,22 @@
         ]
       ],
       services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeroporto / Transfer'],
-      serviceDescs: [
-        'Transfers porta a porta desde Montevidéu',
-        'Viagens regionais com horário combinado',
-        'Casamentos, corporativos e ocasiões especiais',
-        'Carrasco, porto e hotéis · pontualidade'
+      tripInfo: [
+        { distance: '~130 km', duration: '~1h 45min' },
+        { distance: '~180 km', duration: '~2h 15min' },
+        { distance: 'A combinar', duration: 'Conforme local do evento' },
+        { distance: '~20 km', duration: '~25 min' }
       ],
-      contactTitle: 'Contato',
-      contactSubtitle: 'Estamos aqui para ajudar',
-      contactPhoneLabel: 'Telefone',
-      whatsapp: 'Enviar WhatsApp',
-      copyPhone: 'Copiar número',
-      qrLabel: 'Ou escaneie o código QR',
-      copySuccess: 'Copiado',
-      copyError: 'Não foi possível copiar',
-      phoneNumber: '+598 99 774 019',
-      reviewLabel: 'O que dizem os passageiros'
+      reviewLabel: 'O que dizem os passageiros',
+      faqTitle: 'Perguntas frequentes',
+      faqItems: [
+        { q: 'Como reservo um transfer?', a: 'Escreva no WhatsApp ou escaneie o código QR na primeira tela.' },
+        { q: 'Aceitam bagagem grande?', a: 'Sim, o Bestune NAT tem porta-malas amplo para malas.' },
+        { q: 'Viajam com animais de estimação?', a: 'Consulte pelo WhatsApp conforme tamanho e tipo.' },
+        { q: 'Formas de pagamento?', a: 'Dinheiro, transferência bancária e cartão.' },
+        { q: 'Acompanhamento de voo?', a: 'Sim, incluído em transfers para o aeroporto de Carrasco.' },
+        { q: 'Cancelamentos?', a: 'Avise com antecedência para reagendar sem problemas.' }
+      ]
     }
   };
 
@@ -223,22 +243,14 @@
     if (saved && translations[saved]) {
       return saved;
     }
-
     var browserLang = (navigator.language || 'es').toLowerCase();
-    if (browserLang.indexOf('pt') === 0) {
-      return 'pt';
-    }
-    if (browserLang.indexOf('en') === 0) {
-      return 'en';
-    }
+    if (browserLang.indexOf('pt') === 0) return 'pt';
+    if (browserLang.indexOf('en') === 0) return 'en';
     return 'es';
   }
 
   function setLanguage(lang) {
-    if (!translations[lang]) {
-      return;
-    }
-
+    if (!translations[lang]) return;
     activeLang = lang;
     localStorage.setItem(LANG_STORAGE_KEY, lang);
     document.documentElement.lang = lang;
@@ -254,7 +266,6 @@
     $('header-subtitle').textContent = t.headerSubtitle;
     $('vehicle-badge').textContent = t.vehicleBadge;
     $('comfort-subtitle').textContent = t.comfortSubtitle;
-
     $('driver-name').textContent = t.driverName;
     $('driver-role').textContent = t.driverRole;
     $('uber-label').textContent = t.uberLabel;
@@ -268,28 +279,21 @@
       $('comfort-' + (i + 1)).textContent = t.comfortItems[i];
     }
 
+    $('qr-label').textContent = t.qrLabel;
+    $('vehicle-qr-phone').textContent = t.phoneNumber;
+
     $('services-title').textContent = t.servicesTitle;
     $('services-subtitle').textContent = t.servicesSubtitle;
     $('services-intro').textContent = t.servicesIntro;
+    $('dest-trip-note').textContent = t.tripNote;
 
-    for (i = 0; i < t.services.length; i++) {
-      $('service-' + (i + 1)).textContent = t.services[i];
-      $('service-desc-' + (i + 1)).textContent = t.serviceDescs[i];
-    }
+    renderDestTabs();
+    goToDestination(currentDest, false);
 
-    $('contact-title').textContent = t.contactTitle;
-    $('contact-subtitle').textContent = t.contactSubtitle;
-    $('contact-phone-label').textContent = t.contactPhoneLabel;
-    $('contact-number').textContent = t.phoneNumber;
-    $('whatsapp-text').textContent = t.whatsapp;
-    $('copy-phone-btn').textContent = t.copyPhone;
-    $('qr-label').textContent = t.qrLabel;
-    $('review-label').textContent = t.reviewLabel;
-    showReview(0, false);
-
-    if (activeSpotDestination >= 0) {
-      renderSpotsPanel(activeSpotDestination);
-    }
+    $('review-gallery-title').textContent = t.reviewLabel;
+    $('faq-title').textContent = t.faqTitle;
+    renderFaq();
+    showReview(shuffleIndex, false);
 
     $('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
     $('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
@@ -297,24 +301,16 @@
   }
 
   function goToSlide(index) {
-    if (index < 0) {
-      index = totalSlides - 1;
-    } else if (index >= totalSlides) {
-      index = 0;
-    }
+    if (index < 0) index = totalSlides - 1;
+    else if (index >= totalSlides) index = 0;
 
     currentSlide = index;
 
-    closeDestinationSpots();
-
-    var slides = document.querySelectorAll('.slide');
-    var dots = document.querySelectorAll('.dot');
-
-    slides.forEach(function (slide, i) {
+    document.querySelectorAll('.slide').forEach(function (slide, i) {
       slide.classList.toggle('active', i === currentSlide);
     });
 
-    dots.forEach(function (dot, i) {
+    document.querySelectorAll('.dot').forEach(function (dot, i) {
       var isActive = i === currentSlide;
       dot.classList.toggle('active', isActive);
       dot.setAttribute('aria-selected', String(isActive));
@@ -322,19 +318,23 @@
 
     resetIdleTimer();
     updateVehicleShowcase(currentSlide);
-    if (currentSlide === 0) {
+
+    if (currentSlide === 2) {
       startReviewRotation();
     } else {
       stopReviewRotation();
+    }
+
+    if (currentSlide === 1) {
+      startDestRotation();
+    } else {
+      stopDestRotation();
     }
   }
 
   function updateVehicleShowcase(index) {
     var showcase = $('vehicle-showcase');
-    if (!showcase) {
-      return;
-    }
-
+    if (!showcase) return;
     showcase.dataset.slide = String(index);
     document.querySelectorAll('.vehicle-view').forEach(function (view, i) {
       view.classList.toggle('active', i === index);
@@ -368,7 +368,6 @@
       shuffleIndex = 0;
       return;
     }
-
     shuffledReviews = shuffleArray(source);
     if (shuffledReviews.length > 1 && shuffledReviews[0].text === lastReviewText) {
       var swap = shuffledReviews[0];
@@ -379,25 +378,18 @@
   }
 
   function showReview(index, animate) {
-    if (!shuffledReviews.length) {
-      reshuffleReviews();
-    }
+    if (!shuffledReviews.length) reshuffleReviews();
 
-    var textEl = $('review-text');
-    var authorEl = $('review-author');
-    if (!shuffledReviews.length || !textEl || !authorEl) {
-      return;
-    }
+    var textEl = $('gallery-review-text');
+    var authorEl = $('gallery-review-author');
+    if (!shuffledReviews.length || !textEl || !authorEl) return;
 
     if (index >= shuffledReviews.length) {
       reshuffleReviews();
       index = 0;
     }
-    if (index < 0) {
-      index = shuffledReviews.length - 1;
-    }
+    if (index < 0) index = shuffledReviews.length - 1;
     shuffleIndex = index;
-    reviewIndex = index;
 
     var review = shuffledReviews[shuffleIndex];
     lastReviewText = review.text;
@@ -423,6 +415,10 @@
     showReview(shuffleIndex + 1, true);
   }
 
+  function prevReview() {
+    showReview(shuffleIndex - 1, true);
+  }
+
   function startReviewRotation() {
     stopReviewRotation();
     reviewTimer = setInterval(nextReview, REVIEW_INTERVAL_MS);
@@ -433,85 +429,133 @@
     reviewTimer = null;
   }
 
-  function renderSpotsPanel(index) {
+  function renderDestTabs() {
     var t = translations[activeLang];
-    var list = $('spots-panel-list');
-    var title = $('spots-panel-title');
-    if (!list || !t.destinationSpots || !t.destinationSpots[index]) {
-      return;
-    }
+    var tabsEl = $('dest-tabs');
+    var dotsEl = $('dest-dots');
+    if (!tabsEl || !dotsEl) return;
 
-    if (title) {
-      title.textContent = t.services[index];
-    }
-
-    var spots = t.destinationSpots[index];
-    list.innerHTML = spots.map(function (spot, i) {
+    tabsEl.innerHTML = t.services.map(function (name, i) {
       return (
-        '<div class="spot-item" style="--spot-i:' + i + '">' +
-          '<img src="' + spot.image + '" alt="" class="spot-item-photo" loading="lazy">' +
-          '<span class="spot-item-text">' +
-            '<span class="spot-item-name">' + spot.name + '</span>' +
-            '<span class="spot-item-desc">' + spot.desc + '</span>' +
-          '</span>' +
+        '<button type="button" class="dest-tab' + (i === currentDest ? ' active' : '') + '" data-dest="' + i + '" role="tab" aria-selected="' + (i === currentDest) + '">' +
+          name +
+        '</button>'
+      );
+    }).join('');
+
+    dotsEl.innerHTML = t.services.map(function (_, i) {
+      return (
+        '<button type="button" class="dest-dot' + (i === currentDest ? ' active' : '') + '" data-dest="' + i + '" aria-label="Destino ' + (i + 1) + '"></button>'
+      );
+    }).join('');
+  }
+
+  function renderDestSpots(index) {
+    var t = translations[activeLang];
+    var spotsEl = $('dest-spots');
+    if (!spotsEl || !t.destinationSpots[index]) return;
+
+    spotsEl.innerHTML = t.destinationSpots[index].map(function (spot, i) {
+      return (
+        '<div class="dest-spot" style="--spot-i:' + i + '">' +
+          '<img src="' + spot.image + '" alt="" class="dest-spot-photo" loading="lazy">' +
+          '<span class="dest-spot-name">' + spot.name + '</span>' +
+          '<span class="dest-spot-desc">' + spot.desc + '</span>' +
         '</div>'
       );
     }).join('');
   }
 
-  function openDestinationSpots(index) {
-    if (activeSpotDestination === index) {
-      closeDestinationSpots();
-      return;
-    }
+  function goToDestination(index, animate) {
+    if (index < 0) index = TOTAL_DESTINATIONS - 1;
+    else if (index >= TOTAL_DESTINATIONS) index = 0;
 
-    activeSpotDestination = index;
+    currentDest = index;
+    var t = translations[activeLang];
+    var trip = t.tripInfo[index];
 
-    var panel = $('spots-panel');
-    var slide = $('services-slide');
-    if (panel) {
-      renderSpotsPanel(index);
-      panel.hidden = false;
-      panel.setAttribute('aria-hidden', 'false');
-    }
-    if (slide) {
-      slide.classList.add('has-spots-open');
-    }
+    var heroImg = $('dest-hero-img');
+    var nameEl = $('dest-name');
+    var badgeEl = $('dest-trip-badge');
+    var slideEl = $('dest-slide');
 
-    document.querySelectorAll('.service-card-btn').forEach(function (btn) {
-      var isActive = parseInt(btn.dataset.destination, 10) === index;
-      btn.classList.toggle('is-active', isActive);
-      btn.setAttribute('aria-expanded', String(isActive));
+    if (heroImg) heroImg.src = DEST_IMAGES[index];
+    if (nameEl) nameEl.textContent = t.services[index];
+    if (badgeEl) badgeEl.textContent = trip.distance + ' · ' + trip.duration;
+
+    renderDestSpots(index);
+
+    document.querySelectorAll('.dest-tab').forEach(function (tab, i) {
+      var isActive = i === index;
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', String(isActive));
     });
+
+    document.querySelectorAll('.dest-dot').forEach(function (dot, i) {
+      dot.classList.toggle('active', i === index);
+    });
+
+    if (slideEl && animate !== false) {
+      slideEl.classList.remove('is-entering');
+      void slideEl.offsetWidth;
+      slideEl.classList.add('is-entering');
+    }
 
     resetIdleTimer();
   }
 
-  function closeDestinationSpots() {
-    if (activeSpotDestination < 0) {
-      return;
-    }
+  function nextDestination() {
+    goToDestination(currentDest + 1, true);
+  }
 
-    activeSpotDestination = -1;
+  function prevDestination() {
+    goToDestination(currentDest - 1, true);
+  }
 
-    var panel = $('spots-panel');
-    var list = $('spots-panel-list');
-    var slide = $('services-slide');
-    if (panel) {
-      panel.hidden = true;
-      panel.setAttribute('aria-hidden', 'true');
-    }
-    if (list) {
-      list.innerHTML = '';
-    }
-    if (slide) {
-      slide.classList.remove('has-spots-open');
-    }
+  function startDestRotation() {
+    stopDestRotation();
+    destTimer = setInterval(nextDestination, DEST_INTERVAL_MS);
+  }
 
-    document.querySelectorAll('.service-card-btn').forEach(function (btn) {
-      btn.classList.remove('is-active');
-      btn.setAttribute('aria-expanded', 'false');
-    });
+  function stopDestRotation() {
+    clearInterval(destTimer);
+    destTimer = null;
+  }
+
+  function pauseDestRotation() {
+    stopDestRotation();
+    if (currentSlide === 1) {
+      destTimer = setTimeout(function () {
+        startDestRotation();
+      }, DEST_INTERVAL_MS * 2);
+    }
+  }
+
+  function renderFaq() {
+    var t = translations[activeLang];
+    var listEl = $('faq-list');
+    if (!listEl) return;
+
+    listEl.innerHTML = t.faqItems.map(function (item, i) {
+      var isOpen = openFaqIndex === i;
+      return (
+        '<div class="faq-item' + (isOpen ? ' is-open' : '') + '">' +
+          '<button type="button" class="faq-question" data-faq="' + i + '" aria-expanded="' + isOpen + '">' +
+            '<span>' + item.q + '</span>' +
+            '<span class="faq-chevron" aria-hidden="true">' + (isOpen ? '−' : '+') + '</span>' +
+          '</button>' +
+          '<div class="faq-answer" ' + (isOpen ? '' : 'hidden') + '>' +
+            '<p>' + item.a + '</p>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function toggleFaq(index) {
+    openFaqIndex = openFaqIndex === index ? -1 : index;
+    renderFaq();
+    resetIdleTimer();
   }
 
   function nextSlide() {
@@ -529,40 +573,8 @@
     }, IDLE_RESET_MS);
   }
 
-  function showToast(message) {
-    var toast = $('toast');
-    toast.textContent = message;
-    toast.classList.add('show');
-    clearTimeout(window.toastTimer);
-    window.toastTimer = setTimeout(function () {
-      toast.classList.remove('show');
-    }, 1700);
-  }
-
-  function copyPhone(button) {
-    var phone = '+59899774019';
-    navigator.clipboard.writeText(phone).then(function () {
-      showToast(translations[activeLang].copySuccess + ': ' + translations[activeLang].phoneNumber);
-      if (button) {
-        var originalText = button.dataset.originalText || button.textContent;
-        button.dataset.originalText = originalText;
-        button.textContent = translations[activeLang].copySuccess;
-        button.classList.add('copied');
-        clearTimeout(button.copyTimer);
-        button.copyTimer = setTimeout(function () {
-          button.textContent = originalText;
-          button.classList.remove('copied');
-        }, 1500);
-      }
-    }, function () {
-      showToast(translations[activeLang].copyError);
-    });
-  }
-
   function setupPwa() {
-    if (location.protocol !== 'http:' && location.protocol !== 'https:') {
-      return;
-    }
+    if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
 
     var link = document.createElement('link');
     link.rel = 'manifest';
@@ -571,9 +583,7 @@
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
-        navigator.serviceWorker.register('sw.js').catch(function () {
-          /* optional */
-        });
+        navigator.serviceWorker.register('sw.js').catch(function () {});
       });
     }
   }
@@ -581,19 +591,11 @@
   function requestAppFullscreen() {
     var el = document.documentElement;
     var req = el.requestFullscreen || el.webkitRequestFullscreen;
-    if (!req || document.fullscreenElement || document.webkitFullscreenElement) {
-      return;
-    }
+    if (!req || document.fullscreenElement || document.webkitFullscreenElement) return;
     try {
       var promise = req.call(el);
-      if (promise && promise.catch) {
-        promise.catch(function () {
-          /* blocked by browser */
-        });
-      }
-    } catch (error) {
-      /* blocked by browser */
-    }
+      if (promise && promise.catch) promise.catch(function () {});
+    } catch (error) {}
   }
 
   function bindEvents() {
@@ -612,30 +614,62 @@
       });
     });
 
-    $('copy-phone-btn').addEventListener('click', function () {
-      copyPhone(this);
-      resetIdleTimer();
+    $('gallery-prev').addEventListener('click', function () {
+      prevReview();
+      stopReviewRotation();
+      startReviewRotation();
     });
 
-    document.querySelectorAll('.service-card-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        openDestinationSpots(parseInt(btn.dataset.destination, 10));
-      });
+    $('gallery-next').addEventListener('click', function () {
+      nextReview();
+      stopReviewRotation();
+      startReviewRotation();
     });
 
-    var spotsClose = $('spots-panel-close');
-    if (spotsClose) {
-      spotsClose.addEventListener('click', closeDestinationSpots);
-    }
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        closeDestinationSpots();
-      }
+    $('dest-prev').addEventListener('click', function () {
+      prevDestination();
+      pauseDestRotation();
     });
+
+    $('dest-next').addEventListener('click', function () {
+      nextDestination();
+      pauseDestRotation();
+    });
+
+    $('dest-tabs').addEventListener('click', function (e) {
+      var tab = e.target.closest('.dest-tab');
+      if (!tab) return;
+      goToDestination(parseInt(tab.dataset.dest, 10), true);
+      pauseDestRotation();
+    });
+
+    $('dest-dots').addEventListener('click', function (e) {
+      var dot = e.target.closest('.dest-dot');
+      if (!dot) return;
+      goToDestination(parseInt(dot.dataset.dest, 10), true);
+      pauseDestRotation();
+    });
+
+    $('faq-list').addEventListener('click', function (e) {
+      var btn = e.target.closest('.faq-question');
+      if (!btn) return;
+      toggleFaq(parseInt(btn.dataset.faq, 10));
+    });
+
+    var destViewport = $('dest-viewport');
+    destViewport.addEventListener('touchstart', function (e) {
+      destTouchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    destViewport.addEventListener('touchend', function (e) {
+      var deltaX = e.changedTouches[0].screenX - destTouchStartX;
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
+      if (deltaX < 0) nextDestination();
+      else prevDestination();
+      pauseDestRotation();
+    }, { passive: true });
 
     var viewport = $('slides-viewport');
-
     viewport.addEventListener('touchstart', function (e) {
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
@@ -647,15 +681,13 @@
       var deltaX = touchEndX - touchStartX;
       var deltaY = touchEndY - touchStartY;
 
-      if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaY) > Math.abs(deltaX)) {
-        return;
-      }
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaY) > Math.abs(deltaX)) return;
 
-      if (deltaX < 0) {
-        nextSlide();
-      } else {
-        prevSlide();
-      }
+      var activeCard = document.querySelector('.slide.active .slide-card');
+      if (activeCard && activeCard.scrollTop > 10) return;
+
+      if (deltaX < 0) nextSlide();
+      else prevSlide();
     }, { passive: true });
 
     ['click', 'touchstart', 'keydown'].forEach(function (eventName) {
