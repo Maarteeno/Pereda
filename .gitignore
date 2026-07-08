@@ -1,0 +1,19 @@
+# Development / source assets (large)
+assets/raw/
+assets/source/
+scripts/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.cursor/
+*.plan.md
+
+# Optional legacy JPG duplicates (PNG used in app)
+assets/bestune-front.jpg
+assets/bestune-side.jpg
+assets/bestune-rear.jpg
+assets/bestune-*.svg
