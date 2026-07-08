@@ -539,20 +539,27 @@ body {
   overflow: visible;
 }
 
+.service-card-wrap.is-spots-open {
+  z-index: 30;
+}
+
 .spot-bubbles-inline {
   position: absolute;
-  left: 50%;
-  bottom: calc(100% + 6px);
-  transform: translateX(-50%);
-  z-index: 5;
+  inset: 0;
+  z-index: 10;
   display: none;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 6px;
-  width: max-content;
-  max-width: calc(100% + 24px);
+  gap: 10px;
+  width: auto;
+  max-width: none;
   pointer-events: none;
-  padding-bottom: 4px;
+  padding: 14px 10px 12px;
+  background: rgba(8, 10, 14, 0.78);
+  border-radius: 16px;
+  backdrop-filter: blur(3px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38);
 }
 
 .spot-bubbles-inline.is-open {
@@ -560,13 +567,23 @@ body {
   pointer-events: auto;
 }
 
+.spot-bubbles-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
 .spot-bubble-inline {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  width: 72px;
-  flex-shrink: 0;
+  gap: 6px;
+  width: 96px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 110px;
   animation: bubblePop 0.32s ease backwards;
   animation-delay: calc(80ms * var(--bubble-i, 0));
 }
@@ -579,35 +596,32 @@ body {
 }
 
 .spot-bubble-photo {
-  width: 54px;
-  height: 54px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(122, 156, 132, 0.55);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  border: 3px solid rgba(122, 156, 132, 0.65);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
   display: block;
   background: var(--panel-bg);
 }
 
 .spot-bubble-stem {
-  width: 2px;
-  height: 8px;
-  margin-top: 2px;
-  background: rgba(122, 156, 132, 0.45);
-  border-radius: 1px;
+  display: none;
 }
 
 .spot-bubble-label {
-  font-size: 0.62rem;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 700;
   line-height: 1.25;
   text-align: center;
-  color: var(--text-soft);
-  max-width: 72px;
+  color: var(--text-main);
+  max-width: 100px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 
 .service-card {
@@ -616,7 +630,7 @@ body {
   align-items: stretch;
   justify-content: flex-start;
   gap: 0;
-  min-height: 140px;
+  min-height: 152px;
   padding: 0 0 10px;
   background: var(--panel-bg);
   border: 1px solid rgba(139, 150, 167, 0.14);
@@ -964,21 +978,18 @@ body {
   }
 
   .spot-bubble-photo {
-    width: 48px;
-    height: 48px;
+    width: 76px;
+    height: 76px;
   }
 
   .spot-bubble-inline {
-    width: 64px;
+    width: 84px;
+    max-width: 96px;
   }
 
   .spot-bubble-label {
-    max-width: 64px;
-    font-size: 0.58rem;
-  }
-
-  .spot-bubble-child {
-    flex: 1 1 auto;
+    max-width: 88px;
+    font-size: 0.68rem;
   }
 }
 

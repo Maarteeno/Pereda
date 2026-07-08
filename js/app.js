@@ -399,17 +399,17 @@
     }
 
     var spots = t.destinationSpots[index];
-    container.innerHTML = spots.map(function (spot, i) {
+    var bubblesHtml = spots.map(function (spot, i) {
       return (
         '<div class="spot-bubble-inline" style="--bubble-i:' + i + '">' +
           '<div class="spot-bubble-photo-wrap">' +
             '<img src="' + spot.image + '" alt="" class="spot-bubble-photo" loading="lazy">' +
-            '<span class="spot-bubble-stem" aria-hidden="true"></span>' +
           '</div>' +
           '<span class="spot-bubble-label">' + spot.name + '</span>' +
         '</div>'
       );
     }).join('');
+    container.innerHTML = '<div class="spot-bubbles-row">' + bubblesHtml + '</div>';
   }
 
   function openDestinationSpots(index) {
@@ -422,10 +422,14 @@
     activeSpotDestination = index;
 
     var container = $('spot-bubbles-' + index);
+    var wrap = document.querySelector('.service-card-wrap[data-destination="' + index + '"]');
     if (container) {
       renderInlineSpots(index);
       container.classList.add('is-open');
       container.setAttribute('aria-hidden', 'false');
+    }
+    if (wrap) {
+      wrap.classList.add('is-spots-open');
     }
 
     document.querySelectorAll('.service-card-btn').forEach(function (btn) {
@@ -448,6 +452,10 @@
       container.classList.remove('is-open');
       container.setAttribute('aria-hidden', 'true');
       container.innerHTML = '';
+    });
+
+    document.querySelectorAll('.service-card-wrap.is-spots-open').forEach(function (wrap) {
+      wrap.classList.remove('is-spots-open');
     });
 
     document.querySelectorAll('.service-card-btn').forEach(function (btn) {
