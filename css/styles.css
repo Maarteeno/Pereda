@@ -271,18 +271,15 @@ body {
 }
 
 .driver-avatar {
-  width: 64px;
-  height: 64px;
+  width: clamp(72px, 12vw, 96px);
+  height: clamp(72px, 12vw, 96px);
   border-radius: 50%;
-  background: linear-gradient(145deg, rgba(122, 156, 132, 0.35), rgba(122, 156, 132, 0.12));
+  object-fit: cover;
+  object-position: center top;
   border: 2px solid rgba(122, 156, 132, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: #b8d4be;
-  letter-spacing: 0.04em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  display: block;
+  background: var(--panel-bg);
 }
 
 .driver-name {
@@ -308,8 +305,10 @@ body {
 }
 
 .driver-stats-row {
-  flex-direction: row;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
 }
 
 .driver-stats-row .stat-pill {
@@ -333,7 +332,7 @@ body {
 }
 
 .stat-label {
-  font-size: 0.68rem;
+  font-size: clamp(0.58rem, 1.6vw, 0.68rem);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-muted);
@@ -341,7 +340,7 @@ body {
 }
 
 .stat-value {
-  font-size: 1.05rem;
+  font-size: clamp(0.9rem, 2.4vw, 1.05rem);
   font-weight: 800;
   color: var(--text-main);
 }
@@ -977,11 +976,23 @@ body {
   transform: translateY(0);
 }
 
-@media (min-width: 821px) {
-  .driver-stats-row {
-    flex-direction: row;
+@media (min-width: 640px) {
+  .vehicle-layout {
+    grid-template-columns: minmax(220px, 0.95fr) minmax(260px, 1.05fr);
+    gap: 18px;
+    padding: 18px 22px;
   }
 
+  .comfort-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .driver-stats-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 821px) {
   :root {
     --spot-photo-size: clamp(84px, 7.5vw, 108px);
     --spot-bubble-max: clamp(96px, 8.5vw, 128px);
@@ -995,6 +1006,11 @@ body {
 
   .service-card-wrap.is-spots-open {
     z-index: 40;
+  }
+
+  .vehicle-showcase {
+    max-width: min(560px, 62vw);
+    height: clamp(190px, 32vh, 280px);
   }
 }
 
@@ -1023,69 +1039,118 @@ body {
   }
 }
 
-@media (max-width: 820px), (orientation: portrait) {
+@media (max-width: 639px) {
   .vehicle-showcase {
-    max-width: min(480px, 88vw);
-    height: clamp(160px, 30vh, 220px);
+    max-width: min(420px, 92vw);
+    height: clamp(140px, 24vh, 190px);
+    margin-bottom: 4px;
   }
 
   .vehicle-badge {
     top: 8px;
     left: 50%;
-    transform: translateX(calc(-50% - 120px));
-  }
-
-  .vehicle-view.active {
-    filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.48));
-  }
-
-  .driver-stats-row {
-    flex-direction: column;
+    transform: translateX(-50%);
+    font-size: 0.68rem;
   }
 
   .vehicle-layout {
     grid-template-columns: 1fr;
-    padding: 16px 18px;
-    gap: 14px;
+    padding: 12px 14px;
+    gap: 12px;
+  }
+
+  .driver-card {
+    padding: 14px 12px;
+    gap: 6px;
+  }
+
+  .driver-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .driver-stats-row .stat-pill:last-child {
+    grid-column: 1 / -1;
   }
 
   .comfort-grid {
     grid-template-columns: 1fr;
-  }
-
-  .vehicle-content {
-    padding: 20px 22px;
-  }
-
-  .feature-list {
     gap: 8px;
-    margin-top: 16px;
+  }
+
+  .review-rotator {
+    min-height: 72px;
+    padding: 8px 10px;
+    margin-top: 6px;
   }
 
   .slide {
-    padding: 8px 48px 8px;
+    padding: 6px 40px 6px;
   }
 
   .services-slide,
   .contact-slide {
-    padding: 20px 22px;
+    padding: 14px 16px;
   }
 
   .service-card {
-    min-height: clamp(136px, 18vh, 156px);
+    min-height: clamp(128px, 20vh, 148px);
     padding: 0 0 8px;
   }
 
   .service-photo-wrap {
-    height: clamp(60px, 10vh, 72px);
+    height: clamp(56px, 9vh, 68px);
   }
 
   :root {
-    --spot-photo-size: clamp(68px, 14vw, 88px);
-    --spot-bubble-max: clamp(76px, 15vw, 100px);
-    --spot-label-size: clamp(0.62rem, 2.8vw, 0.72rem);
-    --spot-overlay-pad-y: clamp(8px, 1.8vh, 14px);
-    --spot-overlay-pad-x: clamp(6px, 2vw, 12px);
+    --spot-photo-size: clamp(60px, 16vw, 76px);
+    --spot-bubble-max: clamp(68px, 17vw, 84px);
+    --spot-row-gap: clamp(4px, 1.2vw, 8px);
+    --spot-label-size: clamp(0.58rem, 3vw, 0.66rem);
+    --service-card-min-h: clamp(128px, 22vh, 148px);
+  }
+}
+
+@media (max-width: 639px) and (orientation: landscape) {
+  .vehicle-showcase {
+    height: clamp(110px, 28vh, 150px);
+  }
+
+  .vehicle-layout {
+    grid-template-columns: minmax(180px, 0.85fr) minmax(200px, 1.15fr);
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .driver-stats-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .driver-stats-row .stat-pill:last-child {
+    grid-column: auto;
+  }
+
+  .comfort-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .review-rotator {
+    min-height: 64px;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) and (orientation: portrait) {
+  .vehicle-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .comfort-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .vehicle-showcase {
+    max-width: min(500px, 80vw);
+    height: clamp(170px, 28vh, 230px);
   }
 }
 
@@ -1097,6 +1162,28 @@ body {
   .contact-panel {
     padding: 14px 16px;
     gap: 10px;
+  }
+
+  .vehicle-layout {
+    grid-template-columns: minmax(200px, 0.9fr) minmax(240px, 1.1fr);
+    padding: 10px 14px;
+    gap: 12px;
+  }
+
+  .driver-stats-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .driver-stats-row .stat-pill:last-child {
+    grid-column: auto;
+  }
+
+  .comfort-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .vehicle-showcase {
+    height: clamp(120px, 30vh, 170px);
   }
 
   :root {
@@ -1169,24 +1256,8 @@ body {
     height: 40px;
   }
 
-  .slide {
-    padding: 6px 40px 6px;
-  }
-
-  .services-slide {
-    padding: 14px 16px;
-  }
-
   .services-grid {
     gap: 10px;
-  }
-
-  :root {
-    --spot-photo-size: clamp(60px, 16vw, 76px);
-    --spot-bubble-max: clamp(68px, 17vw, 84px);
-    --spot-row-gap: clamp(4px, 1.2vw, 8px);
-    --spot-label-size: clamp(0.58rem, 3vw, 0.66rem);
-    --service-card-min-h: clamp(128px, 22vh, 148px);
   }
 
   .contact-actions {

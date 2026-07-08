@@ -26,9 +26,11 @@
       driverName: 'Adrián Pereda',
       driverRole: 'Conductor profesional · Montevideo y costa',
       uberLabel: 'Valoración Uber',
-      uberRating: '4.9',
+      uberRating: '4.99',
       tripsLabel: 'Viajes realizados',
-      tripsCount: '42.350',
+      tripsCount: '+40.000',
+      yearsLabel: 'Años de servicio',
+      yearsValue: '9,5',
       comfortItems: [
         'Espacio amplio para valijas',
         'Puerta corrediza · acceso cómodo',
@@ -42,7 +44,7 @@
       servicesIntro: 'Viajes seguros, cómodos y directos en vehículo eléctrico. Tocá un destino para ver sugerencias.',
       destinationSpots: [
         [
-          { name: 'La Mano (Los Dedos)', image: 'assets/spots/la-mano.jpg' },
+          { name: 'La Mano', image: 'assets/spots/la-mano.jpg' },
           { name: 'Playa Brava', image: 'assets/spots/playa-brava.jpg' },
           { name: 'Puerto de Punta', image: 'assets/spots/puerto-punta.jpg' }
         ],
@@ -90,9 +92,11 @@
       driverName: 'Adrián Pereda',
       driverRole: 'Professional driver · Montevideo and coast',
       uberLabel: 'Uber rating',
-      uberRating: '4.9',
+      uberRating: '4.99',
       tripsLabel: 'Trips completed',
-      tripsCount: '42,350',
+      tripsCount: '40,000+',
+      yearsLabel: 'Years of service',
+      yearsValue: '9.5',
       comfortItems: [
         'Room for luggage',
         'Sliding door · easy access',
@@ -106,7 +110,7 @@
       servicesIntro: 'Safe, comfortable and direct trips in an electric vehicle. Tap a destination for suggestions.',
       destinationSpots: [
         [
-          { name: 'La Mano (The Hand)', image: 'assets/spots/la-mano.jpg' },
+          { name: 'La Mano', image: 'assets/spots/la-mano.jpg' },
           { name: 'Brava Beach', image: 'assets/spots/playa-brava.jpg' },
           { name: 'Punta del Este Port', image: 'assets/spots/puerto-punta.jpg' }
         ],
@@ -154,9 +158,11 @@
       driverName: 'Adrián Pereda',
       driverRole: 'Motorista profissional · Montevidéu e litoral',
       uberLabel: 'Avaliação Uber',
-      uberRating: '4.9',
+      uberRating: '4.99',
       tripsLabel: 'Viagens realizadas',
-      tripsCount: '42.350',
+      tripsCount: '+40.000',
+      yearsLabel: 'Anos de serviço',
+      yearsValue: '9,5',
       comfortItems: [
         'Espaço amplo para bagagens',
         'Porta corrediça · acesso confortável',
@@ -170,7 +176,7 @@
       servicesIntro: 'Viagens seguras, confortáveis e diretas em veículo elétrico. Toque em um destino para ver sugestões.',
       destinationSpots: [
         [
-          { name: 'La Mano (Los Dedos)', image: 'assets/spots/la-mano.jpg' },
+          { name: 'La Mano', image: 'assets/spots/la-mano.jpg' },
           { name: 'Playa Brava', image: 'assets/spots/playa-brava.jpg' },
           { name: 'Porto de Punta del Este', image: 'assets/spots/puerto-punta.jpg' }
         ],
@@ -258,6 +264,8 @@
     $('uber-rating').textContent = t.uberRating;
     $('trips-label').textContent = t.tripsLabel;
     $('trips-count').textContent = t.tripsCount;
+    $('years-label').textContent = t.yearsLabel;
+    $('years-value').textContent = t.yearsValue;
 
     for (i = 0; i < t.comfortItems.length; i++) {
       $('comfort-' + (i + 1)).textContent = t.comfortItems[i];
