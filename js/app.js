@@ -41,13 +41,27 @@
       servicesSubtitle: 'Contacto directo',
       servicesIntro: 'Viajes seguros, cómodos y directos en vehículo eléctrico. Tocá un destino para ver sugerencias.',
       destinationSpots: [
-        ['La Mano (Los Dedos)', 'Playa Brava', 'Puerto de Punta'],
-        ['Barrio Histórico', 'Faro de Colonia', 'Calle de los Suspiros'],
-        ['Salones Punta del Este', 'Hoteles de la costa', 'Montevideo centro'],
-        ['Aeropuerto Carrasco', 'Terminal Buquebus', 'Hoteles Montevideo']
+        [
+          { name: 'La Mano (Los Dedos)', image: 'assets/spots/la-mano.jpg' },
+          { name: 'Playa Brava', image: 'assets/spots/playa-brava.jpg' },
+          { name: 'Puerto de Punta', image: 'assets/spots/puerto-punta.jpg' }
+        ],
+        [
+          { name: 'Barrio Histórico', image: 'assets/spots/barrio-historico.jpg' },
+          { name: 'Faro de Colonia', image: 'assets/spots/faro-colonia.jpg' },
+          { name: 'Calle de los Suspiros', image: 'assets/spots/calle-suspiros.jpg' }
+        ],
+        [
+          { name: 'Salones Punta del Este', image: 'assets/spots/salones-pde.jpg' },
+          { name: 'Hoteles de la costa', image: 'assets/spots/hoteles-costa.jpg' },
+          { name: 'Montevideo centro', image: 'assets/spots/montevideo-centro.jpg' }
+        ],
+        [
+          { name: 'Aeropuerto Carrasco', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Terminal Buquebus', image: 'assets/spots/buquebus.jpg' },
+          { name: 'Hoteles Montevideo', image: 'assets/spots/hoteles-mvd.jpg' }
+        ]
       ],
-      spotsTitle: 'Lugares recomendados',
-      spotsClose: 'Cerrar',
       services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeropuerto / Traslados'],
       serviceDescs: [
         'Traslados puerta a puerta desde Montevideo',
@@ -91,13 +105,27 @@
       servicesSubtitle: 'Direct contact',
       servicesIntro: 'Safe, comfortable and direct trips in an electric vehicle. Tap a destination for suggestions.',
       destinationSpots: [
-        ['La Mano (The Hand)', 'Brava Beach', 'Punta del Este Port'],
-        ['Historic Quarter', 'Colonia Lighthouse', 'Street of Sighs'],
-        ['Punta del Este venues', 'Coast hotels', 'Montevideo downtown'],
-        ['Carrasco Airport', 'Buquebus Terminal', 'Montevideo hotels']
+        [
+          { name: 'La Mano (The Hand)', image: 'assets/spots/la-mano.jpg' },
+          { name: 'Brava Beach', image: 'assets/spots/playa-brava.jpg' },
+          { name: 'Punta del Este Port', image: 'assets/spots/puerto-punta.jpg' }
+        ],
+        [
+          { name: 'Historic Quarter', image: 'assets/spots/barrio-historico.jpg' },
+          { name: 'Colonia Lighthouse', image: 'assets/spots/faro-colonia.jpg' },
+          { name: 'Street of Sighs', image: 'assets/spots/calle-suspiros.jpg' }
+        ],
+        [
+          { name: 'Punta del Este venues', image: 'assets/spots/salones-pde.jpg' },
+          { name: 'Coast hotels', image: 'assets/spots/hoteles-costa.jpg' },
+          { name: 'Montevideo downtown', image: 'assets/spots/montevideo-centro.jpg' }
+        ],
+        [
+          { name: 'Carrasco Airport', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Buquebus Terminal', image: 'assets/spots/buquebus.jpg' },
+          { name: 'Montevideo hotels', image: 'assets/spots/hoteles-mvd.jpg' }
+        ]
       ],
-      spotsTitle: 'Recommended spots',
-      spotsClose: 'Close',
       services: ['Punta del Este', 'Colonia', 'Events', 'Airport / Transfers'],
       serviceDescs: [
         'Door-to-door transfers from Montevideo',
@@ -141,13 +169,27 @@
       servicesSubtitle: 'Contato direto',
       servicesIntro: 'Viagens seguras, confortáveis e diretas em veículo elétrico. Toque em um destino para ver sugestões.',
       destinationSpots: [
-        ['La Mano (Los Dedos)', 'Playa Brava', 'Porto de Punta del Este'],
-        ['Bairro Histórico', 'Farol de Colonia', 'Calle de los Suspiros'],
-        ['Salões em Punta del Este', 'Hotéis do litoral', 'Centro de Montevidéu'],
-        ['Aeroporto Carrasco', 'Terminal Buquebus', 'Hotéis em Montevidéu']
+        [
+          { name: 'La Mano (Los Dedos)', image: 'assets/spots/la-mano.jpg' },
+          { name: 'Playa Brava', image: 'assets/spots/playa-brava.jpg' },
+          { name: 'Porto de Punta del Este', image: 'assets/spots/puerto-punta.jpg' }
+        ],
+        [
+          { name: 'Bairro Histórico', image: 'assets/spots/barrio-historico.jpg' },
+          { name: 'Farol de Colonia', image: 'assets/spots/faro-colonia.jpg' },
+          { name: 'Calle de los Suspiros', image: 'assets/spots/calle-suspiros.jpg' }
+        ],
+        [
+          { name: 'Salões em Punta del Este', image: 'assets/spots/salones-pde.jpg' },
+          { name: 'Hotéis do litoral', image: 'assets/spots/hoteles-costa.jpg' },
+          { name: 'Centro de Montevidéu', image: 'assets/spots/montevideo-centro.jpg' }
+        ],
+        [
+          { name: 'Aeroporto Carrasco', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Terminal Buquebus', image: 'assets/spots/buquebus.jpg' },
+          { name: 'Hotéis em Montevidéu', image: 'assets/spots/hoteles-mvd.jpg' }
+        ]
       ],
-      spotsTitle: 'Lugares recomendados',
-      spotsClose: 'Fechar',
       services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeroporto / Transfer'],
       serviceDescs: [
         'Transfers porta a porta desde Montevidéu',
@@ -241,10 +283,8 @@
     $('review-label').textContent = t.reviewLabel;
     showReview(reviewIndex, false);
 
-    $('spots-title').textContent = t.spotsTitle;
-    $('spots-close').setAttribute('aria-label', t.spotsClose);
     if (activeSpotDestination >= 0) {
-      renderSpotsCluster(activeSpotDestination);
+      renderInlineSpots(activeSpotDestination);
     }
 
     $('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
@@ -351,53 +391,68 @@
     reviewTimer = null;
   }
 
-  function renderSpotsCluster(index) {
+  function renderInlineSpots(index) {
     var t = translations[activeLang];
-    var cluster = $('spots-cluster');
-    if (!cluster || !t.destinationSpots || !t.destinationSpots[index]) {
+    var container = $('spot-bubbles-' + index);
+    if (!container || !t.destinationSpots || !t.destinationSpots[index]) {
       return;
     }
 
     var spots = t.destinationSpots[index];
-    var destName = t.services[index];
-    var childrenHtml = spots.map(function (spot, i) {
-      return '<span class="spot-bubble spot-bubble-child" style="--bubble-i:' + (i + 1) + '">' + spot + '</span>';
+    container.innerHTML = spots.map(function (spot, i) {
+      return (
+        '<div class="spot-bubble-inline" style="--bubble-i:' + i + '">' +
+          '<div class="spot-bubble-photo-wrap">' +
+            '<img src="' + spot.image + '" alt="" class="spot-bubble-photo" loading="lazy">' +
+            '<span class="spot-bubble-stem" aria-hidden="true"></span>' +
+          '</div>' +
+          '<span class="spot-bubble-label">' + spot.name + '</span>' +
+        '</div>'
+      );
     }).join('');
-
-    cluster.innerHTML =
-      '<div class="spot-bubble spot-bubble-main">' + destName + '</div>' +
-      '<div class="spots-children">' + childrenHtml + '</div>';
   }
 
   function openDestinationSpots(index) {
-    var overlay = $('spots-overlay');
-    if (!overlay) {
+    if (activeSpotDestination === index) {
+      closeDestinationSpots();
       return;
     }
 
+    closeDestinationSpots();
     activeSpotDestination = index;
-    renderSpotsCluster(index);
+
+    var container = $('spot-bubbles-' + index);
+    if (container) {
+      renderInlineSpots(index);
+      container.classList.add('is-open');
+      container.setAttribute('aria-hidden', 'false');
+    }
 
     document.querySelectorAll('.service-card-btn').forEach(function (btn) {
-      btn.classList.toggle('is-active', parseInt(btn.dataset.destination, 10) === index);
+      var isActive = parseInt(btn.dataset.destination, 10) === index;
+      btn.classList.toggle('is-active', isActive);
+      btn.setAttribute('aria-expanded', String(isActive));
     });
 
-    overlay.hidden = false;
-    overlay.setAttribute('aria-hidden', 'false');
     resetIdleTimer();
   }
 
   function closeDestinationSpots() {
-    var overlay = $('spots-overlay');
-    if (!overlay || overlay.hidden) {
+    if (activeSpotDestination < 0) {
       return;
     }
 
     activeSpotDestination = -1;
-    overlay.hidden = true;
-    overlay.setAttribute('aria-hidden', 'true');
+
+    document.querySelectorAll('.spot-bubbles-inline').forEach(function (container) {
+      container.classList.remove('is-open');
+      container.setAttribute('aria-hidden', 'true');
+      container.innerHTML = '';
+    });
+
     document.querySelectorAll('.service-card-btn').forEach(function (btn) {
       btn.classList.remove('is-active');
+      btn.setAttribute('aria-expanded', 'false');
     });
   }
 
@@ -492,8 +547,17 @@
       });
     });
 
-    $('spots-backdrop').addEventListener('click', closeDestinationSpots);
-    $('spots-close').addEventListener('click', closeDestinationSpots);
+    var servicesSlide = document.querySelector('.services-slide');
+    if (servicesSlide) {
+      servicesSlide.addEventListener('click', function (e) {
+        if (activeSpotDestination < 0) {
+          return;
+        }
+        if (!e.target.closest('.service-card-wrap')) {
+          closeDestinationSpots();
+        }
+      });
+    }
 
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
