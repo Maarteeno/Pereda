@@ -14,6 +14,7 @@
   var reviewIndex = 0;
   var reviewTimer = null;
   var REVIEW_INTERVAL_MS = 4500;
+  var activeSpotDestination = -1;
 
   var translations = {
     es: {
@@ -38,7 +39,15 @@
       ],
       servicesTitle: 'Traslados',
       servicesSubtitle: 'Contacto directo',
-      servicesIntro: 'Viajes seguros, cómodos y directos en vehículo eléctrico.',
+      servicesIntro: 'Viajes seguros, cómodos y directos en vehículo eléctrico. Tocá un destino para ver sugerencias.',
+      destinationSpots: [
+        ['La Mano (Los Dedos)', 'Playa Brava', 'Puerto de Punta'],
+        ['Barrio Histórico', 'Faro de Colonia', 'Calle de los Suspiros'],
+        ['Salones Punta del Este', 'Hoteles de la costa', 'Montevideo centro'],
+        ['Aeropuerto Carrasco', 'Terminal Buquebus', 'Hoteles Montevideo']
+      ],
+      spotsTitle: 'Lugares recomendados',
+      spotsClose: 'Cerrar',
       services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeropuerto / Traslados'],
       serviceDescs: [
         'Traslados puerta a puerta desde Montevideo',
@@ -80,7 +89,15 @@
       ],
       servicesTitle: 'Transport',
       servicesSubtitle: 'Direct contact',
-      servicesIntro: 'Safe, comfortable and direct trips in an electric vehicle.',
+      servicesIntro: 'Safe, comfortable and direct trips in an electric vehicle. Tap a destination for suggestions.',
+      destinationSpots: [
+        ['La Mano (The Hand)', 'Brava Beach', 'Punta del Este Port'],
+        ['Historic Quarter', 'Colonia Lighthouse', 'Street of Sighs'],
+        ['Punta del Este venues', 'Coast hotels', 'Montevideo downtown'],
+        ['Carrasco Airport', 'Buquebus Terminal', 'Montevideo hotels']
+      ],
+      spotsTitle: 'Recommended spots',
+      spotsClose: 'Close',
       services: ['Punta del Este', 'Colonia', 'Events', 'Airport / Transfers'],
       serviceDescs: [
         'Door-to-door transfers from Montevideo',
@@ -122,7 +139,15 @@
       ],
       servicesTitle: 'Transporte',
       servicesSubtitle: 'Contato direto',
-      servicesIntro: 'Viagens seguras, confortáveis e diretas em veículo elétrico.',
+      servicesIntro: 'Viagens seguras, confortáveis e diretas em veículo elétrico. Toque em um destino para ver sugestões.',
+      destinationSpots: [
+        ['La Mano (Los Dedos)', 'Playa Brava', 'Porto de Punta del Este'],
+        ['Bairro Histórico', 'Farol de Colonia', 'Calle de los Suspiros'],
+        ['Salões em Punta del Este', 'Hotéis do litoral', 'Centro de Montevidéu'],
+        ['Aeroporto Carrasco', 'Terminal Buquebus', 'Hotéis em Montevidéu']
+      ],
+      spotsTitle: 'Lugares recomendados',
+      spotsClose: 'Fechar',
       services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeroporto / Transfer'],
       serviceDescs: [
         'Transfers porta a porta desde Montevidéu',
@@ -216,6 +241,12 @@
     $('review-label').textContent = t.reviewLabel;
     showReview(reviewIndex, false);
 
+    $('spots-title').textContent = t.spotsTitle;
+    $('spots-close').setAttribute('aria-label', t.spotsClose);
+    if (activeSpotDestination >= 0) {
+      renderSpotsCluster(activeSpotDestination);
+    }
+
     $('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
     $('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
     $('lang-pt').setAttribute('aria-pressed', String(lang === 'pt'));
@@ -229,6 +260,8 @@
     }
 
     currentSlide = index;
+
+    closeDestinationSpots();
 
     var slides = document.querySelectorAll('.slide');
     var dots = document.querySelectorAll('.dot');
@@ -318,6 +351,56 @@
     reviewTimer = null;
   }
 
+  function renderSpotsCluster(index) {
+    var t = translations[activeLang];
+    var cluster = $('spots-cluster');
+    if (!cluster || !t.destinationSpots || !t.destinationSpots[index]) {
+      return;
+    }
+
+    var spots = t.destinationSpots[index];
+    var destName = t.services[index];
+    var childrenHtml = spots.map(function (spot, i) {
+      return '<span class="spot-bubble spot-bubble-child" style="--bubble-i:' + (i + 1) + '">' + spot + '</span>';
+    }).join('');
+
+    cluster.innerHTML =
+      '<div class="spot-bubble spot-bubble-main">' + destName + '</div>' +
+      '<div class="spots-children">' + childrenHtml + '</div>';
+  }
+
+  function openDestinationSpots(index) {
+    var overlay = $('spots-overlay');
+    if (!overlay) {
+      return;
+    }
+
+    activeSpotDestination = index;
+    renderSpotsCluster(index);
+
+    document.querySelectorAll('.service-card-btn').forEach(function (btn) {
+      btn.classList.toggle('is-active', parseInt(btn.dataset.destination, 10) === index);
+    });
+
+    overlay.hidden = false;
+    overlay.setAttribute('aria-hidden', 'false');
+    resetIdleTimer();
+  }
+
+  function closeDestinationSpots() {
+    var overlay = $('spots-overlay');
+    if (!overlay || overlay.hidden) {
+      return;
+    }
+
+    activeSpotDestination = -1;
+    overlay.hidden = true;
+    overlay.setAttribute('aria-hidden', 'true');
+    document.querySelectorAll('.service-card-btn').forEach(function (btn) {
+      btn.classList.remove('is-active');
+    });
+  }
+
   function nextSlide() {
     goToSlide(currentSlide + 1);
   }
@@ -401,6 +484,21 @@
     $('copy-phone-btn').addEventListener('click', function () {
       copyPhone(this);
       resetIdleTimer();
+    });
+
+    document.querySelectorAll('.service-card-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openDestinationSpots(parseInt(btn.dataset.destination, 10));
+      });
+    });
+
+    $('spots-backdrop').addEventListener('click', closeDestinationSpots);
+    $('spots-close').addEventListener('click', closeDestinationSpots);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeDestinationSpots();
+      }
     });
 
     var viewport = $('slides-viewport');

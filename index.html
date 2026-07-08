@@ -96,37 +96,37 @@
             <div class="slide-head">
               <h2 class="slide-title" id="services-title">Traslados</h2>
               <p class="slide-subtitle" id="services-subtitle">Contacto directo</p>
-              <p class="services-intro" id="services-intro">Viajes seguros, cómodos y directos en vehículo eléctrico.</p>
+              <p class="services-intro" id="services-intro">Viajes seguros, cómodos y directos en vehículo eléctrico. Tocá un destino para ver sugerencias.</p>
             </div>
             <div class="services-grid">
-              <article class="service-card">
+              <button type="button" class="service-card service-card-btn" data-destination="0" aria-haspopup="dialog">
                 <div class="service-photo-wrap">
                   <img src="assets/destinations/punta-del-este.jpg" alt="" class="service-photo" loading="lazy">
                 </div>
                 <span class="service-name" id="service-1">Punta del Este</span>
                 <span class="service-desc" id="service-desc-1">Traslados puerta a puerta desde Montevideo</span>
-              </article>
-              <article class="service-card">
+              </button>
+              <button type="button" class="service-card service-card-btn" data-destination="1" aria-haspopup="dialog">
                 <div class="service-photo-wrap">
                   <img src="assets/destinations/colonia.jpg" alt="" class="service-photo" loading="lazy">
                 </div>
                 <span class="service-name" id="service-2">Colonia</span>
                 <span class="service-desc" id="service-desc-2">Viajes regionales con horario a convenir</span>
-              </article>
-              <article class="service-card">
+              </button>
+              <button type="button" class="service-card service-card-btn" data-destination="2" aria-haspopup="dialog">
                 <div class="service-photo-wrap">
                   <img src="assets/destinations/eventos.jpg" alt="" class="service-photo" loading="lazy">
                 </div>
                 <span class="service-name" id="service-3">Eventos</span>
                 <span class="service-desc" id="service-desc-3">Bodas, corporativos y ocasiones especiales</span>
-              </article>
-              <article class="service-card">
+              </button>
+              <button type="button" class="service-card service-card-btn" data-destination="3" aria-haspopup="dialog">
                 <div class="service-photo-wrap">
                   <img src="assets/destinations/aeropuerto.jpg" alt="" class="service-photo" loading="lazy">
                 </div>
                 <span class="service-name" id="service-4">Aeropuerto / Traslados</span>
                 <span class="service-desc" id="service-desc-4">Carrasco, puerto y hoteles · puntualidad</span>
-              </article>
+              </button>
             </div>
             <p class="services-note" id="services-note">Reservá tu traslado con un solo toque en la siguiente pantalla.</p>
           </div>
@@ -174,6 +174,15 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="spots-overlay" id="spots-overlay" hidden aria-hidden="true">
+    <div class="spots-backdrop" id="spots-backdrop"></div>
+    <div class="spots-dialog" role="dialog" aria-modal="true" aria-labelledby="spots-title">
+      <button type="button" class="spots-close" id="spots-close" aria-label="Cerrar">×</button>
+      <p class="spots-heading" id="spots-title">Lugares recomendados</p>
+      <div class="spots-cluster" id="spots-cluster"></div>
+    </div>
+  </div>
 
   <script src="js/reviews-data.js"></script>
   <script src="js/app.js"></script>
