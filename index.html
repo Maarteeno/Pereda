@@ -95,7 +95,7 @@
 
         <!-- Slide 2: Servicios -->
         <section class="slide" data-slide="1" aria-label="Servicios">
-          <div class="slide-card services-slide">
+          <div class="slide-card services-slide" id="services-slide">
             <div class="slide-head">
               <h2 class="slide-title" id="services-title">Traslados</h2>
               <p class="slide-subtitle" id="services-subtitle">Contacto directo</p>
@@ -104,44 +104,51 @@
             <div class="services-grid">
               <div class="service-card-wrap" data-destination="0">
                 <button type="button" class="service-card service-card-btn" data-destination="0" aria-expanded="false">
-                  <div class="service-photo-wrap">
-                    <img src="assets/destinations/punta-del-este.jpg" alt="" class="service-photo" loading="lazy">
-                  </div>
-                  <span class="service-name" id="service-1">Punta del Este</span>
-                  <span class="service-desc" id="service-desc-1">Traslados puerta a puerta desde Montevideo</span>
+                  <img src="assets/destinations/punta-del-este.jpg" alt="" class="service-photo" loading="lazy">
+                  <span class="service-plus" aria-hidden="true">+</span>
+                  <span class="service-card-info">
+                    <span class="service-name" id="service-1">Punta del Este</span>
+                    <span class="service-desc" id="service-desc-1">Traslados puerta a puerta desde Montevideo</span>
+                  </span>
                 </button>
               </div>
               <div class="service-card-wrap" data-destination="1">
                 <button type="button" class="service-card service-card-btn" data-destination="1" aria-expanded="false">
-                  <div class="service-photo-wrap">
-                    <img src="assets/destinations/colonia.jpg" alt="" class="service-photo" loading="lazy">
-                  </div>
-                  <span class="service-name" id="service-2">Colonia</span>
-                  <span class="service-desc" id="service-desc-2">Viajes regionales con horario a convenir</span>
+                  <img src="assets/destinations/colonia.jpg" alt="" class="service-photo" loading="lazy">
+                  <span class="service-plus" aria-hidden="true">+</span>
+                  <span class="service-card-info">
+                    <span class="service-name" id="service-2">Colonia</span>
+                    <span class="service-desc" id="service-desc-2">Viajes regionales con horario a convenir</span>
+                  </span>
                 </button>
               </div>
               <div class="service-card-wrap" data-destination="2">
                 <button type="button" class="service-card service-card-btn" data-destination="2" aria-expanded="false">
-                  <div class="service-photo-wrap">
-                    <img src="assets/destinations/eventos.jpg" alt="" class="service-photo" loading="lazy">
-                  </div>
-                  <span class="service-name" id="service-3">Eventos</span>
-                  <span class="service-desc" id="service-desc-3">Bodas, corporativos y ocasiones especiales</span>
+                  <img src="assets/destinations/eventos.jpg" alt="" class="service-photo" loading="lazy">
+                  <span class="service-plus" aria-hidden="true">+</span>
+                  <span class="service-card-info">
+                    <span class="service-name" id="service-3">Eventos</span>
+                    <span class="service-desc" id="service-desc-3">Bodas, corporativos y ocasiones especiales</span>
+                  </span>
                 </button>
               </div>
               <div class="service-card-wrap" data-destination="3">
                 <button type="button" class="service-card service-card-btn" data-destination="3" aria-expanded="false">
-                  <div class="service-photo-wrap">
-                    <img src="assets/destinations/aeropuerto.jpg" alt="" class="service-photo" loading="lazy">
-                  </div>
-                  <span class="service-name" id="service-4">Aeropuerto / Traslados</span>
-                  <span class="service-desc" id="service-desc-4">Carrasco, puerto y hoteles · puntualidad</span>
+                  <img src="assets/destinations/aeropuerto.jpg" alt="" class="service-photo" loading="lazy">
+                  <span class="service-plus" aria-hidden="true">+</span>
+                  <span class="service-card-info">
+                    <span class="service-name" id="service-4">Aeropuerto / Traslados</span>
+                    <span class="service-desc" id="service-desc-4">Carrasco, puerto y hoteles · puntualidad</span>
+                  </span>
                 </button>
               </div>
             </div>
-            <div class="spots-blur-overlay" id="spots-blur-overlay" hidden aria-hidden="true">
-              <div class="spots-blur-backdrop" id="spots-blur-backdrop"></div>
-              <div class="spots-blur-cluster" id="spots-blur-cluster"></div>
+            <div class="spots-panel" id="spots-panel" hidden aria-hidden="true">
+              <div class="spots-panel-head">
+                <h3 class="spots-panel-title" id="spots-panel-title"></h3>
+                <button type="button" class="spots-panel-close" id="spots-panel-close" aria-label="Cerrar">✕</button>
+              </div>
+              <div class="spots-panel-list" id="spots-panel-list"></div>
             </div>
           </div>
         </section>

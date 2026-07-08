@@ -46,24 +46,24 @@
       servicesIntro: 'Viajes seguros, cómodos y directos en vehículo eléctrico. Tocá un destino para ver sugerencias.',
       destinationSpots: [
         [
-          { name: 'La Mano', image: 'assets/spots/la-mano.jpg' },
-          { name: 'Playa Brava', image: 'assets/spots/playa-brava.jpg' },
-          { name: 'Puerto de Punta', image: 'assets/spots/puerto-punta.jpg' }
+          { name: 'La Mano', desc: 'Escultura icónica en Playa Brava', image: 'assets/spots/la-mano.jpg' },
+          { name: 'Playa Brava', desc: 'Olas y atardeceres imperdibles', image: 'assets/spots/playa-brava.jpg' },
+          { name: 'Puerto de Punta', desc: 'Yates, lobos marinos y paseo', image: 'assets/spots/puerto-punta.jpg' }
         ],
         [
-          { name: 'Barrio Histórico', image: 'assets/spots/barrio-historico.jpg' },
-          { name: 'Faro de Colonia', image: 'assets/spots/faro-colonia.jpg' },
-          { name: 'Calle de los Suspiros', image: 'assets/spots/calle-suspiros.jpg' }
+          { name: 'Barrio Histórico', desc: 'Patrimonio de la Humanidad UNESCO', image: 'assets/spots/barrio-historico.jpg' },
+          { name: 'Faro de Colonia', desc: 'Vista panorámica del Río de la Plata', image: 'assets/spots/faro-colonia.jpg' },
+          { name: 'Calle de los Suspiros', desc: 'La calle colonial más fotografiada', image: 'assets/spots/calle-suspiros.jpg' }
         ],
         [
-          { name: 'Salones Punta del Este', image: 'assets/spots/salones-pde.jpg' },
-          { name: 'Hoteles de la costa', image: 'assets/spots/hoteles-costa.jpg' },
-          { name: 'Montevideo centro', image: 'assets/spots/montevideo-centro.jpg' }
+          { name: 'Salones Punta del Este', desc: 'Bodas y fiestas frente al mar', image: 'assets/spots/salones-pde.jpg' },
+          { name: 'Hoteles de la costa', desc: 'Llegada puntual a tu evento', image: 'assets/spots/hoteles-costa.jpg' },
+          { name: 'Montevideo centro', desc: 'Eventos corporativos y sociales', image: 'assets/spots/montevideo-centro.jpg' }
         ],
         [
-          { name: 'Aeropuerto Carrasco', image: 'assets/spots/carrasco.jpg' },
-          { name: 'Terminal Buquebus', image: 'assets/spots/buquebus.jpg' },
-          { name: 'Hoteles Montevideo', image: 'assets/spots/hoteles-mvd.jpg' }
+          { name: 'Aeropuerto Carrasco', desc: 'Seguimiento de vuelo incluido', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Terminal Buquebus', desc: 'Conexión directa con el puerto', image: 'assets/spots/buquebus.jpg' },
+          { name: 'Hoteles Montevideo', desc: 'Recogida puerta a puerta', image: 'assets/spots/hoteles-mvd.jpg' }
         ]
       ],
       services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeropuerto / Traslados'],
@@ -110,24 +110,24 @@
       servicesIntro: 'Safe, comfortable and direct trips in an electric vehicle. Tap a destination for suggestions.',
       destinationSpots: [
         [
-          { name: 'La Mano', image: 'assets/spots/la-mano.jpg' },
-          { name: 'Brava Beach', image: 'assets/spots/playa-brava.jpg' },
-          { name: 'Punta del Este Port', image: 'assets/spots/puerto-punta.jpg' }
+          { name: 'La Mano', desc: 'Iconic sculpture on Brava Beach', image: 'assets/spots/la-mano.jpg' },
+          { name: 'Brava Beach', desc: 'Waves and unforgettable sunsets', image: 'assets/spots/playa-brava.jpg' },
+          { name: 'Punta del Este Port', desc: 'Yachts, sea lions and promenade', image: 'assets/spots/puerto-punta.jpg' }
         ],
         [
-          { name: 'Historic Quarter', image: 'assets/spots/barrio-historico.jpg' },
-          { name: 'Colonia Lighthouse', image: 'assets/spots/faro-colonia.jpg' },
-          { name: 'Street of Sighs', image: 'assets/spots/calle-suspiros.jpg' }
+          { name: 'Historic Quarter', desc: 'UNESCO World Heritage Site', image: 'assets/spots/barrio-historico.jpg' },
+          { name: 'Colonia Lighthouse', desc: 'Panoramic view of the Río de la Plata', image: 'assets/spots/faro-colonia.jpg' },
+          { name: 'Street of Sighs', desc: 'The most photographed colonial street', image: 'assets/spots/calle-suspiros.jpg' }
         ],
         [
-          { name: 'Punta del Este venues', image: 'assets/spots/salones-pde.jpg' },
-          { name: 'Coast hotels', image: 'assets/spots/hoteles-costa.jpg' },
-          { name: 'Montevideo downtown', image: 'assets/spots/montevideo-centro.jpg' }
+          { name: 'Punta del Este venues', desc: 'Weddings and parties by the sea', image: 'assets/spots/salones-pde.jpg' },
+          { name: 'Coast hotels', desc: 'On-time arrival to your event', image: 'assets/spots/hoteles-costa.jpg' },
+          { name: 'Montevideo downtown', desc: 'Corporate and social events', image: 'assets/spots/montevideo-centro.jpg' }
         ],
         [
-          { name: 'Carrasco Airport', image: 'assets/spots/carrasco.jpg' },
-          { name: 'Buquebus Terminal', image: 'assets/spots/buquebus.jpg' },
-          { name: 'Montevideo hotels', image: 'assets/spots/hoteles-mvd.jpg' }
+          { name: 'Carrasco Airport', desc: 'Flight tracking included', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Buquebus Terminal', desc: 'Direct connection to the port', image: 'assets/spots/buquebus.jpg' },
+          { name: 'Montevideo hotels', desc: 'Door-to-door pickup', image: 'assets/spots/hoteles-mvd.jpg' }
         ]
       ],
       services: ['Punta del Este', 'Colonia', 'Events', 'Airport / Transfers'],
@@ -174,24 +174,24 @@
       servicesIntro: 'Viagens seguras, confortáveis e diretas em veículo elétrico. Toque em um destino para ver sugestões.',
       destinationSpots: [
         [
-          { name: 'La Mano', image: 'assets/spots/la-mano.jpg' },
-          { name: 'Playa Brava', image: 'assets/spots/playa-brava.jpg' },
-          { name: 'Porto de Punta del Este', image: 'assets/spots/puerto-punta.jpg' }
+          { name: 'La Mano', desc: 'Escultura icônica na Playa Brava', image: 'assets/spots/la-mano.jpg' },
+          { name: 'Playa Brava', desc: 'Ondas e pores do sol imperdíveis', image: 'assets/spots/playa-brava.jpg' },
+          { name: 'Porto de Punta del Este', desc: 'Iates, lobos-marinhos e passeio', image: 'assets/spots/puerto-punta.jpg' }
         ],
         [
-          { name: 'Bairro Histórico', image: 'assets/spots/barrio-historico.jpg' },
-          { name: 'Farol de Colonia', image: 'assets/spots/faro-colonia.jpg' },
-          { name: 'Calle de los Suspiros', image: 'assets/spots/calle-suspiros.jpg' }
+          { name: 'Bairro Histórico', desc: 'Patrimônio Mundial da UNESCO', image: 'assets/spots/barrio-historico.jpg' },
+          { name: 'Farol de Colonia', desc: 'Vista panorâmica do Rio da Prata', image: 'assets/spots/faro-colonia.jpg' },
+          { name: 'Calle de los Suspiros', desc: 'A rua colonial mais fotografada', image: 'assets/spots/calle-suspiros.jpg' }
         ],
         [
-          { name: 'Salões em Punta del Este', image: 'assets/spots/salones-pde.jpg' },
-          { name: 'Hotéis do litoral', image: 'assets/spots/hoteles-costa.jpg' },
-          { name: 'Centro de Montevidéu', image: 'assets/spots/montevideo-centro.jpg' }
+          { name: 'Salões em Punta del Este', desc: 'Casamentos e festas à beira-mar', image: 'assets/spots/salones-pde.jpg' },
+          { name: 'Hotéis do litoral', desc: 'Chegada pontual ao seu evento', image: 'assets/spots/hoteles-costa.jpg' },
+          { name: 'Centro de Montevidéu', desc: 'Eventos corporativos e sociais', image: 'assets/spots/montevideo-centro.jpg' }
         ],
         [
-          { name: 'Aeroporto Carrasco', image: 'assets/spots/carrasco.jpg' },
-          { name: 'Terminal Buquebus', image: 'assets/spots/buquebus.jpg' },
-          { name: 'Hotéis em Montevidéu', image: 'assets/spots/hoteles-mvd.jpg' }
+          { name: 'Aeroporto Carrasco', desc: 'Acompanhamento do voo incluído', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Terminal Buquebus', desc: 'Conexão direta com o porto', image: 'assets/spots/buquebus.jpg' },
+          { name: 'Hotéis em Montevidéu', desc: 'Busca porta a porta', image: 'assets/spots/hoteles-mvd.jpg' }
         ]
       ],
       services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeroporto / Transfer'],
@@ -288,7 +288,7 @@
     showReview(0, false);
 
     if (activeSpotDestination >= 0) {
-      renderSpotsBlur(activeSpotDestination);
+      renderSpotsPanel(activeSpotDestination);
     }
 
     $('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
@@ -433,25 +433,30 @@
     reviewTimer = null;
   }
 
-  function renderSpotsBlur(index) {
+  function renderSpotsPanel(index) {
     var t = translations[activeLang];
-    var cluster = $('spots-blur-cluster');
-    if (!cluster || !t.destinationSpots || !t.destinationSpots[index]) {
+    var list = $('spots-panel-list');
+    var title = $('spots-panel-title');
+    if (!list || !t.destinationSpots || !t.destinationSpots[index]) {
       return;
     }
 
+    if (title) {
+      title.textContent = t.services[index];
+    }
+
     var spots = t.destinationSpots[index];
-    var bubblesHtml = spots.map(function (spot, i) {
+    list.innerHTML = spots.map(function (spot, i) {
       return (
-        '<div class="spot-bubble-inline" style="--bubble-i:' + i + '">' +
-          '<div class="spot-bubble-photo-wrap">' +
-            '<img src="' + spot.image + '" alt="" class="spot-bubble-photo" loading="lazy">' +
-          '</div>' +
-          '<span class="spot-bubble-label">' + spot.name + '</span>' +
+        '<div class="spot-item" style="--spot-i:' + i + '">' +
+          '<img src="' + spot.image + '" alt="" class="spot-item-photo" loading="lazy">' +
+          '<span class="spot-item-text">' +
+            '<span class="spot-item-name">' + spot.name + '</span>' +
+            '<span class="spot-item-desc">' + spot.desc + '</span>' +
+          '</span>' +
         '</div>'
       );
     }).join('');
-    cluster.innerHTML = '<div class="spot-bubbles-row">' + bubblesHtml + '</div>';
   }
 
   function openDestinationSpots(index) {
@@ -460,19 +465,17 @@
       return;
     }
 
-    closeDestinationSpots();
     activeSpotDestination = index;
 
-    var overlay = $('spots-blur-overlay');
-    var wrap = document.querySelector('.service-card-wrap[data-destination="' + index + '"]');
-    if (overlay) {
-      renderSpotsBlur(index);
-      overlay.classList.add('is-open');
-      overlay.hidden = false;
-      overlay.setAttribute('aria-hidden', 'false');
+    var panel = $('spots-panel');
+    var slide = $('services-slide');
+    if (panel) {
+      renderSpotsPanel(index);
+      panel.hidden = false;
+      panel.setAttribute('aria-hidden', 'false');
     }
-    if (wrap) {
-      wrap.classList.add('is-spots-open');
+    if (slide) {
+      slide.classList.add('has-spots-open');
     }
 
     document.querySelectorAll('.service-card-btn').forEach(function (btn) {
@@ -491,20 +494,19 @@
 
     activeSpotDestination = -1;
 
-    var overlay = $('spots-blur-overlay');
-    var cluster = $('spots-blur-cluster');
-    if (overlay) {
-      overlay.classList.remove('is-open');
-      overlay.hidden = true;
-      overlay.setAttribute('aria-hidden', 'true');
+    var panel = $('spots-panel');
+    var list = $('spots-panel-list');
+    var slide = $('services-slide');
+    if (panel) {
+      panel.hidden = true;
+      panel.setAttribute('aria-hidden', 'true');
     }
-    if (cluster) {
-      cluster.innerHTML = '';
+    if (list) {
+      list.innerHTML = '';
     }
-
-    document.querySelectorAll('.service-card-wrap.is-spots-open').forEach(function (wrap) {
-      wrap.classList.remove('is-spots-open');
-    });
+    if (slide) {
+      slide.classList.remove('has-spots-open');
+    }
 
     document.querySelectorAll('.service-card-btn').forEach(function (btn) {
       btn.classList.remove('is-active');
@@ -621,21 +623,9 @@
       });
     });
 
-    var spotsBackdrop = $('spots-blur-backdrop');
-    if (spotsBackdrop) {
-      spotsBackdrop.addEventListener('click', closeDestinationSpots);
-    }
-
-    var servicesSlide = document.querySelector('.services-slide');
-    if (servicesSlide) {
-      servicesSlide.addEventListener('click', function (e) {
-        if (activeSpotDestination < 0) {
-          return;
-        }
-        if (!e.target.closest('.service-card-wrap')) {
-          closeDestinationSpots();
-        }
-      });
+    var spotsClose = $('spots-panel-close');
+    if (spotsClose) {
+      spotsClose.addEventListener('click', closeDestinationSpots);
     }
 
     document.addEventListener('keydown', function (e) {
