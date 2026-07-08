@@ -26,7 +26,7 @@
       vehicleBadge: '100% Eléctrico',
       vehicleColor: 'Blanco',
       comfortSubtitle: 'Por qué viajar en Bestune',
-      driverName: 'Adrián Pereda',
+      driverName: 'Adrián',
       driverRole: 'Conductor profesional · Montevideo y costa',
       uberLabel: 'Valoración Uber',
       uberRating: '4.99',
@@ -74,7 +74,6 @@
         'Bodas, corporativos y ocasiones especiales',
         'Carrasco, puerto y hoteles · puntualidad'
       ],
-      servicesNote: 'Reservá tu traslado con un solo toque en la siguiente pantalla.',
       contactTitle: 'Contacto',
       contactSubtitle: 'Estamos para ayudarte',
       contactPhoneLabel: 'Teléfono',
@@ -92,7 +91,7 @@
       vehicleBadge: '100% Electric',
       vehicleColor: 'White',
       comfortSubtitle: 'Why ride in a Bestune',
-      driverName: 'Adrián Pereda',
+      driverName: 'Adrián',
       driverRole: 'Professional driver · Montevideo and coast',
       uberLabel: 'Uber rating',
       uberRating: '4.99',
@@ -140,7 +139,6 @@
         'Weddings, corporate and special occasions',
         'Carrasco, port and hotels · on time'
       ],
-      servicesNote: 'Book your transfer with one tap on the next screen.',
       contactTitle: 'Contact',
       contactSubtitle: 'We are here to help',
       contactPhoneLabel: 'Phone',
@@ -158,7 +156,7 @@
       vehicleBadge: '100% Elétrico',
       vehicleColor: 'Branco',
       comfortSubtitle: 'Por que viajar na Bestune',
-      driverName: 'Adrián Pereda',
+      driverName: 'Adrián',
       driverRole: 'Motorista profissional · Montevidéu e litoral',
       uberLabel: 'Avaliação Uber',
       uberRating: '4.99',
@@ -206,7 +204,6 @@
         'Casamentos, corporativos e ocasiões especiais',
         'Carrasco, porto e hotéis · pontualidade'
       ],
-      servicesNote: 'Reserve seu transfer com um toque na próxima tela.',
       contactTitle: 'Contato',
       contactSubtitle: 'Estamos aqui para ajudar',
       contactPhoneLabel: 'Telefone',
@@ -284,7 +281,6 @@
       $('service-desc-' + (i + 1)).textContent = t.serviceDescs[i];
     }
 
-    $('services-note').textContent = t.servicesNote;
     $('contact-title').textContent = t.contactTitle;
     $('contact-subtitle').textContent = t.contactSubtitle;
     $('contact-phone-label').textContent = t.contactPhoneLabel;
@@ -454,12 +450,24 @@
         '<div class="spot-bubble-inline" style="--bubble-i:' + i + '">' +
           '<div class="spot-bubble-photo-wrap">' +
             '<img src="' + spot.image + '" alt="" class="spot-bubble-photo" loading="lazy">' +
+            '<span class="spot-bubble-stem" aria-hidden="true"></span>' +
           '</div>' +
           '<span class="spot-bubble-label">' + spot.name + '</span>' +
         '</div>'
       );
     }).join('');
     container.innerHTML = '<div class="spot-bubbles-row">' + bubblesHtml + '</div>';
+  }
+
+  function setSpotsOpenState(isOpen) {
+    var grid = document.querySelector('.services-grid');
+    var slide = document.querySelector('.slide-card.services-slide');
+    if (grid) {
+      grid.classList.toggle('has-spots-open', isOpen);
+    }
+    if (slide) {
+      slide.classList.toggle('has-spots-open', isOpen);
+    }
   }
 
   function openDestinationSpots(index) {
@@ -480,7 +488,14 @@
     }
     if (wrap) {
       wrap.classList.add('is-spots-open');
+      var dim = wrap.querySelector('.service-card-dim');
+      if (dim) {
+        dim.classList.add('is-visible');
+        dim.setAttribute('aria-hidden', 'false');
+      }
     }
+
+    setSpotsOpenState(true);
 
     document.querySelectorAll('.service-card-btn').forEach(function (btn) {
       var isActive = parseInt(btn.dataset.destination, 10) === index;
@@ -506,7 +521,14 @@
 
     document.querySelectorAll('.service-card-wrap.is-spots-open').forEach(function (wrap) {
       wrap.classList.remove('is-spots-open');
+      var dim = wrap.querySelector('.service-card-dim');
+      if (dim) {
+        dim.classList.remove('is-visible');
+        dim.setAttribute('aria-hidden', 'true');
+      }
     });
+
+    setSpotsOpenState(false);
 
     document.querySelectorAll('.service-card-btn').forEach(function (btn) {
       btn.classList.remove('is-active');
