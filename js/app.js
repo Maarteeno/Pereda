@@ -8,13 +8,6 @@
   var DEST_INTERVAL_MS = 8000;
   var TOTAL_DESTINATIONS = 4;
 
-  var DEST_IMAGES = [
-    'assets/destinations/punta-del-este.jpg',
-    'assets/destinations/colonia.jpg',
-    'assets/destinations/eventos.jpg',
-    'assets/destinations/aeropuerto.jpg'
-  ];
-
   var activeLang = 'es';
   var currentSlide = 0;
   var totalSlides = 3;
@@ -293,7 +286,7 @@
     $('review-gallery-title').textContent = t.reviewLabel;
     $('faq-title').textContent = t.faqTitle;
     renderFaq();
-    showReview(shuffleIndex, false);
+    showReviewPair(shuffleIndex, false);
 
     $('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
     $('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
@@ -377,46 +370,67 @@
     shuffleIndex = 0;
   }
 
-  function showReview(index, animate) {
+  function showReviewPair(startIndex, animate) {
     if (!shuffledReviews.length) reshuffleReviews();
+    if (!shuffledReviews.length) return;
 
-    var textEl = $('gallery-review-text');
-    var authorEl = $('gallery-review-author');
-    if (!shuffledReviews.length || !textEl || !authorEl) return;
-
-    if (index >= shuffledReviews.length) {
+    var len = shuffledReviews.length;
+    if (startIndex >= len || startIndex < 0) {
       reshuffleReviews();
-      index = 0;
+      startIndex = 0;
+      len = shuffledReviews.length;
     }
-    if (index < 0) index = shuffledReviews.length - 1;
-    shuffleIndex = index;
 
-    var review = shuffledReviews[shuffleIndex];
-    lastReviewText = review.text;
+    shuffleIndex = startIndex;
+    var reviewA = shuffledReviews[startIndex];
+    var reviewB = shuffledReviews[(startIndex + 1) % len];
+    lastReviewText = reviewA.text;
 
-    function applyReview() {
-      textEl.textContent = review.text;
-      authorEl.textContent = '— ' + review.author;
-      textEl.classList.remove('is-fading');
-      authorEl.classList.remove('is-fading');
+    var cards = [0, 1];
+    function applyPair() {
+      cards.forEach(function (cardIndex, i) {
+        var review = i === 0 ? reviewA : reviewB;
+        var textEl = $('gallery-review-text-' + cardIndex);
+        var authorEl = $('gallery-review-author-' + cardIndex);
+        if (!textEl || !authorEl) return;
+        textEl.textContent = review.text;
+        authorEl.textContent = '— ' + review.author;
+        textEl.classList.remove('is-fading');
+        authorEl.classList.remove('is-fading');
+      });
     }
 
     if (animate === false) {
-      applyReview();
+      applyPair();
       return;
     }
 
-    textEl.classList.add('is-fading');
-    authorEl.classList.add('is-fading');
-    setTimeout(applyReview, 320);
+    cards.forEach(function (cardIndex) {
+      var textEl = $('gallery-review-text-' + cardIndex);
+      var authorEl = $('gallery-review-author-' + cardIndex);
+      if (textEl) textEl.classList.add('is-fading');
+      if (authorEl) authorEl.classList.add('is-fading');
+    });
+    setTimeout(applyPair, 320);
   }
 
   function nextReview() {
-    showReview(shuffleIndex + 1, true);
+    var len = shuffledReviews.length;
+    if (!len) return;
+    var next = shuffleIndex + 2;
+    if (next >= len) {
+      reshuffleReviews();
+      next = 0;
+    }
+    showReviewPair(next, true);
   }
 
   function prevReview() {
-    showReview(shuffleIndex - 1, true);
+    var len = shuffledReviews.length;
+    if (!len) return;
+    var prev = shuffleIndex - 2;
+    if (prev < 0) prev = Math.max(0, len - (len % 2 === 0 ? 2 : 1));
+    showReviewPair(prev, true);
   }
 
   function startReviewRotation() {
@@ -474,12 +488,10 @@
     var t = translations[activeLang];
     var trip = t.tripInfo[index];
 
-    var heroImg = $('dest-hero-img');
     var nameEl = $('dest-name');
     var badgeEl = $('dest-trip-badge');
     var slideEl = $('dest-slide');
 
-    if (heroImg) heroImg.src = DEST_IMAGES[index];
     if (nameEl) nameEl.textContent = t.services[index];
     if (badgeEl) badgeEl.textContent = trip.distance + ' · ' + trip.duration;
 
@@ -588,16 +600,6 @@
     }
   }
 
-  function requestAppFullscreen() {
-    var el = document.documentElement;
-    var req = el.requestFullscreen || el.webkitRequestFullscreen;
-    if (!req || document.fullscreenElement || document.webkitFullscreenElement) return;
-    try {
-      var promise = req.call(el);
-      if (promise && promise.catch) promise.catch(function () {});
-    } catch (error) {}
-  }
-
   function bindEvents() {
     $('nav-prev').addEventListener('click', prevSlide);
     $('nav-next').addEventListener('click', nextSlide);
@@ -693,13 +695,6 @@
     ['click', 'touchstart', 'keydown'].forEach(function (eventName) {
       document.addEventListener(eventName, resetIdleTimer, { passive: true });
     });
-
-    var app = document.querySelector('.app');
-    if (app) {
-      ['click', 'touchstart'].forEach(function (eventName) {
-        app.addEventListener(eventName, requestAppFullscreen, { once: true, passive: true });
-      });
-    }
   }
 
   function init() {
@@ -707,7 +702,6 @@
     goToSlide(0);
     bindEvents();
     setupPwa();
-    requestAppFullscreen();
   }
 
   init();

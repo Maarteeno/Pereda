@@ -437,10 +437,6 @@ body {
   align-items: center;
   gap: 8px;
   margin-top: 14px;
-  padding: 12px;
-  background: #161616;
-  border: 1px solid var(--border);
-  border-radius: 14px;
 }
 
 .vehicle-qr-label {
@@ -562,29 +558,28 @@ body {
   animation: destIn 0.32s ease;
 }
 
-.dest-hero {
-  position: relative;
-  flex: 0 0 clamp(100px, 22vh, 160px);
-  border-radius: 14px;
-  overflow: hidden;
+.dest-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 12px 14px;
+  background: #161616;
   border: 1px solid var(--border);
+  border-radius: 14px;
 }
 
-.dest-hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.dest-car-icon {
+  font-size: clamp(1.4rem, 3vw, 1.75rem);
+  line-height: 1;
+  flex-shrink: 0;
 }
 
-.dest-hero-overlay {
-  position: absolute;
-  inset: 0;
+.dest-header-text {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 12px 14px;
-  background: linear-gradient(to top, rgba(5, 5, 5, 0.9) 0%, rgba(5, 5, 5, 0.2) 60%, transparent 100%);
+  gap: 4px;
+  min-width: 0;
 }
 
 .dest-name {
@@ -748,11 +743,21 @@ body {
   color: var(--transport-green);
 }
 
+.review-gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
 .review-gallery-card {
   display: flex;
   flex-direction: column;
   gap: 6px;
   min-height: 80px;
+  padding: 12px;
+  background: #1a1a1a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
 
 .review-gallery-stars {
@@ -768,6 +773,10 @@ body {
   color: var(--text-soft);
   font-weight: 500;
   transition: opacity 0.35s ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .review-gallery-text.is-fading,
@@ -1113,8 +1122,9 @@ body {
     --spot-label-size: clamp(0.62rem, 2.8vw, 0.7rem);
   }
 
-  .dest-hero {
-    flex: 0 0 clamp(90px, 16vh, 130px);
+  .dest-header {
+    padding: 10px 12px;
+    gap: 10px;
   }
 
   .dest-spots {
@@ -1147,7 +1157,21 @@ body {
 
   .vehicle-qr {
     margin-top: 12px;
+  }
+
+  .review-gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .review-gallery-card {
     padding: 10px;
+    min-height: 72px;
+  }
+
+  .review-gallery-text {
+    font-size: 0.76rem;
+    -webkit-line-clamp: 4;
   }
 }
 
