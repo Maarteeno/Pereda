@@ -14,6 +14,9 @@
   var reviewIndex = 0;
   var reviewTimer = null;
   var REVIEW_INTERVAL_MS = 4500;
+  var shuffledReviews = [];
+  var shuffleIndex = 0;
+  var lastReviewText = '';
   var activeSpotDestination = -1;
 
   var translations = {
@@ -245,6 +248,7 @@
     activeLang = lang;
     localStorage.setItem(LANG_STORAGE_KEY, lang);
     document.documentElement.lang = lang;
+    reshuffleReviews();
     renderTranslations(lang);
   }
 
@@ -289,7 +293,7 @@
     $('copy-phone-btn').textContent = t.copyPhone;
     $('qr-label').textContent = t.qrLabel;
     $('review-label').textContent = t.reviewLabel;
-    showReview(reviewIndex, false);
+    showReview(0, false);
 
     if (activeSpotDestination >= 0) {
       renderInlineSpots(activeSpotDestination);
@@ -350,23 +354,61 @@
     return data[activeLang] || data.es || [];
   }
 
-  function showReview(index, animate) {
-    var reviews = getReviews();
-    var textEl = $('review-text');
-    var authorEl = $('review-author');
-    if (!reviews.length || !textEl || !authorEl) {
+  function shuffleArray(items) {
+    var deck = items.slice();
+    var i = deck.length;
+    var j;
+    var temp;
+    while (i > 0) {
+      j = Math.floor(Math.random() * i);
+      i -= 1;
+      temp = deck[i];
+      deck[i] = deck[j];
+      deck[j] = temp;
+    }
+    return deck;
+  }
+
+  function reshuffleReviews() {
+    var source = getReviews();
+    if (!source.length) {
+      shuffledReviews = [];
+      shuffleIndex = 0;
       return;
     }
 
-    if (index >= reviews.length) {
+    shuffledReviews = shuffleArray(source);
+    if (shuffledReviews.length > 1 && shuffledReviews[0].text === lastReviewText) {
+      var swap = shuffledReviews[0];
+      shuffledReviews[0] = shuffledReviews[1];
+      shuffledReviews[1] = swap;
+    }
+    shuffleIndex = 0;
+  }
+
+  function showReview(index, animate) {
+    if (!shuffledReviews.length) {
+      reshuffleReviews();
+    }
+
+    var textEl = $('review-text');
+    var authorEl = $('review-author');
+    if (!shuffledReviews.length || !textEl || !authorEl) {
+      return;
+    }
+
+    if (index >= shuffledReviews.length) {
+      reshuffleReviews();
       index = 0;
     }
     if (index < 0) {
-      index = reviews.length - 1;
+      index = shuffledReviews.length - 1;
     }
+    shuffleIndex = index;
     reviewIndex = index;
 
-    var review = reviews[reviewIndex];
+    var review = shuffledReviews[shuffleIndex];
+    lastReviewText = review.text;
 
     function applyReview() {
       textEl.textContent = review.text;
@@ -386,7 +428,7 @@
   }
 
   function nextReview() {
-    showReview(reviewIndex + 1, true);
+    showReview(shuffleIndex + 1, true);
   }
 
   function startReviewRotation() {
