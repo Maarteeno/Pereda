@@ -6,6 +6,7 @@
   var SWIPE_THRESHOLD = 50;
   var REVIEW_INTERVAL_MS = 4500;
   var DEST_INTERVAL_MS = 8000;
+  var SPOT_INTERVAL_MS = 5000;
   var TOTAL_DESTINATIONS = 4;
 
   var activeLang = 'es';
@@ -20,7 +21,9 @@
   var shuffleIndex = 0;
   var lastReviewText = '';
   var currentDest = 0;
+  var currentSpot = 0;
   var destTouchStartX = 0;
+  var spotTimer = null;
   var openFaqIndex = -1;
 
   var translations = {
@@ -50,6 +53,7 @@
       servicesTitle: 'Traslados',
       servicesSubtitle: 'Destinos desde Montevideo',
       servicesIntro: 'Deslizá para conocer cada destino',
+      transferToPrefix: 'Traslados a',
       tripNote: 'Tiempos estimados sin tráfico',
       destinationSpots: [
         [
@@ -117,6 +121,7 @@
       servicesTitle: 'Transport',
       servicesSubtitle: 'Destinations from Montevideo',
       servicesIntro: 'Swipe to explore each destination',
+      transferToPrefix: 'Transfers to',
       tripNote: 'Estimated times without traffic',
       destinationSpots: [
         [
@@ -184,6 +189,7 @@
       servicesTitle: 'Transporte',
       servicesSubtitle: 'Destinos desde Montevidéu',
       servicesIntro: 'Deslize para conhecer cada destino',
+      transferToPrefix: 'Transfer para',
       tripNote: 'Tempos estimados sem trânsito',
       destinationSpots: [
         [
@@ -320,8 +326,10 @@
 
     if (currentSlide === 1) {
       startDestRotation();
+      startSpotRotation();
     } else {
       stopDestRotation();
+      stopSpotRotation();
     }
   }
 
@@ -464,20 +472,109 @@
     }).join('');
   }
 
+  function isMobileSpotCarousel() {
+    return window.matchMedia('(max-width: 639px) and (orientation: portrait)').matches;
+  }
+
   function renderDestSpots(index) {
     var t = translations[activeLang];
     var spotsEl = $('dest-spots');
     if (!spotsEl || !t.destinationSpots[index]) return;
 
+    var carouselMode = isMobileSpotCarousel();
+    spotsEl.classList.toggle('is-carousel-mode', carouselMode);
+
     spotsEl.innerHTML = t.destinationSpots[index].map(function (spot, i) {
+      var activeClass = carouselMode && i === currentSpot ? ' is-active' : '';
       return (
-        '<div class="dest-spot" style="--spot-i:' + i + '">' +
-          '<img src="' + spot.image + '" alt="" class="dest-spot-photo" loading="lazy">' +
-          '<span class="dest-spot-name">' + spot.name + '</span>' +
-          '<span class="dest-spot-desc">' + spot.desc + '</span>' +
-        '</div>'
+        '<article class="dest-spot' + activeClass + '" data-spot="' + i + '">' +
+          '<div class="dest-spot-media">' +
+            '<img src="' + spot.image + '" alt="" class="dest-spot-photo" loading="lazy">' +
+            '<div class="dest-spot-gradient"></div>' +
+          '</div>' +
+          '<div class="dest-spot-body">' +
+            '<h4 class="dest-spot-name">' + spot.name + '</h4>' +
+            '<p class="dest-spot-desc">' + spot.desc + '</p>' +
+          '</div>' +
+        '</article>'
       );
     }).join('');
+
+    renderSpotDots(index);
+  }
+
+  function renderSpotDots(index) {
+    var dotsEl = $('dest-spot-dots');
+    var t = translations[activeLang];
+    if (!dotsEl || !t.destinationSpots[index]) return;
+
+    var showDots = isMobileSpotCarousel();
+    dotsEl.hidden = !showDots;
+    dotsEl.setAttribute('aria-hidden', String(!showDots));
+
+    if (!showDots) {
+      dotsEl.innerHTML = '';
+      return;
+    }
+
+    dotsEl.innerHTML = t.destinationSpots[index].map(function (_, i) {
+      return (
+        '<button type="button" class="dest-spot-dot' + (i === currentSpot ? ' active' : '') + '" data-spot="' + i + '" aria-label="Lugar ' + (i + 1) + '"></button>'
+      );
+    }).join('');
+  }
+
+  function updateSpotVisibility() {
+    var carouselMode = isMobileSpotCarousel();
+    var spotsEl = $('dest-spots');
+    if (!spotsEl) return;
+
+    spotsEl.classList.toggle('is-carousel-mode', carouselMode);
+
+    spotsEl.querySelectorAll('.dest-spot').forEach(function (spot, i) {
+      spot.classList.toggle('is-active', !carouselMode || i === currentSpot);
+    });
+
+    document.querySelectorAll('.dest-spot-dot').forEach(function (dot, i) {
+      dot.classList.toggle('active', i === currentSpot);
+    });
+  }
+
+  function goToSpot(spotIndex) {
+    var t = translations[activeLang];
+    var spots = t.destinationSpots[currentDest];
+    if (!spots || spotIndex < 0 || spotIndex >= spots.length) return;
+
+    currentSpot = spotIndex;
+    updateSpotVisibility();
+    resetIdleTimer();
+  }
+
+  function nextSpot() {
+    var t = translations[activeLang];
+    var spots = t.destinationSpots[currentDest];
+    if (!spots) return;
+    goToSpot((currentSpot + 1) % spots.length);
+  }
+
+  function startSpotRotation() {
+    stopSpotRotation();
+    if (!isMobileSpotCarousel() || currentSlide !== 1) return;
+    spotTimer = setInterval(nextSpot, SPOT_INTERVAL_MS);
+  }
+
+  function stopSpotRotation() {
+    clearInterval(spotTimer);
+    spotTimer = null;
+  }
+
+  function pauseSpotRotation() {
+    stopSpotRotation();
+    if (currentSlide === 1 && isMobileSpotCarousel()) {
+      spotTimer = setTimeout(function () {
+        startSpotRotation();
+      }, SPOT_INTERVAL_MS * 2);
+    }
   }
 
   function goToDestination(index, animate) {
@@ -485,6 +582,7 @@
     else if (index >= TOTAL_DESTINATIONS) index = 0;
 
     currentDest = index;
+    currentSpot = 0;
     var t = translations[activeLang];
     var trip = t.tripInfo[index];
 
@@ -492,7 +590,7 @@
     var badgeEl = $('dest-trip-badge');
     var slideEl = $('dest-slide');
 
-    if (nameEl) nameEl.textContent = t.services[index];
+    if (nameEl) nameEl.textContent = t.transferToPrefix + ' ' + t.services[index];
     if (badgeEl) badgeEl.textContent = trip.distance + ' · ' + trip.duration;
 
     renderDestSpots(index);
@@ -513,6 +611,7 @@
       slideEl.classList.add('is-entering');
     }
 
+    startSpotRotation();
     resetIdleTimer();
   }
 
@@ -650,6 +749,22 @@
       if (!dot) return;
       goToDestination(parseInt(dot.dataset.dest, 10), true);
       pauseDestRotation();
+    });
+
+    $('dest-spot-dots').addEventListener('click', function (e) {
+      var dot = e.target.closest('.dest-spot-dot');
+      if (!dot) return;
+      goToSpot(parseInt(dot.dataset.spot, 10));
+      pauseSpotRotation();
+    });
+
+    window.matchMedia('(max-width: 639px) and (orientation: portrait)').addEventListener('change', function () {
+      renderDestSpots(currentDest);
+      if (currentSlide === 1) {
+        startSpotRotation();
+      } else {
+        stopSpotRotation();
+      }
     });
 
     $('faq-list').addEventListener('click', function (e) {

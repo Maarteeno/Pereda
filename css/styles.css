@@ -560,8 +560,8 @@ body {
 
 .dest-header {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
   flex-shrink: 0;
   padding: 12px 14px;
   background: #161616;
@@ -569,17 +569,25 @@ body {
   border-radius: 14px;
 }
 
-.dest-car-icon {
-  font-size: clamp(1.4rem, 3vw, 1.75rem);
-  line-height: 1;
-  flex-shrink: 0;
+.dest-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
 }
 
-.dest-header-text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
+.dest-car-icon {
+  flex-shrink: 0;
+  width: clamp(28px, 5vw, 36px);
+  height: clamp(28px, 5vw, 36px);
+  color: var(--transport-green);
+}
+
+.dest-car-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .dest-name {
@@ -587,11 +595,11 @@ body {
   font-size: clamp(1rem, 2.4vw, 1.2rem);
   font-weight: 800;
   letter-spacing: -0.02em;
+  min-width: 0;
 }
 
 .dest-trip-badge {
   display: inline-block;
-  margin-top: 4px;
   padding: 4px 10px;
   border-radius: 999px;
   background: rgba(122, 156, 132, 0.2);
@@ -615,46 +623,82 @@ body {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 5px;
-  padding: 8px 6px;
+  overflow: hidden;
   background: #161616;
   border: 1px solid var(--border);
   border-radius: 12px;
   animation: spotIn 0.3s ease backwards;
-  animation-delay: calc(60ms * var(--spot-i, 0));
+}
+
+.dest-spot-media {
+  position: relative;
+  flex-shrink: 0;
+  height: clamp(72px, 14vh, 100px);
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
 }
 
 .dest-spot-photo {
-  width: var(--spot-photo-size);
-  height: var(--spot-photo-size);
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border: 2px solid rgba(122, 156, 132, 0.5);
-  flex-shrink: 0;
+  display: block;
+}
+
+.dest-spot-gradient {
+  position: absolute;
+  inset: auto 0 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(22, 22, 22, 0.65), transparent);
+  pointer-events: none;
+}
+
+.dest-spot-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px 10px;
+  min-width: 0;
 }
 
 .dest-spot-name {
-  font-size: var(--spot-label-size);
+  margin: 0;
+  font-size: clamp(0.78rem, 1.8vw, 0.88rem);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--text-main);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .dest-spot-desc {
-  font-size: calc(var(--spot-label-size) - 0.06rem);
+  margin: 0;
+  font-size: clamp(0.68rem, 1.5vw, 0.78rem);
   font-weight: 500;
-  line-height: 1.3;
+  line-height: 1.35;
   color: var(--text-muted);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+}
+
+.dest-spot-dots {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.dest-spot-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: rgba(139, 150, 167, 0.35);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.dest-spot-dot.active {
+  background: var(--transport-green);
+  transform: scale(1.2);
 }
 
 .dest-arrow {
@@ -845,9 +889,10 @@ body {
 .faq-list {
   flex: 1;
   min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  align-content: start;
   overflow: hidden;
 }
 
@@ -1124,31 +1169,6 @@ body {
 
   .dest-header {
     padding: 10px 12px;
-    gap: 10px;
-  }
-
-  .dest-spots {
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .dest-spot {
-    flex-direction: row;
-    text-align: left;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 10px;
-  }
-
-  .dest-spot-photo {
-    width: clamp(40px, 8vh, 52px);
-    height: clamp(40px, 8vh, 52px);
-  }
-
-  .dest-spot-name,
-  .dest-spot-desc {
-    text-align: left;
-    -webkit-line-clamp: 1;
   }
 
   .dest-arrow {
@@ -1186,8 +1206,58 @@ body {
     scrollbar-width: none;
   }
 
+  .dest-spots.is-carousel-mode {
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .dest-spots.is-carousel-mode .dest-spot {
+    display: none;
+    flex: none;
+    width: 100%;
+  }
+
+  .dest-spots.is-carousel-mode .dest-spot.is-active {
+    display: flex;
+  }
+
+  .dest-spot-dots {
+    display: flex;
+  }
+
+  .dest-spot-media {
+    height: clamp(80px, 16vh, 110px);
+  }
+
+  .dest-spot-body {
+    padding: 10px 12px 12px;
+  }
+
+  .dest-spot-name {
+    font-size: clamp(0.82rem, 3.6vw, 0.92rem);
+  }
+
+  .dest-spot-desc {
+    font-size: clamp(0.72rem, 3.2vw, 0.8rem);
+  }
+
   .faq-list {
     overflow-y: visible;
+    gap: 6px;
+  }
+
+  .faq-question {
+    padding: 8px 10px;
+    font-size: clamp(0.68rem, 3vw, 0.76rem);
+  }
+
+  .faq-answer {
+    padding: 0 10px 8px;
+  }
+
+  .faq-answer p {
+    font-size: clamp(0.66rem, 2.8vw, 0.74rem);
   }
 }
 
