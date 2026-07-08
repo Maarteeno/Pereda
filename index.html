@@ -46,7 +46,7 @@
 
         .container {
             width: 100%;
-            max-width: 1180px;
+            max-width: 760px;
         }
 
         header {
@@ -68,10 +68,42 @@
             letter-spacing: 0.01em;
         }
 
-        .language-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 26px;
+        .language-selector-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .language-selector {
+            display: inline-flex;
+            border-radius: 999px;
+            border: 1px solid rgba(139, 150, 167, 0.28);
+            background: rgba(18, 24, 32, 0.85);
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            border: 0;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--text-soft);
+            font-size: 0.84rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.18s ease, color 0.18s ease;
+        }
+
+        .lang-btn[aria-pressed="true"] {
+            background: rgba(123, 138, 161, 0.25);
+            color: var(--text-main);
+        }
+
+        .single-card-area {
+            display: flex;
+            justify-content: center;
         }
 
         .language-card {
@@ -81,6 +113,7 @@
             padding: 22px;
             box-shadow:
                 0 10px 24px rgba(0, 0, 0, 0.28);
+            width: 100%;
         }
 
         .language-head {
@@ -132,6 +165,10 @@
             align-items: center;
             margin-bottom: 14px;
             gap: 12px;
+        }
+
+        .section-head > div:last-child {
+            text-align: right;
         }
 
         .bank-info {
@@ -305,6 +342,10 @@
             overflow-wrap: anywhere;
         }
 
+        .section-spacer {
+            margin-top: 12px;
+        }
+
         footer {
             text-align: center;
             margin-top: 30px;
@@ -334,8 +375,8 @@
         }
 
         @media (max-width: 940px) {
-            .language-grid {
-                grid-template-columns: 1fr;
+            .container {
+                max-width: 680px;
             }
         }
 
@@ -351,6 +392,10 @@
             .section-head {
                 align-items: flex-start;
             }
+
+            .lang-btn {
+                padding: 8px 12px;
+            }
         }
     </style>
 </head>
@@ -358,69 +403,76 @@
     <div class="container">
         <header>
             <h1>Adrian Pereda</h1>
-            <div class="subtitle">Información de contacto y cuentas | Contact & account information</div>
+            <div class="subtitle" id="subtitle"></div>
         </header>
 
-        <main class="language-grid">
+        <div class="language-selector-wrap">
+            <div class="language-selector" role="group" aria-label="Language selector">
+                <button class="lang-btn" id="lang-es" aria-pressed="true" onclick="setLanguage('es')">Español</button>
+                <button class="lang-btn" id="lang-en" aria-pressed="false" onclick="setLanguage('en')">English</button>
+            </div>
+        </div>
+
+        <main class="single-card-area">
             <article class="language-card">
                 <div class="language-head">
-                    <div class="language-title"><i class="fa-solid fa-language"></i> Español</div>
-                    <span class="language-badge">ES</span>
+                    <div class="language-title"><i class="fa-solid fa-language"></i> <span id="lang-title"></span></div>
+                    <span class="language-badge" id="lang-badge"></span>
                 </div>
 
                 <section class="info-section">
                     <div class="section-head">
                         <div class="bank-info">
-                            <div class="bank-icon" style="color: #4ade80;"><i class="fa-solid fa-car"></i></div>
+                            <div class="bank-icon" style="color: #7a9c84;"><i class="fa-solid fa-car"></i></div>
                             <div>
-                                <span class="bank-name">Traslados</span>
-                                <span class="bank-sub">Contacto Directo</span>
+                                <span class="bank-name" id="transport-name"></span>
+                                <span class="bank-sub" id="transport-sub"></span>
                             </div>
                         </div>
-                        <span class="badge badge-transport">Info</span>
+                        <span class="badge badge-transport" id="transport-badge"></span>
                     </div>
 
                     <div class="contact-number-large">+598 99 774 019</div>
                     <div class="contact-locations">
-                        <span><i class="fa-solid fa-location-dot"></i> Punta del Este</span>
-                        <span><i class="fa-solid fa-location-dot"></i> Colonia</span>
-                        <span><i class="fa-solid fa-champagne-glasses"></i> Eventos</span>
-                        <span><i class="fa-solid fa-plane-departure"></i> Aeropuerto/Traslados</span>
+                        <span><i class="fa-solid fa-location-dot"></i> <span id="location-1"></span></span>
+                        <span><i class="fa-solid fa-location-dot"></i> <span id="location-2"></span></span>
+                        <span><i class="fa-solid fa-champagne-glasses"></i> <span id="location-3"></span></span>
+                        <span><i class="fa-solid fa-plane-departure"></i> <span id="location-4"></span></span>
                     </div>
                     <div class="action-row">
-                        <a href="https://wa.me/59899774019" target="_blank" class="btn-whatsapp">
-                            <i class="fa-brands fa-whatsapp"></i> Enviar WhatsApp
+                        <a href="https://wa.me/59899774019" target="_blank" class="btn-whatsapp" id="whatsapp-btn">
+                            <i class="fa-brands fa-whatsapp"></i> <span id="whatsapp-text"></span>
                         </a>
-                        <button class="btn-copy" onclick="copiar('+59899774019')">Copiar Número</button>
+                        <button class="btn-copy" onclick="copiar('+59899774019')" id="copy-phone-btn"></button>
                     </div>
                 </section>
 
                 <section class="info-section">
                     <div class="section-head">
                         <div class="bank-info">
-                            <div class="bank-icon" style="color: #ef4444;"><i class="fa-solid fa-fire"></i></div>
+                            <div class="bank-icon" style="color: #c16363;"><i class="fa-solid fa-fire"></i></div>
                             <div>
                                 <span class="bank-name">Santander</span>
-                                <span class="bank-sub">Cuentas USD y UYU</span>
+                                <span class="bank-sub" id="santander-sub"></span>
                             </div>
                         </div>
                         <span class="badge badge-santander">Santander</span>
                     </div>
-                    <div class="branch-info"><i class="fa-solid fa-building-columns"></i> Sucursal 60 - Puerto del Buceo</div>
+                    <div class="branch-info"><i class="fa-solid fa-building-columns"></i> <span id="branch-info"></span></div>
                     <div class="account-group">
                         <div class="account-row">
                             <div>
-                                <span class="account-label">Caja de ahorro en dólares</span>
+                                <span class="account-label" id="usd-label"></span>
                                 <div class="account-number">005201484920</div>
                             </div>
-                            <button class="btn-copy" onclick="copiar('005201484920')">Copiar</button>
+                            <button class="btn-copy" onclick="copiar('005201484920')" id="copy-btn-1"></button>
                         </div>
                         <div class="account-row">
                             <div>
-                                <span class="account-label">Caja de ahorro en pesos</span>
+                                <span class="account-label" id="uyu-label"></span>
                                 <div class="account-number">001201340671</div>
                             </div>
-                            <button class="btn-copy" onclick="copiar('001201340671')">Copiar</button>
+                            <button class="btn-copy" onclick="copiar('001201340671')" id="copy-btn-2"></button>
                         </div>
                     </div>
                 </section>
@@ -428,104 +480,20 @@
                 <section class="info-section">
                     <div class="section-head">
                         <div class="bank-info">
-                            <div class="bank-icon" style="color: #a855f7;"><i class="fa-solid fa-wallet"></i></div>
+                            <div class="bank-icon" style="color: #8168a5;"><i class="fa-solid fa-wallet"></i></div>
                             <div>
                                 <span class="bank-name">Prex</span>
-                                <span class="bank-sub">Cuenta digital</span>
+                                <span class="bank-sub" id="prex-sub"></span>
                             </div>
                         </div>
                         <span class="badge badge-prex">Prex</span>
                     </div>
                     <div class="account-row">
                         <div>
-                            <span class="account-label">Número de cuenta Prex</span>
+                            <span class="account-label" id="prex-label"></span>
                             <div class="account-number">35815</div>
                         </div>
-                        <button class="btn-copy" onclick="copiar('35815')">Copiar</button>
-                    </div>
-                </section>
-            </article>
-
-            <article class="language-card">
-                <div class="language-head">
-                    <div class="language-title"><i class="fa-solid fa-globe"></i> English</div>
-                    <span class="language-badge">EN</span>
-                </div>
-
-                <section class="info-section">
-                    <div class="section-head">
-                        <div class="bank-info">
-                            <div class="bank-icon" style="color: #4ade80;"><i class="fa-solid fa-car"></i></div>
-                            <div>
-                                <span class="bank-name">Transport</span>
-                                <span class="bank-sub">Direct Contact</span>
-                            </div>
-                        </div>
-                        <span class="badge badge-transport">Info</span>
-                    </div>
-
-                    <div class="contact-number-large">+598 99 774 019</div>
-                    <div class="contact-locations">
-                        <span><i class="fa-solid fa-location-dot"></i> Punta del Este</span>
-                        <span><i class="fa-solid fa-location-dot"></i> Colonia</span>
-                        <span><i class="fa-solid fa-champagne-glasses"></i> Events</span>
-                        <span><i class="fa-solid fa-plane-departure"></i> Airport/Transfers</span>
-                    </div>
-                    <div class="action-row">
-                        <a href="https://wa.me/59899774019" target="_blank" class="btn-whatsapp">
-                            <i class="fa-brands fa-whatsapp"></i> Send Message
-                        </a>
-                        <button class="btn-copy" onclick="copiar('+59899774019')">Copy Number</button>
-                    </div>
-                </section>
-
-                <section class="info-section">
-                    <div class="section-head">
-                        <div class="bank-info">
-                            <div class="bank-icon" style="color: #ef4444;"><i class="fa-solid fa-fire"></i></div>
-                            <div>
-                                <span class="bank-name">Santander</span>
-                                <span class="bank-sub">USD & UYU Accounts</span>
-                            </div>
-                        </div>
-                        <span class="badge badge-santander">Santander</span>
-                    </div>
-                    <div class="branch-info"><i class="fa-solid fa-building-columns"></i> Branch 60 - Puerto del Buceo</div>
-                    <div class="account-group">
-                        <div class="account-row">
-                            <div>
-                                <span class="account-label">USD savings account</span>
-                                <div class="account-number">005201484920</div>
-                            </div>
-                            <button class="btn-copy" onclick="copiar('005201484920')">Copy</button>
-                        </div>
-                        <div class="account-row">
-                            <div>
-                                <span class="account-label">UYU savings account</span>
-                                <div class="account-number">001201340671</div>
-                            </div>
-                            <button class="btn-copy" onclick="copiar('001201340671')">Copy</button>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="info-section">
-                    <div class="section-head">
-                        <div class="bank-info">
-                            <div class="bank-icon" style="color: #a855f7;"><i class="fa-solid fa-wallet"></i></div>
-                            <div>
-                                <span class="bank-name">Prex</span>
-                                <span class="bank-sub">Digital account</span>
-                            </div>
-                        </div>
-                        <span class="badge badge-prex">Prex</span>
-                    </div>
-                    <div class="account-row">
-                        <div>
-                            <span class="account-label">Prex account number</span>
-                            <div class="account-number">35815</div>
-                        </div>
-                        <button class="btn-copy" onclick="copiar('35815')">Copy</button>
+                        <button class="btn-copy" onclick="copiar('35815')" id="copy-btn-3"></button>
                     </div>
                 </section>
             </article>
@@ -537,12 +505,106 @@
     <div id="toast" class="toast" aria-live="polite"></div>
 
     <script>
+        var activeLang = 'es';
+        var translations = {
+            es: {
+                subtitle: 'Información de contacto y cuentas',
+                langTitle: 'Español',
+                langBadge: 'ES',
+                transport: {
+                    name: 'Traslados',
+                    sub: 'Contacto Directo',
+                    badge: 'Info',
+                    whatsapp: 'Enviar WhatsApp',
+                    copyPhone: 'Copiar Número',
+                    locations: ['Punta del Este', 'Colonia', 'Eventos', 'Aeropuerto/Traslados']
+                },
+                santander: {
+                    sub: 'Cuentas USD y UYU',
+                    branch: 'Sucursal 60 - Puerto del Buceo',
+                    usdLabel: 'Caja de ahorro en dólares',
+                    uyuLabel: 'Caja de ahorro en pesos'
+                },
+                prex: {
+                    sub: 'Cuenta digital',
+                    label: 'Número de cuenta Prex'
+                },
+                copyBtn: 'Copiar',
+                copySuccess: 'Copiado',
+                copyError: 'No se pudo copiar'
+            },
+            en: {
+                subtitle: 'Contact & account information',
+                langTitle: 'English',
+                langBadge: 'EN',
+                transport: {
+                    name: 'Transport',
+                    sub: 'Direct Contact',
+                    badge: 'Info',
+                    whatsapp: 'Send Message',
+                    copyPhone: 'Copy Number',
+                    locations: ['Punta del Este', 'Colonia', 'Events', 'Airport/Transfers']
+                },
+                santander: {
+                    sub: 'USD & UYU Accounts',
+                    branch: 'Branch 60 - Puerto del Buceo',
+                    usdLabel: 'USD savings account',
+                    uyuLabel: 'UYU savings account'
+                },
+                prex: {
+                    sub: 'Digital account',
+                    label: 'Prex account number'
+                },
+                copyBtn: 'Copy',
+                copySuccess: 'Copied',
+                copyError: 'Could not copy'
+            }
+        };
+
+        function setLanguage(lang) {
+            activeLang = lang;
+            renderCard(lang);
+        }
+
+        function renderCard(lang) {
+            var t = translations[lang];
+
+            document.getElementById('subtitle').textContent = t.subtitle;
+            document.getElementById('lang-title').textContent = t.langTitle;
+            document.getElementById('lang-badge').textContent = t.langBadge;
+
+            document.getElementById('transport-name').textContent = t.transport.name;
+            document.getElementById('transport-sub').textContent = t.transport.sub;
+            document.getElementById('transport-badge').textContent = t.transport.badge;
+            document.getElementById('location-1').textContent = t.transport.locations[0];
+            document.getElementById('location-2').textContent = t.transport.locations[1];
+            document.getElementById('location-3').textContent = t.transport.locations[2];
+            document.getElementById('location-4').textContent = t.transport.locations[3];
+            document.getElementById('whatsapp-text').textContent = t.transport.whatsapp;
+            document.getElementById('copy-phone-btn').textContent = t.transport.copyPhone;
+
+            document.getElementById('santander-sub').textContent = t.santander.sub;
+            document.getElementById('branch-info').textContent = t.santander.branch;
+            document.getElementById('usd-label').textContent = t.santander.usdLabel;
+            document.getElementById('uyu-label').textContent = t.santander.uyuLabel;
+
+            document.getElementById('prex-sub').textContent = t.prex.sub;
+            document.getElementById('prex-label').textContent = t.prex.label;
+
+            document.getElementById('copy-btn-1').textContent = t.copyBtn;
+            document.getElementById('copy-btn-2').textContent = t.copyBtn;
+            document.getElementById('copy-btn-3').textContent = t.copyBtn;
+
+            document.getElementById('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
+            document.getElementById('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
+        }
+
         function copiar(texto) {
             navigator.clipboard.writeText(texto).then(function() {
-                showToast('Copiado / Copied: ' + texto);
+                showToast(translations[activeLang].copySuccess + ': ' + texto);
             }, function(err) {
                 console.error('Error: ', err);
-                showToast('No se pudo copiar / Could not copy');
+                showToast(translations[activeLang].copyError);
             });
         }
 
@@ -555,6 +617,8 @@
                 toast.classList.remove('show');
             }, 1700);
         }
+
+        renderCard(activeLang);
     </script>
 </body>
 </html>
