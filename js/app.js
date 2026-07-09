@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v27';
+  var APP_VERSION = 'v28';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var IDLE_RESET_MS = 60000;
   var SWIPE_THRESHOLD = 50;
@@ -33,6 +33,11 @@
   var currentVehicleView = 0;
   var swRegistration = null;
   var sectionObserver = null;
+  var isProgrammaticScroll = false;
+  var userScrolledManually = false;
+  var lastScrollTop = 0;
+  var touchScrollStartY = 0;
+  var touchScrollActive = false;
 
   var translations = {
     es: {
@@ -365,6 +370,29 @@
     });
   }
 
+  function updateScrollProgress() {
+    var scrollEl = $('page-scroll');
+    if (!scrollEl) return;
+    var max = scrollEl.scrollHeight - scrollEl.clientHeight;
+    var pct = max > 0 ? (scrollEl.scrollTop / max) * 100 : 0;
+    var fill = $('section-progress-fill');
+    if (fill) fill.style.width = pct + '%';
+  }
+
+  function updateHeroParallax() {
+    var scrollEl = $('page-scroll');
+    var heroScene = $('vehicle-hero-scene');
+    if (!scrollEl || !heroScene) return;
+    var offset = Math.min(scrollEl.scrollTop * 0.15, 60);
+    heroScene.style.setProperty('--hero-parallax', offset + 'px');
+  }
+
+  function markManualScroll() {
+    if (isProgrammaticScroll) return;
+    userScrolledManually = true;
+    pauseAutoplay();
+  }
+
   function getSectionEl(index) {
     return document.querySelector('.page-section[data-section="' + index + '"]');
   }
@@ -376,9 +404,14 @@
     var section = getSectionEl(index);
     if (!section) return;
 
+    isProgrammaticScroll = true;
     section.scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
     setActiveSection(index);
     resetIdleTimer();
+    setTimeout(function () {
+      isProgrammaticScroll = false;
+      lastScrollTop = ($('page-scroll') || {}).scrollTop || 0;
+    }, 600);
   }
 
   function setActiveSection(index) {
@@ -389,10 +422,6 @@
       dot.classList.toggle('active', active);
       dot.setAttribute('aria-selected', String(active));
     });
-
-    var progress = ((index + 1) / TOTAL_SECTIONS) * 100;
-    var fill = $('section-progress-fill');
-    if (fill) fill.style.width = progress + '%';
 
     var fab = $('whatsapp-fab');
     if (fab) fab.hidden = index < 1;
@@ -412,13 +441,13 @@
 
     sectionObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (!entry.isIntersecting || entry.intersectionRatio < 0.45) return;
+        if (!entry.isIntersecting || entry.intersectionRatio < 0.25) return;
         var index = parseInt(entry.target.getAttribute('data-section'), 10);
         if (!isNaN(index) && index !== currentSection) {
           setActiveSection(index);
         }
       });
-    }, { root: scrollEl, threshold: [0.45, 0.6] });
+    }, { root: scrollEl, threshold: [0.25, 0.4, 0.55] });
 
     document.querySelectorAll('.page-section').forEach(function (section) {
       sectionObserver.observe(section);
@@ -661,7 +690,7 @@
     currentSpot = spotIndex;
     updateSpotVisibility();
     if (options.manual !== false) {
-      pauseAutoplayTemporarily();
+      markManualScroll();
       resetIdleTimer();
     }
     startSpotRotation();
@@ -723,7 +752,7 @@
     }
 
     if (animate !== false) {
-      pauseAutoplayTemporarily();
+      markManualScroll();
       resetIdleTimer();
     }
     startSpotRotation();
@@ -761,6 +790,7 @@
   function resetIdleTimer() {
     clearTimeout(idleTimer);
     idleTimer = setTimeout(function () {
+      userScrolledManually = false;
       scrollToSection(0);
       resumeAutoplay();
     }, IDLE_RESET_MS);
@@ -858,7 +888,7 @@
 
     document.querySelectorAll('.section-dot').forEach(function (dot) {
       dot.addEventListener('click', function () {
-        pauseAutoplayTemporarily();
+        markManualScroll();
         scrollToSection(parseInt(dot.dataset.section, 10));
       });
     });
@@ -870,13 +900,13 @@
     });
 
     on('gallery-prev', 'click', function () {
-      pauseAutoplayTemporarily();
+      markManualScroll();
       prevReview();
       resetIdleTimer();
     });
 
     on('gallery-next', 'click', function () {
-      pauseAutoplayTemporarily();
+      markManualScroll();
       nextReview();
       resetIdleTimer();
     });
@@ -903,7 +933,7 @@
     if (spotViewport) {
       spotViewport.addEventListener('touchstart', function (e) {
         spotTouchStartX = e.changedTouches[0].screenX;
-        pauseAutoplayTemporarily();
+        markManualScroll();
       }, { passive: true });
 
       spotViewport.addEventListener('touchend', function (e) {
@@ -921,16 +951,44 @@
 
     var scrollEl = $('page-scroll');
     if (scrollEl) {
-      var scrollPauseTimer = null;
+      lastScrollTop = scrollEl.scrollTop;
+
       scrollEl.addEventListener('scroll', function () {
-        pauseAutoplayTemporarily(5000);
-        clearTimeout(scrollPauseTimer);
-        scrollPauseTimer = setTimeout(function () {
-          if (openFaqIndex < 0) resumeAutoplay();
-        }, 5000);
+        updateScrollProgress();
+        updateHeroParallax();
+
+        if (!isProgrammaticScroll) {
+          var delta = Math.abs(scrollEl.scrollTop - lastScrollTop);
+          if (delta > 8) markManualScroll();
+        }
+        lastScrollTop = scrollEl.scrollTop;
         resetIdleTimer();
       }, { passive: true });
+
+      scrollEl.addEventListener('wheel', function () {
+        markManualScroll();
+      }, { passive: true });
+
+      scrollEl.addEventListener('touchstart', function (e) {
+        touchScrollStartY = e.changedTouches[0].screenY;
+        touchScrollActive = true;
+      }, { passive: true });
+
+      scrollEl.addEventListener('touchmove', function (e) {
+        if (!touchScrollActive) return;
+        var deltaY = Math.abs(e.changedTouches[0].screenY - touchScrollStartY);
+        if (deltaY > 12) markManualScroll();
+      }, { passive: true });
+
+      scrollEl.addEventListener('touchend', function () {
+        touchScrollActive = false;
+      }, { passive: true });
     }
+
+    document.addEventListener('keydown', function (e) {
+      var keys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '];
+      if (keys.indexOf(e.key) >= 0) markManualScroll();
+    });
 
     ['click', 'touchstart', 'keydown'].forEach(function (eventName) {
       document.addEventListener(eventName, function () {
@@ -943,6 +1001,7 @@
     setLanguage(detectLanguage());
     setupSectionObserver();
     setActiveSection(0);
+    updateScrollProgress();
     startVehicleRotation();
     startSectionAutoAdvance();
     bindEvents();
