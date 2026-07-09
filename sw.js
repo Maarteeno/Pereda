@@ -1,4 +1,5 @@
-var CACHE_NAME = 'pereda-tablet-v23';
+var APP_VERSION = 'v24';
+var CACHE_NAME = 'pereda-tablet-' + APP_VERSION;
 var ASSETS = [
   './',
   './index.html',
@@ -32,6 +33,49 @@ var ASSETS = [
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap'
 ];
 
+function isNetworkFirstAsset(url) {
+  return /\.(html|css|js)(\?|$)/.test(url.pathname) ||
+    url.pathname.endsWith('/') ||
+    url.pathname.indexOf('/js/') !== -1 ||
+    url.pathname.indexOf('/css/') !== -1;
+}
+
+function networkFirst(request) {
+  return fetch(request).then(function (response) {
+    if (response && response.status === 200 && response.type !== 'opaque') {
+      var copy = response.clone();
+      caches.open(CACHE_NAME).then(function (cache) {
+        cache.put(request, copy);
+      });
+    }
+    return response;
+  }).catch(function () {
+    return caches.match(request);
+  });
+}
+
+function cacheFirst(request) {
+  return caches.match(request).then(function (cached) {
+    if (cached) return cached;
+    return fetch(request).then(function (response) {
+      if (!response || response.status !== 200 || response.type === 'opaque') {
+        return response;
+      }
+      var copy = response.clone();
+      caches.open(CACHE_NAME).then(function (cache) {
+        cache.put(request, copy);
+      });
+      return response;
+    });
+  });
+}
+
+self.addEventListener('message', function (event) {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
@@ -51,9 +95,10 @@ self.addEventListener('activate', function (event) {
           return caches.delete(key);
         })
       );
+    }).then(function () {
+      return self.clients.claim();
     })
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', function (event) {
@@ -61,28 +106,19 @@ self.addEventListener('fetch', function (event) {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then(function (cached) {
-      if (cached) {
-        return cached;
-      }
+  var url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) {
+    return;
+  }
 
-      return fetch(event.request).then(function (response) {
-        if (!response || response.status !== 200 || response.type === 'opaque') {
-          return response;
-        }
+  if (event.request.mode === 'navigate' || isNetworkFirstAsset(url)) {
+    event.respondWith(networkFirst(event.request));
+    return;
+  }
 
-        var copy = response.clone();
-        caches.open(CACHE_NAME).then(function (cache) {
-          cache.put(event.request, copy);
-        });
-
-        return response;
-      }).catch(function () {
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
-    })
-  );
+  event.respondWith(cacheFirst(event.request).catch(function () {
+    if (event.request.mode === 'navigate') {
+      return caches.match('./index.html');
+    }
+  }));
 });

@@ -2,6 +2,10 @@
   'use strict';
 
   var LANG_STORAGE_KEY = 'pereda-lang';
+  var VERSION_STORAGE_KEY = 'pereda-app-version';
+  var APP_VERSION = 'v24';
+  var COMFORT_PAGE_SIZE = 4;
+  window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var IDLE_RESET_MS = 60000;
   var SWIPE_THRESHOLD = 50;
   var REVIEW_INTERVAL_MS = 4500;
@@ -21,6 +25,8 @@
   var currentSpot = 0;
   var spotTouchStartX = 0;
   var openFaqIndex = -1;
+  var currentComfortPage = 0;
+  var swRegistration = null;
 
   var translations = {
     es: {
@@ -51,6 +57,9 @@
       spotSectionTitle: 'Puntos de interés',
       finalCtaLabel: '¿Listo para reservar?',
       finalCtaAction: 'Abrir WhatsApp',
+      updateGateTitle: 'Nueva versión disponible',
+      updateGateText: 'Hay una actualización de la app. Actualizá para ver el diseño más reciente.',
+      updateGateAction: 'Actualizar ahora',
       servicesTitle: 'Traslados',
       servicesSubtitle: 'Destinos desde Montevideo',
       servicesIntro: 'Deslizá para conocer cada destino',
@@ -124,6 +133,9 @@
       spotSectionTitle: 'Points of interest',
       finalCtaLabel: 'Ready to book?',
       finalCtaAction: 'Open WhatsApp',
+      updateGateTitle: 'New version available',
+      updateGateText: 'An app update is ready. Refresh to see the latest layout.',
+      updateGateAction: 'Update now',
       servicesTitle: 'Transport',
       servicesSubtitle: 'Destinations from Montevideo',
       servicesIntro: 'Swipe to explore each destination',
@@ -197,6 +209,9 @@
       spotSectionTitle: 'Pontos de interesse',
       finalCtaLabel: 'Pronto para reservar?',
       finalCtaAction: 'Abrir WhatsApp',
+      updateGateTitle: 'Nova versão disponível',
+      updateGateText: 'Há uma atualização do app. Atualize para ver o layout mais recente.',
+      updateGateAction: 'Atualizar agora',
       servicesTitle: 'Transporte',
       servicesSubtitle: 'Destinos desde Montevidéu',
       servicesIntro: 'Deslize para conhecer cada destino',
@@ -295,11 +310,15 @@
     for (i = 0; i < t.comfortItems.length; i++) {
       setText('comfort-' + (i + 1), t.comfortItems[i]);
     }
+    renderComfortPage();
 
     setText('qr-label', t.qrLabel);
     setText('vehicle-qr-phone', t.phoneNumber);
     setText('final-cta-label', t.finalCtaLabel);
     setText('final-cta-action', t.finalCtaAction);
+    setText('update-gate-title', t.updateGateTitle);
+    setText('update-gate-text', t.updateGateText);
+    setText('update-gate-btn', t.updateGateAction);
     setText('spot-section-title', t.spotSectionTitle);
 
     setText('services-title', t.servicesTitle);
@@ -642,7 +661,110 @@
     }, IDLE_RESET_MS);
   }
 
+  function shouldPaginateComfort() {
+    return window.matchMedia('(max-width: 639px) and (orientation: portrait)').matches;
+  }
+
+  function renderComfortPage() {
+    var chips = document.querySelectorAll('.comfort-chip');
+    var dots = document.querySelectorAll('.comfort-page-dot');
+    var totalPages = Math.ceil(chips.length / COMFORT_PAGE_SIZE);
+    var i;
+    var start;
+    var end;
+
+    if (!shouldPaginateComfort()) {
+      for (i = 0; i < chips.length; i++) {
+        chips[i].hidden = false;
+      }
+      dots.forEach(function (dot) {
+        dot.hidden = true;
+      });
+      return;
+    }
+
+    if (currentComfortPage >= totalPages) {
+      currentComfortPage = 0;
+    }
+
+    start = currentComfortPage * COMFORT_PAGE_SIZE;
+    end = start + COMFORT_PAGE_SIZE;
+
+    for (i = 0; i < chips.length; i++) {
+      chips[i].hidden = i < start || i >= end;
+    }
+
+    dots.forEach(function (dot, index) {
+      var visible = totalPages > 1;
+      dot.hidden = !visible;
+      dot.classList.toggle('active', index === currentComfortPage);
+      dot.setAttribute('aria-selected', String(index === currentComfortPage));
+    });
+  }
+
+  function goToComfortPage(page) {
+    var chips = document.querySelectorAll('.comfort-chip');
+    var totalPages = Math.ceil(chips.length / COMFORT_PAGE_SIZE);
+    if (totalPages < 1) return;
+    currentComfortPage = ((page % totalPages) + totalPages) % totalPages;
+    renderComfortPage();
+  }
+
+  function clearCachesAndReload() {
+    if ('caches' in window) {
+      caches.keys().then(function (keys) {
+        return Promise.all(keys.map(function (key) {
+          return caches.delete(key);
+        }));
+      }).then(function () {
+        localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
+        window.location.reload();
+      });
+      return;
+    }
+    localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
+    window.location.reload();
+  }
+
+  function checkAppVersion() {
+    var stored = localStorage.getItem(VERSION_STORAGE_KEY);
+    if (stored && stored !== APP_VERSION) {
+      clearCachesAndReload();
+      return false;
+    }
+    localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
+    return true;
+  }
+
+  function showUpdateGate(registration) {
+    var gate = $('update-gate');
+    var btn = $('update-gate-btn');
+    if (!gate || gate.hidden === false) return;
+
+    swRegistration = registration;
+    gate.hidden = false;
+    document.body.classList.add('update-blocked');
+
+    if (btn && !btn.dataset.bound) {
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function () {
+        if (swRegistration && swRegistration.waiting) {
+          swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
+          return;
+        }
+        clearCachesAndReload();
+      });
+    }
+  }
+
+  function handleWaitingWorker(registration) {
+    if (registration.waiting && navigator.serviceWorker.controller) {
+      showUpdateGate(registration);
+    }
+  }
+
   function setupPwa() {
+    if (!checkAppVersion()) return;
     if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
 
     var link = document.createElement('link');
@@ -651,8 +773,34 @@
     document.head.appendChild(link);
 
     if ('serviceWorker' in navigator) {
+      var refreshing = false;
+
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
+
       window.addEventListener('load', function () {
-        navigator.serviceWorker.register('sw.js').catch(function () {});
+        navigator.serviceWorker.register('sw.js?v=' + APP_VERSION).then(function (registration) {
+          swRegistration = registration;
+          handleWaitingWorker(registration);
+
+          registration.addEventListener('updatefound', function () {
+            var newWorker = registration.installing;
+            if (!newWorker) return;
+
+            newWorker.addEventListener('statechange', function () {
+              if (newWorker.state === 'installed') {
+                handleWaitingWorker(registration);
+              }
+            });
+          });
+
+          setInterval(function () {
+            registration.update();
+          }, 60 * 60 * 1000);
+        }).catch(function () {});
       });
     }
   }
@@ -665,6 +813,12 @@
 
     on('nav-prev', 'click', prevSlide);
     on('nav-next', 'click', nextSlide);
+
+    document.querySelectorAll('.comfort-page-dot').forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        goToComfortPage(parseInt(dot.getAttribute('data-page'), 10));
+      });
+    });
 
     document.querySelectorAll('.dot').forEach(function (dot) {
       dot.addEventListener('click', function () {
@@ -756,11 +910,15 @@
     ['click', 'touchstart', 'keydown'].forEach(function (eventName) {
       document.addEventListener(eventName, resetIdleTimer, { passive: true });
     });
+
+    window.addEventListener('resize', renderComfortPage);
+    window.addEventListener('orientationchange', renderComfortPage);
   }
 
   function init() {
     setLanguage(detectLanguage());
     goToSlide(0);
+    renderComfortPage();
     bindEvents();
     setupPwa();
   }
