@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v36';
+  var APP_VERSION = 'v37';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var VEHICLE_ROTATE_MS = 8000;
 
@@ -37,12 +37,13 @@
       trasladosItems: [
         { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Playa Brava', 'Puerto de Punta'] },
         { image: 'assets/destinations/colonia-ai.png', name: 'Colonia del Sacramento', spots: ['Barrio Histórico', 'Faro de Colonia', 'Calle de los Suspiros'] },
-        { image: 'assets/destinations/montevideo-ai.png', name: 'Montevideo', spots: ['Aeropuerto Carrasco', 'Centro', 'Rambla'] }
+        { image: 'assets/destinations/montevideo-ai.png', name: 'Montevideo', spots: ['Aeropuerto Carrasco', 'Centro', 'Rambla', 'Mercado del Puerto'] }
       ],
       paseosItems: [
-        { image: 'assets/paseos/montevideo-ai.png', name: 'Montevideo', spots: ['Estadio Centenario', 'Rambla', 'Parque Rodó'] },
+        { image: 'assets/paseos/montevideo-ai.png', name: 'Montevideo', spots: ['Estadio Centenario', 'Rambla', 'Parque Rodó', 'Mercado del Puerto'] },
         { image: 'assets/paseos/eventos-ai.png', name: 'Eventos', spots: ['Bodas', 'Salones', 'Congresos'] },
-        { image: 'assets/paseos/costa-ai.png', name: 'Costa y hoteles', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] }
+        { image: 'assets/paseos/costa-ai.png', name: 'Costa y hoteles', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] },
+        { image: 'assets/paseos/bodegas-ai.png', name: 'Bodegas', spots: ['Juanicó', 'Garzón', 'Carmelo'] }
       ],
       softwareTitle: 'Software Mac',
       updateGateTitle: 'Nueva versión disponible',
@@ -72,12 +73,13 @@
       trasladosItems: [
         { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Brava Beach', 'Punta del Este Port'] },
         { image: 'assets/destinations/colonia-ai.png', name: 'Colonia del Sacramento', spots: ['Historic Quarter', 'Colonia Lighthouse', 'Street of Sighs'] },
-        { image: 'assets/destinations/montevideo-ai.png', name: 'Montevideo', spots: ['Carrasco Airport', 'Downtown', 'Waterfront'] }
+        { image: 'assets/destinations/montevideo-ai.png', name: 'Montevideo', spots: ['Carrasco Airport', 'Downtown', 'Waterfront', 'Mercado del Puerto'] }
       ],
       paseosItems: [
-        { image: 'assets/paseos/montevideo-ai.png', name: 'Montevideo', spots: ['Estadio Centenario', 'Waterfront', 'Parque Rodó'] },
+        { image: 'assets/paseos/montevideo-ai.png', name: 'Montevideo', spots: ['Estadio Centenario', 'Waterfront', 'Parque Rodó', 'Mercado del Puerto'] },
         { image: 'assets/paseos/eventos-ai.png', name: 'Events', spots: ['Weddings', 'Venues', 'Conferences'] },
-        { image: 'assets/paseos/costa-ai.png', name: 'Coast and hotels', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] }
+        { image: 'assets/paseos/costa-ai.png', name: 'Coast and hotels', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] },
+        { image: 'assets/paseos/bodegas-ai.png', name: 'Wineries', spots: ['Juanicó', 'Garzón', 'Carmelo'] }
       ],
       softwareTitle: 'Mac Software',
       updateGateTitle: 'New version available',
@@ -107,12 +109,13 @@
       trasladosItems: [
         { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Playa Brava', 'Porto de Punta del Este'] },
         { image: 'assets/destinations/colonia-ai.png', name: 'Colonia del Sacramento', spots: ['Bairro Histórico', 'Farol de Colonia', 'Calle de los Suspiros'] },
-        { image: 'assets/destinations/montevideo-ai.png', name: 'Montevidéu', spots: ['Aeroporto Carrasco', 'Centro', 'Rambla'] }
+        { image: 'assets/destinations/montevideo-ai.png', name: 'Montevidéu', spots: ['Aeroporto Carrasco', 'Centro', 'Rambla', 'Mercado del Puerto'] }
       ],
       paseosItems: [
-        { image: 'assets/paseos/montevideo-ai.png', name: 'Montevidéu', spots: ['Estádio Centenário', 'Rambla', 'Parque Rodó'] },
+        { image: 'assets/paseos/montevideo-ai.png', name: 'Montevidéu', spots: ['Estádio Centenário', 'Rambla', 'Parque Rodó', 'Mercado del Puerto'] },
         { image: 'assets/paseos/eventos-ai.png', name: 'Eventos', spots: ['Casamentos', 'Salões', 'Congressos'] },
-        { image: 'assets/paseos/costa-ai.png', name: 'Costa e hotéis', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] }
+        { image: 'assets/paseos/costa-ai.png', name: 'Costa e hotéis', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] },
+        { image: 'assets/paseos/bodegas-ai.png', name: 'Vinícolas', spots: ['Juanicó', 'Garzón', 'Carmelo'] }
       ],
       softwareTitle: 'Software Mac',
       updateGateTitle: 'Nova versão disponível',

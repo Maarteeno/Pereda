@@ -1,4 +1,4 @@
-var APP_VERSION = 'v36';
+var APP_VERSION = 'v37';
 var CACHE_NAME = 'pereda-tablet-' + APP_VERSION;
 var ASSETS = [
   './',
@@ -21,6 +21,7 @@ var ASSETS = [
   './assets/paseos/montevideo-ai.png',
   './assets/paseos/eventos-ai.png',
   './assets/paseos/costa-ai.png',
+  './assets/paseos/bodegas-ai.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
   'https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap'

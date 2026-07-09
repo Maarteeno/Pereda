@@ -292,6 +292,14 @@ body {
   flex-wrap: nowrap;
 }
 
+.header-center-cluster {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
 .brand {
   display: flex;
   flex-direction: column;
@@ -2163,12 +2171,6 @@ body {
 }
 
 @media (max-width: 520px) {
-  .app-header {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 12px 14px 8px;
-  }
-
   .language-selector {
     justify-content: center;
   }
@@ -2574,21 +2576,32 @@ body.update-blocked {
 
 @media (max-width: 639px) {
   :root {
-    --header-height: 44px;
+    --header-height: 52px;
     --hero-vehicle-height: clamp(140px, 26vh, 200px);
   }
 
   .sticky-top .app-header {
     width: 100%;
     padding: 6px 14px 4px;
-    gap: 12px;
+    justify-content: center;
     align-items: center;
     flex-wrap: nowrap;
   }
 
+  .header-center-cluster {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(10px, 3vw, 16px);
+    width: auto;
+    max-width: 100%;
+  }
+
   .sticky-top .brand {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     min-width: 0;
   }
 
@@ -2597,7 +2610,9 @@ body.update-blocked {
   }
 
   .header-lang {
-    align-self: flex-start;
+    margin-left: 0;
+    align-self: center;
+    flex-shrink: 0;
   }
 
   .header-lang .lang-btn {
@@ -3482,7 +3497,18 @@ body.update-blocked {
 
 .brand-name {
   font-size: clamp(1.05rem, 3.8vw, 1.25rem);
-  text-align: left;
+}
+
+@media (max-width: 639px) {
+  .brand-name {
+    text-align: center;
+  }
+}
+
+@media (min-width: 640px) {
+  .brand-name {
+    text-align: left;
+  }
 }
 
 @media (min-width: 640px) {
