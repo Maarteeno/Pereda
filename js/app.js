@@ -5,8 +5,6 @@
   var IDLE_RESET_MS = 60000;
   var SWIPE_THRESHOLD = 50;
   var REVIEW_INTERVAL_MS = 4500;
-  var DEST_INTERVAL_MS = 8000;
-  var SPOT_INTERVAL_MS = 5000;
   var TOTAL_DESTINATIONS = 4;
 
   var activeLang = 'es';
@@ -16,14 +14,12 @@
   var touchStartX = 0;
   var touchStartY = 0;
   var reviewTimer = null;
-  var destTimer = null;
   var shuffledReviews = [];
   var shuffleIndex = 0;
   var lastReviewText = '';
   var currentDest = 0;
   var currentSpot = 0;
-  var destTouchStartX = 0;
-  var spotTimer = null;
+  var spotTouchStartX = 0;
   var openFaqIndex = -1;
 
   var translations = {
@@ -324,12 +320,9 @@
       stopReviewRotation();
     }
 
-    if (currentSlide === 1) {
-      startDestRotation();
-      startSpotRotation();
-    } else {
-      stopDestRotation();
-      stopSpotRotation();
+    if (currentSlide !== 1) {
+      currentSpot = 0;
+      updateSpotVisibility();
     }
   }
 
@@ -472,20 +465,13 @@
     }).join('');
   }
 
-  function isMobileSpotCarousel() {
-    return window.matchMedia('(max-width: 639px) and (orientation: portrait)').matches;
-  }
-
   function renderDestSpots(index) {
     var t = translations[activeLang];
     var spotsEl = $('dest-spots');
     if (!spotsEl || !t.destinationSpots[index]) return;
 
-    var carouselMode = isMobileSpotCarousel();
-    spotsEl.classList.toggle('is-carousel-mode', carouselMode);
-
     spotsEl.innerHTML = t.destinationSpots[index].map(function (spot, i) {
-      var activeClass = carouselMode && i === currentSpot ? ' is-active' : '';
+      var activeClass = i === currentSpot ? ' is-active' : '';
       return (
         '<article class="dest-spot' + activeClass + '" data-spot="' + i + '">' +
           '<div class="dest-spot-media">' +
@@ -507,15 +493,8 @@
     var dotsEl = $('dest-spot-dots');
     var t = translations[activeLang];
     if (!dotsEl || !t.destinationSpots[index]) return;
-
-    var showDots = isMobileSpotCarousel();
-    dotsEl.hidden = !showDots;
-    dotsEl.setAttribute('aria-hidden', String(!showDots));
-
-    if (!showDots) {
-      dotsEl.innerHTML = '';
-      return;
-    }
+    dotsEl.hidden = false;
+    dotsEl.setAttribute('aria-hidden', 'false');
 
     dotsEl.innerHTML = t.destinationSpots[index].map(function (_, i) {
       return (
@@ -525,14 +504,11 @@
   }
 
   function updateSpotVisibility() {
-    var carouselMode = isMobileSpotCarousel();
     var spotsEl = $('dest-spots');
     if (!spotsEl) return;
 
-    spotsEl.classList.toggle('is-carousel-mode', carouselMode);
-
     spotsEl.querySelectorAll('.dest-spot').forEach(function (spot, i) {
-      spot.classList.toggle('is-active', !carouselMode || i === currentSpot);
+      spot.classList.toggle('is-active', i === currentSpot);
     });
 
     document.querySelectorAll('.dest-spot-dot').forEach(function (dot, i) {
@@ -555,26 +531,6 @@
     var spots = t.destinationSpots[currentDest];
     if (!spots) return;
     goToSpot((currentSpot + 1) % spots.length);
-  }
-
-  function startSpotRotation() {
-    stopSpotRotation();
-    if (!isMobileSpotCarousel() || currentSlide !== 1) return;
-    spotTimer = setInterval(nextSpot, SPOT_INTERVAL_MS);
-  }
-
-  function stopSpotRotation() {
-    clearInterval(spotTimer);
-    spotTimer = null;
-  }
-
-  function pauseSpotRotation() {
-    stopSpotRotation();
-    if (currentSlide === 1 && isMobileSpotCarousel()) {
-      spotTimer = setTimeout(function () {
-        startSpotRotation();
-      }, SPOT_INTERVAL_MS * 2);
-    }
   }
 
   function goToDestination(index, animate) {
@@ -611,7 +567,6 @@
       slideEl.classList.add('is-entering');
     }
 
-    startSpotRotation();
     resetIdleTimer();
   }
 
@@ -621,25 +576,6 @@
 
   function prevDestination() {
     goToDestination(currentDest - 1, true);
-  }
-
-  function startDestRotation() {
-    stopDestRotation();
-    destTimer = setInterval(nextDestination, DEST_INTERVAL_MS);
-  }
-
-  function stopDestRotation() {
-    clearInterval(destTimer);
-    destTimer = null;
-  }
-
-  function pauseDestRotation() {
-    stopDestRotation();
-    if (currentSlide === 1) {
-      destTimer = setTimeout(function () {
-        startDestRotation();
-      }, DEST_INTERVAL_MS * 2);
-    }
   }
 
   function renderFaq() {
@@ -729,42 +665,28 @@
 
     $('dest-prev').addEventListener('click', function () {
       prevDestination();
-      pauseDestRotation();
     });
 
     $('dest-next').addEventListener('click', function () {
       nextDestination();
-      pauseDestRotation();
     });
 
     $('dest-tabs').addEventListener('click', function (e) {
       var tab = e.target.closest('.dest-tab');
       if (!tab) return;
       goToDestination(parseInt(tab.dataset.dest, 10), true);
-      pauseDestRotation();
     });
 
     $('dest-dots').addEventListener('click', function (e) {
       var dot = e.target.closest('.dest-dot');
       if (!dot) return;
       goToDestination(parseInt(dot.dataset.dest, 10), true);
-      pauseDestRotation();
     });
 
     $('dest-spot-dots').addEventListener('click', function (e) {
       var dot = e.target.closest('.dest-spot-dot');
       if (!dot) return;
       goToSpot(parseInt(dot.dataset.spot, 10));
-      pauseSpotRotation();
-    });
-
-    window.matchMedia('(max-width: 639px) and (orientation: portrait)').addEventListener('change', function () {
-      renderDestSpots(currentDest);
-      if (currentSlide === 1) {
-        startSpotRotation();
-      } else {
-        stopSpotRotation();
-      }
     });
 
     $('faq-list').addEventListener('click', function (e) {
@@ -773,17 +695,21 @@
       toggleFaq(parseInt(btn.dataset.faq, 10));
     });
 
-    var destViewport = $('dest-viewport');
-    destViewport.addEventListener('touchstart', function (e) {
-      destTouchStartX = e.changedTouches[0].screenX;
+    var spotViewport = $('dest-spots');
+    spotViewport.addEventListener('touchstart', function (e) {
+      spotTouchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
 
-    destViewport.addEventListener('touchend', function (e) {
-      var deltaX = e.changedTouches[0].screenX - destTouchStartX;
+    spotViewport.addEventListener('touchend', function (e) {
+      var deltaX = e.changedTouches[0].screenX - spotTouchStartX;
       if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
-      if (deltaX < 0) nextDestination();
-      else prevDestination();
-      pauseDestRotation();
+      if (deltaX < 0) nextSpot();
+      else {
+        var t = translations[activeLang];
+        var spots = t.destinationSpots[currentDest];
+        if (!spots) return;
+        goToSpot((currentSpot - 1 + spots.length) % spots.length);
+      }
     }, { passive: true });
 
     var viewport = $('slides-viewport');

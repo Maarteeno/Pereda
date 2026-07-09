@@ -1,4 +1,4 @@
-var CACHE_NAME = 'pereda-tablet-v19';
+var CACHE_NAME = 'pereda-tablet-v21';
 var ASSETS = [
   './',
   './index.html',
@@ -6,7 +6,7 @@ var ASSETS = [
   './js/reviews-data.js',
   './js/app.js',
   './manifest.json',
-  './assets/adrian-pereda.jpg',
+  './assets/adrian-pereda.png',
   './assets/bestune-front.png',
   './assets/bestune-side.png',
   './assets/bestune-rear.png',

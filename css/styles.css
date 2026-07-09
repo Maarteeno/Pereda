@@ -231,6 +231,7 @@ body {
   width: 100%;
   padding: 16px 20px;
   align-items: start;
+  justify-items: stretch;
 }
 
 .driver-card {
@@ -251,11 +252,11 @@ body {
   height: clamp(72px, 12vw, 96px);
   border-radius: 50%;
   object-fit: cover;
-  object-position: center 28%;
+  object-position: center center;
   border: 2px solid rgba(122, 156, 132, 0.45);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
   display: block;
-  background: var(--panel-bg);
+  background: #0a0a0a;
 }
 
 .driver-name {
@@ -432,11 +433,17 @@ body {
 }
 
 .vehicle-qr {
+  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 6px;
+  width: 100%;
+  max-width: 260px;
+  justify-self: center;
+  text-align: center;
 }
 
 .vehicle-qr-label {
@@ -471,6 +478,8 @@ body {
   font-weight: 600;
   color: var(--text-muted);
   letter-spacing: 0.02em;
+  text-align: center;
+  width: 100%;
 }
 
 .services-slide,
@@ -614,13 +623,16 @@ body {
   flex: 1;
   min-height: 0;
   display: flex;
-  gap: clamp(6px, 1.5vw, 14px);
+  flex-direction: column;
+  gap: 0;
   align-items: stretch;
+  overflow: hidden;
 }
 
 .dest-spot {
-  flex: 1 1 0;
-  min-width: 0;
+  flex: none;
+  min-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -628,6 +640,11 @@ body {
   border: 1px solid var(--border);
   border-radius: 12px;
   animation: spotIn 0.3s ease backwards;
+  display: none;
+}
+
+.dest-spot.is-active {
+  display: flex;
 }
 
 .dest-spot-media {
@@ -678,7 +695,7 @@ body {
 }
 
 .dest-spot-dots {
-  display: none;
+  display: flex;
   justify-content: center;
   gap: 8px;
   flex-shrink: 0;
@@ -712,7 +729,7 @@ body {
   border: 1px solid rgba(139, 150, 167, 0.28);
   background: rgba(18, 24, 32, 0.9);
   color: var(--text-main);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -734,7 +751,7 @@ body {
 }
 
 .dest-dots {
-  display: flex;
+  display: none;
   justify-content: center;
   gap: 8px;
   flex-shrink: 0;
@@ -1176,7 +1193,7 @@ body {
   }
 
   .vehicle-qr {
-    margin-top: 12px;
+    margin-top: 10px;
   }
 
   .review-gallery-grid {
