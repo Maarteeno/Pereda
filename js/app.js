@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v26';
+  var APP_VERSION = 'v27';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var IDLE_RESET_MS = 60000;
   var SWIPE_THRESHOLD = 50;
@@ -21,6 +21,7 @@
   var spotAutoTimer = null;
   var vehicleRotateTimer = null;
   var reviewTimer = null;
+  var temporaryAutoplayTimer = null;
   var autoplayPaused = false;
   var shuffledReviews = [];
   var shuffleIndex = 0;
@@ -425,13 +426,25 @@
   }
 
   function pauseAutoplay() {
+    clearTimeout(temporaryAutoplayTimer);
     autoplayPaused = true;
     stopSectionAutoAdvance();
   }
 
   function resumeAutoplay() {
+    clearTimeout(temporaryAutoplayTimer);
     autoplayPaused = false;
     startSectionAutoAdvance();
+  }
+
+  function pauseAutoplayTemporarily(delay) {
+    if (openFaqIndex >= 0) return;
+    clearTimeout(temporaryAutoplayTimer);
+    autoplayPaused = true;
+    stopSectionAutoAdvance();
+    temporaryAutoplayTimer = setTimeout(function () {
+      resumeAutoplay();
+    }, delay || 5000);
   }
 
   function startSectionAutoAdvance() {
@@ -640,28 +653,33 @@
     });
   }
 
-  function goToSpot(spotIndex) {
+  function goToSpot(spotIndex, options) {
+    options = options || {};
     var t = translations[activeLang];
     var spots = t.destinationSpots[currentDest];
     if (!spots || spotIndex < 0 || spotIndex >= spots.length) return;
     currentSpot = spotIndex;
     updateSpotVisibility();
-    pauseAutoplay();
-    resetIdleTimer();
+    if (options.manual !== false) {
+      pauseAutoplayTemporarily();
+      resetIdleTimer();
+    }
     startSpotRotation();
   }
 
-  function nextSpot() {
+  function nextSpot(options) {
     var t = translations[activeLang];
     var spots = t.destinationSpots[currentDest];
     if (!spots) return;
-    goToSpot((currentSpot + 1) % spots.length);
+    goToSpot((currentSpot + 1) % spots.length, options);
   }
 
   function startSpotRotation() {
     stopSpotRotation();
     if (currentSection !== 3) return;
-    spotAutoTimer = setInterval(nextSpot, SPOT_AUTO_MS);
+    spotAutoTimer = setInterval(function () {
+      nextSpot({ manual: false });
+    }, SPOT_AUTO_MS);
   }
 
   function stopSpotRotation() {
@@ -704,8 +722,10 @@
       slideEl.classList.add('is-entering');
     }
 
-    pauseAutoplay();
-    resetIdleTimer();
+    if (animate !== false) {
+      pauseAutoplayTemporarily();
+      resetIdleTimer();
+    }
     startSpotRotation();
   }
 
@@ -838,9 +858,8 @@
 
     document.querySelectorAll('.section-dot').forEach(function (dot) {
       dot.addEventListener('click', function () {
-        pauseAutoplay();
+        pauseAutoplayTemporarily();
         scrollToSection(parseInt(dot.dataset.section, 10));
-        resumeAutoplay();
       });
     });
 
@@ -851,13 +870,13 @@
     });
 
     on('gallery-prev', 'click', function () {
-      pauseAutoplay();
+      pauseAutoplayTemporarily();
       prevReview();
       resetIdleTimer();
     });
 
     on('gallery-next', 'click', function () {
-      pauseAutoplay();
+      pauseAutoplayTemporarily();
       nextReview();
       resetIdleTimer();
     });
@@ -884,20 +903,19 @@
     if (spotViewport) {
       spotViewport.addEventListener('touchstart', function (e) {
         spotTouchStartX = e.changedTouches[0].screenX;
-        pauseAutoplay();
+        pauseAutoplayTemporarily();
       }, { passive: true });
 
       spotViewport.addEventListener('touchend', function (e) {
         var deltaX = e.changedTouches[0].screenX - spotTouchStartX;
         if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
-        if (deltaX < 0) nextSpot();
+        if (deltaX < 0) nextSpot({ manual: true });
         else {
           var t = translations[activeLang];
           var spots = t.destinationSpots[currentDest];
           if (!spots) return;
-          goToSpot((currentSpot - 1 + spots.length) % spots.length);
+          goToSpot((currentSpot - 1 + spots.length) % spots.length, { manual: true });
         }
-        resumeAutoplay();
       }, { passive: true });
     }
 
@@ -905,9 +923,11 @@
     if (scrollEl) {
       var scrollPauseTimer = null;
       scrollEl.addEventListener('scroll', function () {
-        pauseAutoplay();
+        pauseAutoplayTemporarily(5000);
         clearTimeout(scrollPauseTimer);
-        scrollPauseTimer = setTimeout(resumeAutoplay, 4000);
+        scrollPauseTimer = setTimeout(function () {
+          if (openFaqIndex < 0) resumeAutoplay();
+        }, 5000);
         resetIdleTimer();
       }, { passive: true });
     }

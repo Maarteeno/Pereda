@@ -2184,3 +2184,146 @@ body.update-blocked {
 .update-gate-btn:active {
   transform: scale(0.98);
 }
+
+/* Scroll-snap kiosk overrides
+   These rules intentionally live last so legacy slide media queries cannot
+   override the kiosk layout. Vehicle showcase base rules above remain intact. */
+:root {
+  --kiosk-header-height: 54px;
+  --kiosk-vehicle-height: clamp(108px, 16vh, 148px);
+  --kiosk-sticky-height: calc(var(--kiosk-header-height) + var(--kiosk-vehicle-height) + 12px);
+}
+
+.page-scroll {
+  height: 100dvh;
+  scroll-padding-top: var(--kiosk-sticky-height);
+}
+
+.sticky-top {
+  min-height: var(--kiosk-sticky-height);
+}
+
+.sticky-top .app-header {
+  min-height: var(--kiosk-header-height);
+}
+
+.sticky-top .vehicle-showcase.vehicle-showcase-compact {
+  max-width: min(480px, 88vw);
+  height: var(--kiosk-vehicle-height);
+  margin: 0 auto 6px;
+  padding-bottom: 4px;
+}
+
+.page-section {
+  min-height: calc(100dvh - var(--kiosk-sticky-height));
+  scroll-margin-top: var(--kiosk-sticky-height);
+  padding: 10px 14px 18px;
+}
+
+.section-card {
+  max-height: calc(100dvh - var(--kiosk-sticky-height) - 28px);
+  overflow: hidden;
+}
+
+.profile-hero-split {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
+.benefit-grid {
+  align-content: start;
+}
+
+.dest-spots {
+  min-height: 0;
+}
+
+.dest-spot-media.dest-spot-media-tall {
+  height: clamp(180px, 34vh, 300px);
+}
+
+.faq-list {
+  overflow-y: auto;
+}
+
+.slides-viewport,
+.slides-track,
+.nav-arrow,
+.slide-dots,
+.comfort-pages {
+  display: none !important;
+}
+
+@media (min-width: 768px) and (orientation: landscape) {
+  :root {
+    --kiosk-header-height: 50px;
+    --kiosk-vehicle-height: clamp(104px, 15vh, 138px);
+  }
+
+  .profile-hero-split {
+    grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
+    align-items: center;
+  }
+
+  .qr-card .vehicle-qr-image {
+    width: min(160px, 18vw);
+    height: min(160px, 18vw);
+  }
+
+  .benefit-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .section-nav {
+    right: 14px;
+  }
+}
+
+@media (min-width: 640px) and (orientation: portrait) {
+  :root {
+    --kiosk-header-height: 58px;
+    --kiosk-vehicle-height: clamp(120px, 17vh, 160px);
+  }
+
+  .page-section {
+    padding-inline: 18px;
+  }
+
+  .benefit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 639px) {
+  :root {
+    --kiosk-header-height: 56px;
+    --kiosk-vehicle-height: clamp(92px, 15vh, 128px);
+  }
+
+  .page-section {
+    padding: 8px 10px 80px;
+  }
+
+  .section-card {
+    max-height: calc(100dvh - var(--kiosk-sticky-height) - 88px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sticky-top .vehicle-showcase.vehicle-showcase-compact {
+    max-width: min(390px, 92vw);
+  }
+
+  .dest-spot-media.dest-spot-media-tall {
+    height: clamp(150px, 28vh, 220px);
+  }
+
+  .section-nav {
+    bottom: calc(62px + env(safe-area-inset-bottom));
+  }
+
+  .whatsapp-fab {
+    bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+}
