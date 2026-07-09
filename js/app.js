@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v24';
+  var APP_VERSION = 'v25';
   var COMFORT_PAGE_SIZE = 4;
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var IDLE_RESET_MS = 60000;
@@ -13,7 +13,7 @@
 
   var activeLang = 'es';
   var currentSlide = 0;
-  var totalSlides = 6;
+  var totalSlides = 5;
   var idleTimer = null;
   var touchStartX = 0;
   var touchStartY = 0;
@@ -43,51 +43,57 @@
       yearsLabel: 'Años de servicio',
       yearsValue: '9,5',
       comfortItems: [
-        'Espacio amplio para valijas',
-        'Puerta corrediza · acceso cómodo',
-        'Viaje silencioso, sin vibraciones',
-        'Climatización confort todo el año',
-        'Asientos amplios · viaje relajado',
-        '100% eléctrico · aire limpio a bordo'
+        { icon: '🧳', title: 'Espacio amplio', desc: 'Maletero generoso para valijas y equipaje' },
+        { icon: '🚪', title: 'Puerta corrediza', desc: 'Acceso cómodo y rápido al vehículo' },
+        { icon: '🔇', title: 'Viaje silencioso', desc: 'Sin motor ni vibraciones a bordo' },
+        { icon: '❄️', title: 'Climatización', desc: 'Confort térmico durante todo el año' },
+        { icon: '💺', title: 'Asientos amplios', desc: 'Viaje relajado en trayectos largos' },
+        { icon: '🌿', title: '100% eléctrico', desc: 'Aire limpio y conducción suave' }
       ],
       qrLabel: 'Escribile por WhatsApp',
+      qrAction: 'Abrir WhatsApp',
       phoneNumber: '+598 99 774 019',
       introTitle: 'Traslados privados y seguros',
       introSubtitle: 'Atención directa con Adrián y reserva inmediata por WhatsApp.',
       spotSectionTitle: 'Puntos de interés',
-      finalCtaLabel: '¿Listo para reservar?',
       finalCtaAction: 'Abrir WhatsApp',
       updateGateTitle: 'Nueva versión disponible',
       updateGateText: 'Hay una actualización de la app. Actualizá para ver el diseño más reciente.',
       updateGateAction: 'Actualizar ahora',
-      servicesTitle: 'Traslados',
-      servicesSubtitle: 'Destinos desde Montevideo',
-      servicesIntro: 'Deslizá para conocer cada destino',
-      transferToPrefix: 'Traslados a',
       tripNote: 'Tiempos estimados sin tráfico',
+      destinationCovers: [
+        'assets/destinations/punta-del-este.jpg',
+        'assets/destinations/colonia.jpg',
+        'assets/destinations/eventos.jpg',
+        'assets/destinations/aeropuerto.jpg'
+      ],
       destinationSpots: [
         [
           { name: 'La Mano', desc: 'Escultura icónica en Playa Brava', image: 'assets/spots/la-mano.jpg' },
           { name: 'Playa Brava', desc: 'Olas y atardeceres imperdibles', image: 'assets/spots/playa-brava.jpg' },
-          { name: 'Puerto de Punta', desc: 'Yates, lobos marinos y paseo', image: 'assets/spots/puerto-punta.jpg' }
+          { name: 'Puerto de Punta', desc: 'Yates, lobos marinos y paseo', image: 'assets/spots/puerto-punta.jpg' },
+          { name: 'Isla Gorriti', desc: 'Paseo en lancha y naturaleza frente al puerto', image: 'assets/spots/gorriti.jpg' }
         ],
         [
           { name: 'Barrio Histórico', desc: 'Patrimonio de la Humanidad UNESCO', image: 'assets/spots/barrio-historico.jpg' },
           { name: 'Faro de Colonia', desc: 'Vista panorámica del Río de la Plata', image: 'assets/spots/faro-colonia.jpg' },
-          { name: 'Calle de los Suspiros', desc: 'La calle colonial más fotografiada', image: 'assets/spots/calle-suspiros.jpg' }
+          { name: 'Calle de los Suspiros', desc: 'La calle colonial más fotografiada', image: 'assets/spots/calle-suspiros.jpg' },
+          { name: 'Rambla de Colonia', desc: 'Paseo costero con vistas al río', image: 'assets/spots/rambla-colonia.jpg' }
         ],
         [
-          { name: 'Salones Punta del Este', desc: 'Bodas y fiestas frente al mar', image: 'assets/spots/salones-pde.jpg' },
-          { name: 'Hoteles de la costa', desc: 'Llegada puntual a tu evento', image: 'assets/spots/hoteles-costa.jpg' },
-          { name: 'Montevideo centro', desc: 'Eventos corporativos y sociales', image: 'assets/spots/montevideo-centro.jpg' }
+          { name: 'Boda en la costa', desc: 'Llegada puntual a ceremonias frente al mar', image: 'assets/spots/boda-costa.jpg' },
+          { name: 'Salón de eventos', desc: 'Bodas, fiestas y celebraciones en Punta', image: 'assets/spots/salones-pde.jpg' },
+          { name: 'Hotel cinco estrellas', desc: 'Traslado VIP a hoteles de la costa', image: 'assets/spots/hoteles-costa.jpg' },
+          { name: 'Evento corporativo', desc: 'Montevideo y zonas empresariales', image: 'assets/spots/montevideo-centro.jpg' }
         ],
         [
-          { name: 'Aeropuerto Carrasco', desc: 'Seguimiento de vuelo incluido', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Aeropuerto Carrasco', desc: 'Terminal internacional con seguimiento de vuelo', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Seguimiento de vuelo', desc: 'Monitoreo en tiempo real de tu arribo', image: 'assets/spots/vuelo-seguimiento.jpg' },
           { name: 'Terminal Buquebus', desc: 'Conexión directa con el puerto', image: 'assets/spots/buquebus.jpg' },
-          { name: 'Hoteles Montevideo', desc: 'Recogida puerta a puerta', image: 'assets/spots/hoteles-mvd.jpg' }
+          { name: 'Hoteles Montevideo', desc: 'Recogida puerta a puerta en la ciudad', image: 'assets/spots/hoteles-mvd.jpg' }
         ]
       ],
-      services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeropuerto / Traslados'],
+      services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeropuerto'],
       tripInfo: [
         { distance: '~130 km', duration: '~1h 45min' },
         { distance: '~180 km', duration: '~2h 15min' },
@@ -119,51 +125,57 @@
       yearsLabel: 'Years of service',
       yearsValue: '9.5',
       comfortItems: [
-        'Room for luggage',
-        'Sliding door · easy access',
-        'Quiet ride, no vibrations',
-        'Comfort climate all year',
-        'Spacious seats · relaxed trip',
-        '100% electric · clean air onboard'
+        { icon: '🧳', title: 'Room for luggage', desc: 'Generous trunk space for suitcases and bags' },
+        { icon: '🚪', title: 'Sliding door', desc: 'Easy and quick access to the vehicle' },
+        { icon: '🔇', title: 'Quiet ride', desc: 'No engine noise or vibrations onboard' },
+        { icon: '❄️', title: 'Climate control', desc: 'Comfortable temperature all year round' },
+        { icon: '💺', title: 'Spacious seats', desc: 'Relaxed travel on long journeys' },
+        { icon: '🌿', title: '100% electric', desc: 'Clean air and smooth driving' }
       ],
       qrLabel: 'Message on WhatsApp',
+      qrAction: 'Open WhatsApp',
       phoneNumber: '+598 99 774 019',
       introTitle: 'Private and reliable transfers',
       introSubtitle: 'Direct contact with Adrián and instant booking via WhatsApp.',
       spotSectionTitle: 'Points of interest',
-      finalCtaLabel: 'Ready to book?',
       finalCtaAction: 'Open WhatsApp',
       updateGateTitle: 'New version available',
       updateGateText: 'An app update is ready. Refresh to see the latest layout.',
       updateGateAction: 'Update now',
-      servicesTitle: 'Transport',
-      servicesSubtitle: 'Destinations from Montevideo',
-      servicesIntro: 'Swipe to explore each destination',
-      transferToPrefix: 'Transfers to',
       tripNote: 'Estimated times without traffic',
+      destinationCovers: [
+        'assets/destinations/punta-del-este.jpg',
+        'assets/destinations/colonia.jpg',
+        'assets/destinations/eventos.jpg',
+        'assets/destinations/aeropuerto.jpg'
+      ],
       destinationSpots: [
         [
           { name: 'La Mano', desc: 'Iconic sculpture on Brava Beach', image: 'assets/spots/la-mano.jpg' },
           { name: 'Brava Beach', desc: 'Waves and unforgettable sunsets', image: 'assets/spots/playa-brava.jpg' },
-          { name: 'Punta del Este Port', desc: 'Yachts, sea lions and promenade', image: 'assets/spots/puerto-punta.jpg' }
+          { name: 'Punta del Este Port', desc: 'Yachts, sea lions and promenade', image: 'assets/spots/puerto-punta.jpg' },
+          { name: 'Gorriti Island', desc: 'Boat trip and nature by the harbour', image: 'assets/spots/gorriti.jpg' }
         ],
         [
           { name: 'Historic Quarter', desc: 'UNESCO World Heritage Site', image: 'assets/spots/barrio-historico.jpg' },
           { name: 'Colonia Lighthouse', desc: 'Panoramic view of the Río de la Plata', image: 'assets/spots/faro-colonia.jpg' },
-          { name: 'Street of Sighs', desc: 'The most photographed colonial street', image: 'assets/spots/calle-suspiros.jpg' }
+          { name: 'Street of Sighs', desc: 'The most photographed colonial street', image: 'assets/spots/calle-suspiros.jpg' },
+          { name: 'Colonia Waterfront', desc: 'Coastal promenade with river views', image: 'assets/spots/rambla-colonia.jpg' }
         ],
         [
-          { name: 'Punta del Este venues', desc: 'Weddings and parties by the sea', image: 'assets/spots/salones-pde.jpg' },
-          { name: 'Coast hotels', desc: 'On-time arrival to your event', image: 'assets/spots/hoteles-costa.jpg' },
-          { name: 'Montevideo downtown', desc: 'Corporate and social events', image: 'assets/spots/montevideo-centro.jpg' }
+          { name: 'Coastal wedding', desc: 'On-time arrival to seaside ceremonies', image: 'assets/spots/boda-costa.jpg' },
+          { name: 'Event venue', desc: 'Weddings, parties and celebrations in Punta', image: 'assets/spots/salones-pde.jpg' },
+          { name: 'Five-star hotel', desc: 'VIP transfer to coast hotels', image: 'assets/spots/hoteles-costa.jpg' },
+          { name: 'Corporate event', desc: 'Montevideo and business districts', image: 'assets/spots/montevideo-centro.jpg' }
         ],
         [
-          { name: 'Carrasco Airport', desc: 'Flight tracking included', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Carrasco Airport', desc: 'International terminal with flight tracking', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Flight tracking', desc: 'Real-time monitoring of your arrival', image: 'assets/spots/vuelo-seguimiento.jpg' },
           { name: 'Buquebus Terminal', desc: 'Direct connection to the port', image: 'assets/spots/buquebus.jpg' },
-          { name: 'Montevideo hotels', desc: 'Door-to-door pickup', image: 'assets/spots/hoteles-mvd.jpg' }
+          { name: 'Montevideo hotels', desc: 'Door-to-door pickup in the city', image: 'assets/spots/hoteles-mvd.jpg' }
         ]
       ],
-      services: ['Punta del Este', 'Colonia', 'Events', 'Airport / Transfers'],
+      services: ['Punta del Este', 'Colonia', 'Events', 'Airport'],
       tripInfo: [
         { distance: '~130 km', duration: '~1h 45min' },
         { distance: '~180 km', duration: '~2h 15min' },
@@ -195,51 +207,57 @@
       yearsLabel: 'Anos de serviço',
       yearsValue: '9,5',
       comfortItems: [
-        'Espaço amplo para bagagens',
-        'Porta corrediça · acesso confortável',
-        'Viagem silenciosa, sem vibrações',
-        'Climatização confortável o ano todo',
-        'Assentos amplos · viagem relaxada',
-        '100% elétrico · ar limpo a bordo'
+        { icon: '🧳', title: 'Espaço amplo', desc: 'Porta-malas generoso para malas e bagagens' },
+        { icon: '🚪', title: 'Porta corrediça', desc: 'Acesso confortável e rápido ao veículo' },
+        { icon: '🔇', title: 'Viagem silenciosa', desc: 'Sem motor nem vibrações a bordo' },
+        { icon: '❄️', title: 'Climatização', desc: 'Conforto térmico durante todo o ano' },
+        { icon: '💺', title: 'Assentos amplos', desc: 'Viagem relaxada em trajetos longos' },
+        { icon: '🌿', title: '100% elétrico', desc: 'Ar limpo e condução suave' }
       ],
       qrLabel: 'Escreva no WhatsApp',
+      qrAction: 'Abrir WhatsApp',
       phoneNumber: '+598 99 774 019',
       introTitle: 'Transfers privados e seguros',
       introSubtitle: 'Contato direto com Adrián e reserva imediata pelo WhatsApp.',
       spotSectionTitle: 'Pontos de interesse',
-      finalCtaLabel: 'Pronto para reservar?',
       finalCtaAction: 'Abrir WhatsApp',
       updateGateTitle: 'Nova versão disponível',
       updateGateText: 'Há uma atualização do app. Atualize para ver o layout mais recente.',
       updateGateAction: 'Atualizar agora',
-      servicesTitle: 'Transporte',
-      servicesSubtitle: 'Destinos desde Montevidéu',
-      servicesIntro: 'Deslize para conhecer cada destino',
-      transferToPrefix: 'Transfer para',
       tripNote: 'Tempos estimados sem trânsito',
+      destinationCovers: [
+        'assets/destinations/punta-del-este.jpg',
+        'assets/destinations/colonia.jpg',
+        'assets/destinations/eventos.jpg',
+        'assets/destinations/aeropuerto.jpg'
+      ],
       destinationSpots: [
         [
           { name: 'La Mano', desc: 'Escultura icônica na Playa Brava', image: 'assets/spots/la-mano.jpg' },
           { name: 'Playa Brava', desc: 'Ondas e pores do sol imperdíveis', image: 'assets/spots/playa-brava.jpg' },
-          { name: 'Porto de Punta del Este', desc: 'Iates, lobos-marinhos e passeio', image: 'assets/spots/puerto-punta.jpg' }
+          { name: 'Porto de Punta del Este', desc: 'Iates, lobos-marinhos e passeio', image: 'assets/spots/puerto-punta.jpg' },
+          { name: 'Ilha Gorriti', desc: 'Passeio de barco e natureza no porto', image: 'assets/spots/gorriti.jpg' }
         ],
         [
           { name: 'Bairro Histórico', desc: 'Patrimônio Mundial da UNESCO', image: 'assets/spots/barrio-historico.jpg' },
           { name: 'Farol de Colonia', desc: 'Vista panorâmica do Rio da Prata', image: 'assets/spots/faro-colonia.jpg' },
-          { name: 'Calle de los Suspiros', desc: 'A rua colonial mais fotografada', image: 'assets/spots/calle-suspiros.jpg' }
+          { name: 'Calle de los Suspiros', desc: 'A rua colonial mais fotografada', image: 'assets/spots/calle-suspiros.jpg' },
+          { name: 'Rambla de Colonia', desc: 'Passeio costeiro com vista ao rio', image: 'assets/spots/rambla-colonia.jpg' }
         ],
         [
-          { name: 'Salões em Punta del Este', desc: 'Casamentos e festas à beira-mar', image: 'assets/spots/salones-pde.jpg' },
-          { name: 'Hotéis do litoral', desc: 'Chegada pontual ao seu evento', image: 'assets/spots/hoteles-costa.jpg' },
-          { name: 'Centro de Montevidéu', desc: 'Eventos corporativos e sociais', image: 'assets/spots/montevideo-centro.jpg' }
+          { name: 'Casamento na costa', desc: 'Chegada pontual a cerimônias à beira-mar', image: 'assets/spots/boda-costa.jpg' },
+          { name: 'Salão de eventos', desc: 'Casamentos, festas e celebrações em Punta', image: 'assets/spots/salones-pde.jpg' },
+          { name: 'Hotel cinco estrelas', desc: 'Transfer VIP para hotéis do litoral', image: 'assets/spots/hoteles-costa.jpg' },
+          { name: 'Evento corporativo', desc: 'Montevidéu e zonas empresariais', image: 'assets/spots/montevideo-centro.jpg' }
         ],
         [
-          { name: 'Aeroporto Carrasco', desc: 'Acompanhamento do voo incluído', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Aeroporto Carrasco', desc: 'Terminal internacional com acompanhamento de voo', image: 'assets/spots/carrasco.jpg' },
+          { name: 'Acompanhamento de voo', desc: 'Monitoramento em tempo real da sua chegada', image: 'assets/spots/vuelo-seguimiento.jpg' },
           { name: 'Terminal Buquebus', desc: 'Conexão direta com o porto', image: 'assets/spots/buquebus.jpg' },
-          { name: 'Hotéis em Montevidéu', desc: 'Busca porta a porta', image: 'assets/spots/hoteles-mvd.jpg' }
+          { name: 'Hotéis em Montevidéu', desc: 'Busca porta a porta na cidade', image: 'assets/spots/hoteles-mvd.jpg' }
         ]
       ],
-      services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeroporto / Transfer'],
+      services: ['Punta del Este', 'Colonia', 'Eventos', 'Aeroporto'],
       tripInfo: [
         { distance: '~130 km', duration: '~1h 45min' },
         { distance: '~180 km', duration: '~2h 15min' },
@@ -308,22 +326,20 @@
     setText('years-value', t.yearsValue);
 
     for (i = 0; i < t.comfortItems.length; i++) {
-      setText('comfort-' + (i + 1), t.comfortItems[i]);
+      setText('benefit-icon-' + (i + 1), t.comfortItems[i].icon);
+      setText('benefit-title-' + (i + 1), t.comfortItems[i].title);
+      setText('benefit-desc-' + (i + 1), t.comfortItems[i].desc);
     }
     renderComfortPage();
 
     setText('qr-label', t.qrLabel);
+    setText('qr-action-btn', t.qrAction);
     setText('vehicle-qr-phone', t.phoneNumber);
-    setText('final-cta-label', t.finalCtaLabel);
     setText('final-cta-action', t.finalCtaAction);
     setText('update-gate-title', t.updateGateTitle);
     setText('update-gate-text', t.updateGateText);
     setText('update-gate-btn', t.updateGateAction);
     setText('spot-section-title', t.spotSectionTitle);
-
-    setText('services-title', t.servicesTitle);
-    setText('services-subtitle', t.servicesSubtitle);
-    setText('services-intro', t.servicesIntro);
     setText('dest-trip-note', t.tripNote);
 
     renderDestTabs();
@@ -334,9 +350,9 @@
     renderFaq();
     showReviewPair(shuffleIndex, false);
 
-    if ($('lang-es')) $('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
-    if ($('lang-en')) $('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
-    if ($('lang-pt')) $('lang-pt').setAttribute('aria-pressed', String(lang === 'pt'));
+    document.querySelectorAll('.lang-btn').forEach(function (btn) {
+      btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));
+    });
   }
 
   function goToSlide(index) {
@@ -358,7 +374,7 @@
     resetIdleTimer();
     updateVehicleShowcase(currentSlide);
 
-    if (currentSlide === 4) {
+    if (currentSlide === 2) {
       startReviewRotation();
     } else {
       stopReviewRotation();
@@ -373,10 +389,32 @@
   function updateVehicleShowcase(index) {
     var showcase = $('vehicle-showcase');
     if (!showcase) return;
+
+    if (index >= 3) {
+      showcase.classList.add('is-hidden');
+      return;
+    }
+
+    showcase.classList.remove('is-hidden');
     showcase.dataset.slide = String(index);
     document.querySelectorAll('.vehicle-view').forEach(function (view, i) {
       view.classList.toggle('active', i === index);
     });
+  }
+
+  function shouldShowSingleReview() {
+    return window.matchMedia('(max-width: 639px) and (orientation: portrait)').matches;
+  }
+
+  function updateReviewLayout() {
+    var secondCard = $('gallery-card-1');
+    var grid = document.querySelector('.review-gallery-grid');
+    if (!secondCard || !grid) return;
+
+    var single = shouldShowSingleReview();
+    secondCard.hidden = single;
+    grid.classList.toggle('is-single', single);
+    showReviewPair(shuffleIndex, false);
   }
 
   function getReviews() {
@@ -427,42 +465,56 @@
     }
 
     shuffleIndex = startIndex;
+    var single = shouldShowSingleReview();
     var reviewA = shuffledReviews[startIndex];
     var reviewB = shuffledReviews[(startIndex + 1) % len];
     lastReviewText = reviewA.text;
 
-    var cards = [0, 1];
-    function applyPair() {
-      cards.forEach(function (cardIndex, i) {
-        var review = i === 0 ? reviewA : reviewB;
-        var textEl = $('gallery-review-text-' + cardIndex);
-        var authorEl = $('gallery-review-author-' + cardIndex);
-        if (!textEl || !authorEl) return;
-        textEl.textContent = review.text;
-        authorEl.textContent = '— ' + review.author;
-        textEl.classList.remove('is-fading');
-        authorEl.classList.remove('is-fading');
-      });
+    function applyReviews() {
+      var textEl0 = $('gallery-review-text-0');
+      var authorEl0 = $('gallery-review-author-0');
+      var textEl1 = $('gallery-review-text-1');
+      var authorEl1 = $('gallery-review-author-1');
+
+      if (textEl0 && authorEl0) {
+        textEl0.textContent = reviewA.text;
+        authorEl0.textContent = '— ' + reviewA.author;
+        textEl0.classList.remove('is-fading');
+        authorEl0.classList.remove('is-fading');
+      }
+
+      if (!single && textEl1 && authorEl1) {
+        textEl1.textContent = reviewB.text;
+        authorEl1.textContent = '— ' + reviewB.author;
+        textEl1.classList.remove('is-fading');
+        authorEl1.classList.remove('is-fading');
+      }
     }
 
     if (animate === false) {
-      applyPair();
+      applyReviews();
       return;
     }
 
-    cards.forEach(function (cardIndex) {
+    [0, 1].forEach(function (cardIndex) {
+      if (single && cardIndex === 1) return;
       var textEl = $('gallery-review-text-' + cardIndex);
       var authorEl = $('gallery-review-author-' + cardIndex);
       if (textEl) textEl.classList.add('is-fading');
       if (authorEl) authorEl.classList.add('is-fading');
     });
-    setTimeout(applyPair, 320);
+    setTimeout(applyReviews, 320);
+  }
+
+  function reviewStep() {
+    return shouldShowSingleReview() ? 1 : 2;
   }
 
   function nextReview() {
     var len = shuffledReviews.length;
     if (!len) return;
-    var next = shuffleIndex + 2;
+    var step = reviewStep();
+    var next = shuffleIndex + step;
     if (next >= len) {
       reshuffleReviews();
       next = 0;
@@ -473,8 +525,9 @@
   function prevReview() {
     var len = shuffledReviews.length;
     if (!len) return;
-    var prev = shuffleIndex - 2;
-    if (prev < 0) prev = Math.max(0, len - (len % 2 === 0 ? 2 : 1));
+    var step = reviewStep();
+    var prev = shuffleIndex - step;
+    if (prev < 0) prev = Math.max(0, len - step);
     showReviewPair(prev, true);
   }
 
@@ -498,9 +551,7 @@
       );
     }).join('');
 
-    var overviewTabsEl = $('dest-tabs-overview');
     var spotTabsEl = $('spot-tabs');
-    if (overviewTabsEl) overviewTabsEl.innerHTML = tabMarkup;
     if (spotTabsEl) spotTabsEl.innerHTML = tabMarkup;
   }
 
@@ -514,8 +565,7 @@
       return (
         '<article class="dest-spot' + activeClass + '" data-spot="' + i + '">' +
           '<div class="dest-spot-media">' +
-            '<img src="' + spot.image + '" alt="" class="dest-spot-photo" loading="lazy">' +
-            '<div class="dest-spot-gradient"></div>' +
+            '<img src="' + spot.image + '" alt="' + spot.name + '" class="dest-spot-photo" loading="lazy">' +
           '</div>' +
           '<div class="dest-spot-body">' +
             '<h4 class="dest-spot-name">' + spot.name + '</h4>' +
@@ -581,18 +631,19 @@
     var t = translations[activeLang];
     var trip = t.tripInfo[index];
 
-    var summaryNameEl = $('dest-summary-name');
-    var summaryBadgeEl = $('dest-summary-badge');
     var spotNameEl = $('spot-dest-name');
     var spotBadgeEl = $('spot-dest-badge');
+    var coverEl = $('spot-category-cover');
     var slideEl = $('dest-slide');
 
-    var label = t.transferToPrefix + ' ' + t.services[index];
+    var label = t.services[index];
     var meta = trip.distance + ' · ' + trip.duration;
-    if (summaryNameEl) summaryNameEl.textContent = label;
-    if (summaryBadgeEl) summaryBadgeEl.textContent = meta;
     if (spotNameEl) spotNameEl.textContent = label;
     if (spotBadgeEl) spotBadgeEl.textContent = meta;
+    if (coverEl && t.destinationCovers[index]) {
+      coverEl.src = t.destinationCovers[index];
+      coverEl.alt = label;
+    }
 
     renderDestSpots(index);
 
@@ -666,16 +717,16 @@
   }
 
   function renderComfortPage() {
-    var chips = document.querySelectorAll('.comfort-chip');
+    var cards = document.querySelectorAll('.benefit-card');
     var dots = document.querySelectorAll('.comfort-page-dot');
-    var totalPages = Math.ceil(chips.length / COMFORT_PAGE_SIZE);
+    var totalPages = Math.ceil(cards.length / COMFORT_PAGE_SIZE);
     var i;
     var start;
     var end;
 
     if (!shouldPaginateComfort()) {
-      for (i = 0; i < chips.length; i++) {
-        chips[i].hidden = false;
+      for (i = 0; i < cards.length; i++) {
+        cards[i].hidden = false;
       }
       dots.forEach(function (dot) {
         dot.hidden = true;
@@ -690,8 +741,8 @@
     start = currentComfortPage * COMFORT_PAGE_SIZE;
     end = start + COMFORT_PAGE_SIZE;
 
-    for (i = 0; i < chips.length; i++) {
-      chips[i].hidden = i < start || i >= end;
+    for (i = 0; i < cards.length; i++) {
+      cards[i].hidden = i < start || i >= end;
     }
 
     dots.forEach(function (dot, index) {
@@ -703,8 +754,8 @@
   }
 
   function goToComfortPage(page) {
-    var chips = document.querySelectorAll('.comfort-chip');
-    var totalPages = Math.ceil(chips.length / COMFORT_PAGE_SIZE);
+    var cards = document.querySelectorAll('.benefit-card');
+    var totalPages = Math.ceil(cards.length / COMFORT_PAGE_SIZE);
     if (totalPages < 1) return;
     currentComfortPage = ((page % totalPages) + totalPages) % totalPages;
     renderComfortPage();
@@ -826,9 +877,9 @@
       });
     });
 
-    ['lang-es', 'lang-en', 'lang-pt'].forEach(function (id) {
-      on(id, 'click', function () {
-        setLanguage($(id).dataset.lang);
+    document.querySelectorAll('.lang-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setLanguage(btn.dataset.lang);
       });
     });
 
@@ -842,12 +893,6 @@
       nextReview();
       stopReviewRotation();
       startReviewRotation();
-    });
-
-    on('dest-tabs-overview', 'click', function (e) {
-      var tab = e.target.closest('.dest-tab');
-      if (!tab) return;
-      goToDestination(parseInt(tab.dataset.dest, 10), true);
     });
 
     on('spot-tabs', 'click', function (e) {
@@ -911,14 +956,21 @@
       document.addEventListener(eventName, resetIdleTimer, { passive: true });
     });
 
-    window.addEventListener('resize', renderComfortPage);
-    window.addEventListener('orientationchange', renderComfortPage);
+    window.addEventListener('resize', function () {
+      renderComfortPage();
+      updateReviewLayout();
+    });
+    window.addEventListener('orientationchange', function () {
+      renderComfortPage();
+      updateReviewLayout();
+    });
   }
 
   function init() {
     setLanguage(detectLanguage());
     goToSlide(0);
     renderComfortPage();
+    updateReviewLayout();
     bindEvents();
     setupPwa();
   }

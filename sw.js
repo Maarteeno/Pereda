@@ -1,4 +1,4 @@
-var APP_VERSION = 'v24';
+var APP_VERSION = 'v25';
 var CACHE_NAME = 'pereda-tablet-' + APP_VERSION;
 var ASSETS = [
   './',
@@ -27,6 +27,10 @@ var ASSETS = [
   './assets/spots/carrasco.jpg',
   './assets/spots/buquebus.jpg',
   './assets/spots/hoteles-mvd.jpg',
+  './assets/spots/gorriti.jpg',
+  './assets/spots/rambla-colonia.jpg',
+  './assets/spots/boda-costa.jpg',
+  './assets/spots/vuelo-seguimiento.jpg',
   './assets/whatsapp-qr.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
