@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -27,9 +27,9 @@
             <span class="brand-sub" id="header-subtitle">Traslados</span>
           </div>
           <div class="language-selector header-lang" role="group" aria-label="Idioma">
-            <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">Español</button>
-            <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">English</button>
-            <button type="button" class="lang-btn" data-lang="pt" aria-pressed="false">Português</button>
+            <button type="button" class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="true"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#c60b1e"/><rect y="6" width="32" height="12" fill="#ffc400"/></svg></button>
+            <button type="button" class="lang-btn" data-lang="en" aria-label="English" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#012169"/><path d="M0 0l32 24M32 0L0 24" stroke="#fff" stroke-width="4"/><path d="M0 0l32 24M32 0L0 24" stroke="#c8102e" stroke-width="2"/><path d="M16 0v24M0 12h32" stroke="#fff" stroke-width="6"/><path d="M16 0v24M0 12h32" stroke="#c8102e" stroke-width="3"/></svg></button>
+            <button type="button" class="lang-btn" data-lang="pt" aria-label="Português" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#009b3a"/><polygon points="16,2 30,12 16,22 2,12" fill="#fedf00"/><circle cx="16" cy="12" r="5" fill="#002776"/></svg></button>
           </div>
         </header>
         <div class="section-progress" aria-hidden="true">
@@ -130,26 +130,11 @@
         </div>
       </section>
 
-      <section class="page-section page-section-flow" id="section-spots" data-section="3" aria-label="Puntos de interés">
-        <div class="section-inner spots-slide" id="services-slide">
-          <div class="slide-head">
-            <h2 class="slide-title" id="spot-section-title">Puntos de interés</h2>
-            <p class="services-intro" id="dest-trip-note">Tiempos estimados sin tráfico</p>
-          </div>
-          <div class="dest-carousel" id="dest-carousel">
-            <div class="dest-tabs" id="spot-tabs" role="tablist"></div>
-            <div class="dest-slide" id="dest-slide">
-              <div class="spot-category-banner spot-category-banner-tall" id="spot-category-banner">
-                <img src="assets/destinations/punta-del-este.jpg" alt="" class="spot-category-cover" id="spot-category-cover" loading="lazy">
-                <div class="spot-category-overlay">
-                  <h3 class="dest-name spot-category-name" id="spot-dest-name">Punta del Este</h3>
-                  <span class="dest-trip-badge" id="spot-dest-badge">~130 km · ~1h 45min</span>
-                </div>
-              </div>
-              <div class="dest-spots" id="dest-spots"></div>
-              <div class="dest-spot-dots" id="dest-spot-dots" role="tablist" aria-hidden="true"></div>
-            </div>
-          </div>
+      <section class="page-section page-section-flow" id="section-spots" data-section="3" aria-label="Traslados turísticos">
+        <div class="section-inner">
+          <h2 class="slide-title" id="spot-section-title">Traslados turísticos</h2>
+          <p class="tourist-intro" id="tourist-intro">Próximamente fotos de destinos</p>
+          <div class="tourist-cities" id="tourist-cities"></div>
         </div>
       </section>
 
@@ -157,7 +142,21 @@
         <div class="section-inner faq-slide">
           <div class="faq-section">
             <h2 class="faq-title" id="faq-title">Preguntas frecuentes</h2>
-            <div class="faq-list" id="faq-list"></div>
+            <div class="faq-gallery" id="faq-gallery" aria-live="polite">
+              <article class="faq-kiosk-card" id="faq-kiosk-card">
+                <h3 class="faq-card-question" id="faq-card-question"></h3>
+                <p class="faq-card-answer" id="faq-card-answer"></p>
+              </article>
+              <div class="faq-gallery-nav review-gallery-nav-minimal">
+                <button type="button" class="gallery-arrow gallery-arrow-prev" id="faq-prev" aria-label="Pregunta anterior">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <div class="gallery-dots" id="faq-dots"></div>
+                <button type="button" class="gallery-arrow gallery-arrow-next" id="faq-next" aria-label="Pregunta siguiente">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </button>
+              </div>
+            </div>
           </div>
           <div class="final-cta final-cta-compact">
             <p class="vehicle-qr-label" id="final-cta-label">¿Listo para reservar?</p>
@@ -168,9 +167,9 @@
 
       <footer class="app-footer app-footer-minimal">
         <div class="language-selector footer-lang" role="group" aria-label="Idioma">
-          <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">Español</button>
-          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">English</button>
-          <button type="button" class="lang-btn" data-lang="pt" aria-pressed="false">Português</button>
+          <button type="button" class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="true"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#c60b1e"/><rect y="6" width="32" height="12" fill="#ffc400"/></svg></button>
+          <button type="button" class="lang-btn" data-lang="en" aria-label="English" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#012169"/><path d="M0 0l32 24M32 0L0 24" stroke="#fff" stroke-width="4"/><path d="M0 0l32 24M32 0L0 24" stroke="#c8102e" stroke-width="2"/><path d="M16 0v24M0 12h32" stroke="#fff" stroke-width="6"/><path d="M16 0v24M0 12h32" stroke="#c8102e" stroke-width="3"/></svg></button>
+          <button type="button" class="lang-btn" data-lang="pt" aria-label="Português" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#009b3a"/><polygon points="16,2 30,12 16,22 2,12" fill="#fedf00"/><circle cx="16" cy="12" r="5" fill="#002776"/></svg></button>
         </div>
         <p class="footer-copy">© Maarteeno 2025</p>
       </footer>
@@ -180,7 +179,7 @@
       <button type="button" class="section-dot active" data-section="0" aria-label="Perfil" aria-selected="true"></button>
       <button type="button" class="section-dot" data-section="1" aria-label="Bestune" aria-selected="false"></button>
       <button type="button" class="section-dot" data-section="2" aria-label="Reseñas" aria-selected="false"></button>
-      <button type="button" class="section-dot" data-section="3" aria-label="Puntos de interés" aria-selected="false"></button>
+      <button type="button" class="section-dot" data-section="3" aria-label="Traslados turísticos" aria-selected="false"></button>
       <button type="button" class="section-dot" data-section="4" aria-label="FAQ" aria-selected="false"></button>
     </nav>
 

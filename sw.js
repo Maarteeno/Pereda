@@ -1,4 +1,4 @@
-var APP_VERSION = 'v28';
+var APP_VERSION = 'v29';
 var CACHE_NAME = 'pereda-tablet-' + APP_VERSION;
 var ASSETS = [
   './',
