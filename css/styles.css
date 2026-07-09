@@ -284,25 +284,37 @@ body {
 
 .app-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  padding: 4px 14px;
+  padding: 6px 14px;
   flex-shrink: 0;
   flex-wrap: nowrap;
 }
 
 .brand {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   flex-shrink: 1;
   min-width: 0;
 }
 
 .sticky-top .brand-sub {
-  display: none;
+  display: block;
+  color: var(--transport-green);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.header-lang {
+  flex-shrink: 0;
+  margin-left: auto;
+  align-self: flex-start;
 }
 
 .brand-name {
@@ -332,6 +344,7 @@ body {
 .header-lang {
   flex-shrink: 0;
   margin-left: auto;
+  align-self: flex-start;
 }
 
 .lang-btn {
@@ -2574,13 +2587,17 @@ body.update-blocked {
   }
 
   .sticky-top .brand {
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     min-width: 0;
   }
 
   .sticky-top .brand-sub {
-    display: none;
+    display: block;
+  }
+
+  .header-lang {
+    align-self: flex-start;
   }
 
   .header-lang .lang-btn {
@@ -3238,9 +3255,12 @@ body.update-blocked {
 }
 
 .dest-cards-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 12px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .dest-card {
@@ -3300,11 +3320,77 @@ body.update-blocked {
   justify-content: center;
 }
 
-.contact-stats {
+.subview-vehicle-badge {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.subview-vehicle-icon {
+  width: 56px;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.92;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+}
+
+.subview-hero-image {
   width: 100%;
-  max-width: 320px;
-  grid-template-columns: 1fr;
+  max-height: clamp(120px, 22vh, 180px);
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 10px;
+}
+
+.contact-info-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
+}
+
+.contact-info-item {
+  font-size: 0.84rem;
+  color: var(--text-soft);
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  line-height: 1.4;
+}
+
+.contact-info-vehicle {
+  color: var(--transport-green);
+  font-weight: 600;
+  text-align: center;
+}
+
+.software-catalog-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+.software-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.software-contact .vehicle-qr-image {
+  width: min(140px, 36vw);
+  height: min(140px, 36vw);
 }
 
 .contact-qr {
@@ -3426,23 +3512,12 @@ body.update-blocked {
 
 .brand-name {
   font-size: clamp(1.05rem, 3.8vw, 1.25rem);
+  text-align: left;
 }
 
 @media (min-width: 640px) {
   .hub-nav-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     max-width: 720px;
-  }
-
-  .dest-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .dest-cards-grid .dest-card:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-    max-width: 360px;
-    justify-self: center;
-    width: 100%;
   }
 }

@@ -1,4 +1,4 @@
-var APP_VERSION = 'v34';
+var APP_VERSION = 'v35';
 var CACHE_NAME = 'pereda-tablet-' + APP_VERSION;
 var ASSETS = [
   './',
@@ -12,6 +12,9 @@ var ASSETS = [
   './assets/bestune-rear.png',
   './assets/whatsapp-qr.png',
   './assets/software-whatsapp-qr.png',
+  './assets/software/catalogo-mac.png',
+  './assets/contacto/contacto-hero-ai.png',
+  './assets/paseos/paseos-hero-ai.png',
   './assets/destinations/punta-del-este-ai.png',
   './assets/destinations/colonia-ai.png',
   './assets/destinations/montevideo-ai.png',

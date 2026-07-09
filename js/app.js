@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v34';
+  var APP_VERSION = 'v35';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var VEHICLE_ROTATE_MS = 8000;
 
@@ -16,6 +16,7 @@
   var translations = {
     es: {
       brandName: 'Adrián Pereda',
+      headerRole: 'Conductor Profesional',
       vehicleBadge: '100% Eléctrico',
       hubTraslados: 'Traslados',
       hubPaseos: 'Paseos',
@@ -28,14 +29,13 @@
       contactoTitle: 'Contacto',
       driverName: 'Adrián',
       driverRole: 'Conductor Profesional. Montevideo y La Costa',
-      uberLabel: 'Valoración Uber',
-      uberRating: '4.99',
-      tripsLabel: 'Viajes realizados',
-      tripsCount: '+40.000',
-      yearsLabel: 'Años de servicio',
-      yearsValue: '9,5',
+      contactCoverage: 'Montevideo, Costa de Oro y trayectos a PDE / Colonia',
+      contactLanguages: 'Atención en español, inglés y portugués',
+      contactHours: 'Consultas por WhatsApp — respuesta rápida',
+      contactVehicle: 'Bestune NAT · 100% eléctrico',
       qrLabel: 'Escribile por WhatsApp',
       qrAction: 'Abrir WhatsApp',
+      softwareQrAction: 'Abrir WhatsApp',
       phoneNumber: '+598 99 774 019',
       trasladosItems: [
         { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Playa Brava', 'Puerto de Punta'] },
@@ -48,32 +48,15 @@
         { image: 'assets/paseos/costa-ai.png', name: 'Costa y hoteles', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] }
       ],
       softwareTitle: 'Software Mac',
-      softwareBrand: 'Silicon Software',
-      softwareIntro: 'Catálogo exclusivo para Mac',
       softwarePhoneLabel: 'WhatsApp',
       softwarePhone: '+598 91 555 764',
-      softwareSiteLabel: 'silicon-software.web.app',
-      softwarePayments: 'Formas de pago: PREX · Transferencia · Efectivo',
-      softwareServices: [
-        'Retiro o recepción a coordinar',
-        'Instalación presencial en tu Mac',
-        'Instalación remota',
-        'Soporte 6 meses'
-      ],
-      softwareApps: [
-        { name: 'Microsoft Office', desc: 'Word, Excel, PowerPoint y Outlook' },
-        { name: 'Adobe Creative Cloud', desc: 'Photoshop, Illustrator, Premiere' },
-        { name: 'Final Cut Pro', desc: 'Edición de video profesional' },
-        { name: 'Logic Pro', desc: 'Producción musical en Mac' },
-        { name: 'Parallels Desktop', desc: 'Windows en tu Mac' },
-        { name: 'CleanMyMac', desc: 'Mantenimiento y optimización' }
-      ],
       updateGateTitle: 'Nueva versión disponible',
       updateGateText: 'Hay una actualización de la app. Actualizá para ver el diseño más reciente.',
       updateGateAction: 'Actualizar ahora'
     },
     en: {
       brandName: 'Adrián Pereda',
+      headerRole: 'Professional Driver',
       vehicleBadge: '100% Electric',
       hubTraslados: 'Transfers',
       hubPaseos: 'Tours',
@@ -86,14 +69,13 @@
       contactoTitle: 'Contact',
       driverName: 'Adrián',
       driverRole: 'Professional Driver. Montevideo and the Coast',
-      uberLabel: 'Uber rating',
-      uberRating: '4.99',
-      tripsLabel: 'Trips completed',
-      tripsCount: '40,000+',
-      yearsLabel: 'Years of service',
-      yearsValue: '9.5',
+      contactCoverage: 'Montevideo, Gold Coast and routes to PDE / Colonia',
+      contactLanguages: 'Service in Spanish, English and Portuguese',
+      contactHours: 'WhatsApp inquiries — quick response',
+      contactVehicle: 'Bestune NAT · 100% electric',
       qrLabel: 'Message on WhatsApp',
       qrAction: 'Open WhatsApp',
+      softwareQrAction: 'Open WhatsApp',
       phoneNumber: '+598 99 774 019',
       trasladosItems: [
         { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Brava Beach', 'Punta del Este Port'] },
@@ -106,32 +88,15 @@
         { image: 'assets/paseos/costa-ai.png', name: 'Coast and hotels', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] }
       ],
       softwareTitle: 'Mac Software',
-      softwareBrand: 'Silicon Software',
-      softwareIntro: 'Exclusive catalog for Mac',
       softwarePhoneLabel: 'WhatsApp',
       softwarePhone: '+598 91 555 764',
-      softwareSiteLabel: 'silicon-software.web.app',
-      softwarePayments: 'Payment: PREX · Bank transfer · Cash',
-      softwareServices: [
-        'Pickup or delivery by appointment',
-        'On-site installation on your Mac',
-        'Remote installation',
-        '6 months support'
-      ],
-      softwareApps: [
-        { name: 'Microsoft Office', desc: 'Word, Excel, PowerPoint and Outlook' },
-        { name: 'Adobe Creative Cloud', desc: 'Photoshop, Illustrator, Premiere' },
-        { name: 'Final Cut Pro', desc: 'Professional video editing' },
-        { name: 'Logic Pro', desc: 'Music production on Mac' },
-        { name: 'Parallels Desktop', desc: 'Windows on your Mac' },
-        { name: 'CleanMyMac', desc: 'Maintenance and optimization' }
-      ],
       updateGateTitle: 'New version available',
       updateGateText: 'An app update is ready. Refresh to see the latest layout.',
       updateGateAction: 'Update now'
     },
     pt: {
       brandName: 'Adrián Pereda',
+      headerRole: 'Motorista Profissional',
       vehicleBadge: '100% Elétrico',
       hubTraslados: 'Transfers',
       hubPaseos: 'Passeios',
@@ -144,14 +109,13 @@
       contactoTitle: 'Contato',
       driverName: 'Adrián',
       driverRole: 'Motorista Profissional. Montevidéu e o Litoral',
-      uberLabel: 'Avaliação Uber',
-      uberRating: '4.99',
-      tripsLabel: 'Viagens realizadas',
-      tripsCount: '+40.000',
-      yearsLabel: 'Anos de serviço',
-      yearsValue: '9,5',
+      contactCoverage: 'Montevidéu, Costa de Oro e trajetos para PDE / Colonia',
+      contactLanguages: 'Atendimento em espanhol, inglês e português',
+      contactHours: 'Consultas pelo WhatsApp — resposta rápida',
+      contactVehicle: 'Bestune NAT · 100% elétrico',
       qrLabel: 'Escreva no WhatsApp',
       qrAction: 'Abrir WhatsApp',
+      softwareQrAction: 'Abrir WhatsApp',
       phoneNumber: '+598 99 774 019',
       trasladosItems: [
         { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Playa Brava', 'Porto de Punta del Este'] },
@@ -164,26 +128,8 @@
         { image: 'assets/paseos/costa-ai.png', name: 'Costa e hotéis', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] }
       ],
       softwareTitle: 'Software Mac',
-      softwareBrand: 'Silicon Software',
-      softwareIntro: 'Catálogo exclusivo para Mac',
       softwarePhoneLabel: 'WhatsApp',
       softwarePhone: '+598 91 555 764',
-      softwareSiteLabel: 'silicon-software.web.app',
-      softwarePayments: 'Pagamento: PREX · Transferência · Dinheiro',
-      softwareServices: [
-        'Retirada ou recepção a combinar',
-        'Instalação presencial no seu Mac',
-        'Instalação remota',
-        'Suporte 6 meses'
-      ],
-      softwareApps: [
-        { name: 'Microsoft Office', desc: 'Word, Excel, PowerPoint e Outlook' },
-        { name: 'Adobe Creative Cloud', desc: 'Photoshop, Illustrator, Premiere' },
-        { name: 'Final Cut Pro', desc: 'Edição de vídeo profissional' },
-        { name: 'Logic Pro', desc: 'Produção musical no Mac' },
-        { name: 'Parallels Desktop', desc: 'Windows no seu Mac' },
-        { name: 'CleanMyMac', desc: 'Manutenção e otimização' }
-      ],
       updateGateTitle: 'Nova versão disponível',
       updateGateText: 'Há uma atualização do app. Atualize para ver o layout mais recente.',
       updateGateAction: 'Atualizar agora'
@@ -228,32 +174,11 @@
     }).join('');
   }
 
-  function renderSoftware(t) {
-    var serviceList = $('software-service-list');
-    var appsGrid = $('software-apps-grid');
-
-    if (serviceList) {
-      serviceList.innerHTML = t.softwareServices.map(function (line) {
-        return '<li class="software-service-item">' + line + '</li>';
-      }).join('');
-    }
-
-    if (appsGrid) {
-      appsGrid.innerHTML = t.softwareApps.map(function (app) {
-        return (
-          '<article class="software-app-card">' +
-            '<h4 class="software-app-name">' + app.name + '</h4>' +
-            '<p class="software-app-desc">' + app.desc + '</p>' +
-          '</article>'
-        );
-      }).join('');
-    }
-  }
-
   function renderTranslations(lang) {
     var t = translations[lang];
 
     setText('brand-name', t.brandName);
+    setText('header-subtitle', t.headerRole);
     setText('vehicle-badge', t.vehicleBadge);
     setText('hub-traslados-label', t.hubTraslados);
     setText('hub-paseos-label', t.hubPaseos);
@@ -269,29 +194,23 @@
     setText('contacto-title', t.contactoTitle);
     setText('driver-name', t.driverName);
     setText('driver-role', t.driverRole);
-    setText('uber-label', t.uberLabel);
-    setText('uber-rating', t.uberRating);
-    setText('trips-label', t.tripsLabel);
-    setText('trips-count', t.tripsCount);
-    setText('years-label', t.yearsLabel);
-    setText('years-value', t.yearsValue);
+    setText('contact-coverage', t.contactCoverage);
+    setText('contact-languages', t.contactLanguages);
+    setText('contact-hours', t.contactHours);
+    setText('contact-vehicle', t.contactVehicle);
     setText('qr-label', t.qrLabel);
     setText('qr-action-btn', t.qrAction);
     setText('vehicle-qr-phone', t.phoneNumber);
     setText('software-title', t.softwareTitle);
-    setText('software-brand', t.softwareBrand);
-    setText('software-intro', t.softwareIntro);
     setText('software-phone-label', t.softwarePhoneLabel);
     setText('software-phone', t.softwarePhone);
-    setText('software-site-link', t.softwareSiteLabel);
-    setText('software-payments', t.softwarePayments);
+    setText('software-qr-action', t.softwareQrAction);
     setText('update-gate-title', t.updateGateTitle);
     setText('update-gate-text', t.updateGateText);
     setText('update-gate-btn', t.updateGateAction);
 
     renderDestCards('traslados-cards', t.trasladosItems);
     renderDestCards('paseos-cards', t.paseosItems);
-    renderSoftware(t);
 
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
       btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));

@@ -23,7 +23,7 @@
       <header class="app-header">
         <div class="brand">
           <span class="brand-name" id="brand-name">Adrián Pereda</span>
-          <span class="brand-sub" id="header-subtitle" hidden>Traslados</span>
+          <span class="brand-sub" id="header-subtitle">Conductor Profesional</span>
         </div>
         <div class="language-selector header-lang" role="group" aria-label="Idioma">
           <button type="button" class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="true"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#c60b1e"/><rect y="6" width="32" height="12" fill="#ffc400"/></svg></button>
@@ -80,6 +80,9 @@
           <h1 class="subview-title" id="traslados-title">Traslados</h1>
         </div>
         <div class="subview-body">
+          <div class="subview-vehicle-badge" aria-hidden="true">
+            <img src="assets/bestune-side.png" alt="" class="subview-vehicle-icon">
+          </div>
           <div class="dest-cards-grid" id="traslados-cards"></div>
         </div>
       </section>
@@ -93,6 +96,7 @@
           <h1 class="subview-title" id="paseos-title">Paseos</h1>
         </div>
         <div class="subview-body">
+          <img src="assets/paseos/paseos-hero-ai.png" alt="" class="subview-hero-image" id="paseos-hero-image" loading="lazy">
           <p class="subview-intro" id="paseos-intro"></p>
           <div class="dest-cards-grid" id="paseos-cards"></div>
         </div>
@@ -107,6 +111,7 @@
           <h1 class="subview-title" id="contacto-title">Contacto</h1>
         </div>
         <div class="subview-body contact-panel">
+          <img src="assets/contacto/contacto-hero-ai.png" alt="" class="subview-hero-image" id="contacto-hero-image" loading="lazy">
           <div class="profile-identity contact-identity">
             <img src="assets/adrian-pereda.png" alt="Adrián" class="driver-avatar profile-avatar" width="96" height="96" loading="lazy">
             <div class="profile-identity-meta">
@@ -114,20 +119,12 @@
               <p class="driver-role" id="driver-role">Conductor Profesional. Montevideo y La Costa</p>
             </div>
           </div>
-          <div class="profile-stats-grid contact-stats">
-            <div class="stat-pill stat-uber">
-              <span class="stat-label" id="uber-label">Valoración Uber</span>
-              <span class="stat-value stat-value-lg"><span id="uber-rating">4.99</span> <span class="stars" aria-hidden="true">★★★★★</span></span>
-            </div>
-            <div class="stat-pill">
-              <span class="stat-label" id="trips-label">Viajes realizados</span>
-              <span class="stat-value stat-value-lg" id="trips-count">+40.000</span>
-            </div>
-            <div class="stat-pill">
-              <span class="stat-label" id="years-label">Años de servicio</span>
-              <span class="stat-value stat-value-lg" id="years-value">9,5</span>
-            </div>
-          </div>
+          <ul class="contact-info-list" id="contact-info-list">
+            <li class="contact-info-item" id="contact-coverage"></li>
+            <li class="contact-info-item" id="contact-languages"></li>
+            <li class="contact-info-item" id="contact-hours"></li>
+            <li class="contact-info-item contact-info-vehicle" id="contact-vehicle"></li>
+          </ul>
           <div class="qr-card contact-qr">
             <p class="vehicle-qr-label" id="qr-label">Escribile por WhatsApp</p>
             <a href="https://wa.me/59899774019" class="vehicle-qr-link" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Adrián Pereda">
@@ -148,18 +145,14 @@
           <h1 class="subview-title" id="software-title">Software Mac</h1>
         </div>
         <div class="subview-body software-panel">
-          <p class="software-brand" id="software-brand">Silicon Software</p>
-          <p class="subview-intro" id="software-intro">Catálogo exclusivo para Mac</p>
-          <ul class="software-service-list" id="software-service-list"></ul>
-          <div class="software-apps-grid" id="software-apps-grid"></div>
-          <p class="software-payments" id="software-payments"></p>
+          <img src="assets/software/catalogo-mac.png" alt="Catálogo Software Mac" class="software-catalog-image" id="software-catalog-image" loading="lazy">
           <div class="software-contact">
-            <p class="software-phone-label" id="software-phone-label">WhatsApp</p>
+            <p class="vehicle-qr-label" id="software-phone-label">WhatsApp</p>
             <p class="software-phone" id="software-phone">+598 91 555 764</p>
-            <a href="https://wa.me/59891555764" class="vehicle-qr-link" target="_blank" rel="noopener noreferrer">
-              <img src="assets/software-whatsapp-qr.png" alt="QR WhatsApp Silicon Software" class="software-qr-image" width="100" height="100" loading="lazy">
+            <a href="https://wa.me/59891555764" class="vehicle-qr-link" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Silicon Software">
+              <img src="assets/software-whatsapp-qr.png" alt="QR WhatsApp Silicon Software" class="vehicle-qr-image" width="140" height="140" loading="lazy">
             </a>
-            <a href="https://silicon-software.web.app/" class="software-site-link" id="software-site-link" target="_blank" rel="noopener noreferrer">silicon-software.web.app</a>
+            <a href="https://wa.me/59891555764" class="qr-action-btn" id="software-qr-action" target="_blank" rel="noopener noreferrer">Abrir WhatsApp</a>
           </div>
         </div>
       </section>
