@@ -3166,8 +3166,49 @@ body.update-blocked {
 }
 
 #view-home .vehicle-showcase-hero {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  max-height: min(42vh, 320px);
+  max-height: min(48vh, 360px);
+}
+
+#view-home .vehicle-showcase-hero .vehicle-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.vehicle-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 4px 0;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+.vehicle-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(122, 156, 132, 0.18);
+  border: 1px solid rgba(122, 156, 132, 0.4);
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+.vehicle-chip-icon {
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.vehicle-chip-label {
+  line-height: 1.2;
 }
 
 .hub-nav-grid {

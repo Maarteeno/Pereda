@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v38';
+  var APP_VERSION = 'v39';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var VEHICLE_ROTATE_MS = 8000;
 
@@ -17,7 +17,14 @@
     es: {
       brandName: 'Adrián Pereda',
       headerRole: 'Conductor Profesional',
-      vehicleBadge: '100% Eléctrico',
+      vehicleBadges: [
+        { icon: '🌿', label: '100% eléctrico' },
+        { icon: '🔇', label: 'Viaje silencioso' },
+        { icon: '❄️', label: 'Climatización' },
+        { icon: '🧳', label: 'Maletero amplio' },
+        { icon: '🚪', label: 'Puerta corrediza' },
+        { icon: '💺', label: 'Asientos amplios' }
+      ],
       hubTraslados: 'Traslados',
       hubPaseos: 'Paseos',
       hubContacto: 'Contacto',
@@ -51,7 +58,14 @@
     en: {
       brandName: 'Adrián Pereda',
       headerRole: 'Professional Driver',
-      vehicleBadge: '100% Electric',
+      vehicleBadges: [
+        { icon: '🌿', label: '100% electric' },
+        { icon: '🔇', label: 'Quiet ride' },
+        { icon: '❄️', label: 'Climate control' },
+        { icon: '🧳', label: 'Room for luggage' },
+        { icon: '🚪', label: 'Sliding door' },
+        { icon: '💺', label: 'Spacious seats' }
+      ],
       hubTraslados: 'Transfers',
       hubPaseos: 'Tours',
       hubContacto: 'Contact',
@@ -85,7 +99,14 @@
     pt: {
       brandName: 'Adrián Pereda',
       headerRole: 'Motorista Profissional',
-      vehicleBadge: '100% Elétrico',
+      vehicleBadges: [
+        { icon: '🌿', label: '100% elétrico' },
+        { icon: '🔇', label: 'Viagem silenciosa' },
+        { icon: '❄️', label: 'Climatização' },
+        { icon: '🧳', label: 'Espaço amplo' },
+        { icon: '🚪', label: 'Porta corrediça' },
+        { icon: '💺', label: 'Assentos amplos' }
+      ],
       hubTraslados: 'Transfers',
       hubPaseos: 'Passeios',
       hubContacto: 'Contato',
@@ -156,12 +177,26 @@
     }).join('');
   }
 
+  function renderVehicleBadges(items) {
+    var container = $('vehicle-badges');
+    if (!container || !items) return;
+
+    container.innerHTML = items.map(function (item) {
+      return (
+        '<span class="vehicle-chip">' +
+          '<span class="vehicle-chip-icon" aria-hidden="true">' + item.icon + '</span>' +
+          '<span class="vehicle-chip-label">' + item.label + '</span>' +
+        '</span>'
+      );
+    }).join('');
+  }
+
   function renderTranslations(lang) {
     var t = translations[lang];
 
     setText('brand-name', t.brandName);
     setText('header-subtitle', t.headerRole);
-    setText('vehicle-badge', t.vehicleBadge);
+    renderVehicleBadges(t.vehicleBadges);
     setText('hub-traslados-label', t.hubTraslados);
     setText('hub-paseos-label', t.hubPaseos);
     setText('hub-contacto-label', t.hubContacto);
