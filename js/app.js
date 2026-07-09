@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v31';
+  var APP_VERSION = 'v32';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var IDLE_RESET_MS = 60000;
   var REVIEW_INTERVAL_MS = 5000;
@@ -450,8 +450,12 @@
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   }
 
-  function isDualReviewLayout() {
+  function isDualCardLayout() {
     return window.innerHeight >= 640;
+  }
+
+  function isDualReviewLayout() {
+    return isDualCardLayout();
   }
 
   function fillReviewCard(slot, review, animate) {
@@ -576,18 +580,12 @@
     }).join('');
   }
 
-  function showFaq(index, animate) {
-    var t = translations[activeLang];
-    if (!t.faqItems || !t.faqItems.length) return;
+  function fillFaqCard(slot, item, animate) {
+    if (!item) return;
 
-    if (index >= t.faqItems.length) index = 0;
-    if (index < 0) index = t.faqItems.length - 1;
-    faqIndex = index;
-
-    var item = t.faqItems[index];
-    var questionEl = $('faq-card-question');
-    var answerEl = $('faq-card-answer');
-    var card = $('faq-kiosk-card');
+    var questionEl = $('faq-card-question-' + slot);
+    var answerEl = $('faq-card-answer-' + slot);
+    var card = $('faq-kiosk-card-' + slot);
 
     function applyFaq() {
       if (questionEl) {
@@ -599,7 +597,6 @@
         answerEl.classList.remove('is-fading');
       }
       if (card) card.classList.remove('is-fading');
-      renderFaqDots();
     }
 
     if (animate === false) {
@@ -611,6 +608,33 @@
     if (answerEl) answerEl.classList.add('is-fading');
     if (card) card.classList.add('is-fading');
     setTimeout(applyFaq, 320);
+  }
+
+  function updateFaqSecondaryVisibility() {
+    var secondary = $('faq-kiosk-card-1');
+    if (!secondary) return;
+    secondary.hidden = !isDualCardLayout();
+  }
+
+  function showFaq(index, animate) {
+    var t = translations[activeLang];
+    if (!t.faqItems || !t.faqItems.length) return;
+
+    if (index >= t.faqItems.length) index = 0;
+    if (index < 0) index = t.faqItems.length - 1;
+    faqIndex = index;
+
+    var len = t.faqItems.length;
+    updateFaqSecondaryVisibility();
+    fillFaqCard(0, t.faqItems[index], animate);
+
+    if (isDualCardLayout()) {
+      var nextIndex = index + 1;
+      if (nextIndex >= len) nextIndex = 0;
+      fillFaqCard(1, t.faqItems[nextIndex], animate);
+    }
+
+    renderFaqDots();
   }
 
   function nextFaq() {
@@ -808,6 +832,8 @@
     window.addEventListener('resize', function () {
       updateReviewSecondaryVisibility();
       showReview(shuffleIndex, false);
+      updateFaqSecondaryVisibility();
+      showFaq(faqIndex, false);
     });
   }
 
