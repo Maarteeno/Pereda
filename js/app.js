@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v35';
+  var APP_VERSION = 'v36';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var VEHICLE_ROTATE_MS = 8000;
 
@@ -30,12 +30,9 @@
       driverName: 'Adrián',
       driverRole: 'Conductor Profesional. Montevideo y La Costa',
       contactCoverage: 'Montevideo, Costa de Oro y trayectos a PDE / Colonia',
-      contactLanguages: 'Atención en español, inglés y portugués',
-      contactHours: 'Consultas por WhatsApp — respuesta rápida',
       contactVehicle: 'Bestune NAT · 100% eléctrico',
       qrLabel: 'Escribile por WhatsApp',
       qrAction: 'Abrir WhatsApp',
-      softwareQrAction: 'Abrir WhatsApp',
       phoneNumber: '+598 99 774 019',
       trasladosItems: [
         { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Playa Brava', 'Puerto de Punta'] },
@@ -48,8 +45,6 @@
         { image: 'assets/paseos/costa-ai.png', name: 'Costa y hoteles', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] }
       ],
       softwareTitle: 'Software Mac',
-      softwarePhoneLabel: 'WhatsApp',
-      softwarePhone: '+598 91 555 764',
       updateGateTitle: 'Nueva versión disponible',
       updateGateText: 'Hay una actualización de la app. Actualizá para ver el diseño más reciente.',
       updateGateAction: 'Actualizar ahora'
@@ -70,12 +65,9 @@
       driverName: 'Adrián',
       driverRole: 'Professional Driver. Montevideo and the Coast',
       contactCoverage: 'Montevideo, Gold Coast and routes to PDE / Colonia',
-      contactLanguages: 'Service in Spanish, English and Portuguese',
-      contactHours: 'WhatsApp inquiries — quick response',
       contactVehicle: 'Bestune NAT · 100% electric',
       qrLabel: 'Message on WhatsApp',
       qrAction: 'Open WhatsApp',
-      softwareQrAction: 'Open WhatsApp',
       phoneNumber: '+598 99 774 019',
       trasladosItems: [
         { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Brava Beach', 'Punta del Este Port'] },
@@ -88,8 +80,6 @@
         { image: 'assets/paseos/costa-ai.png', name: 'Coast and hotels', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] }
       ],
       softwareTitle: 'Mac Software',
-      softwarePhoneLabel: 'WhatsApp',
-      softwarePhone: '+598 91 555 764',
       updateGateTitle: 'New version available',
       updateGateText: 'An app update is ready. Refresh to see the latest layout.',
       updateGateAction: 'Update now'
@@ -110,12 +100,9 @@
       driverName: 'Adrián',
       driverRole: 'Motorista Profissional. Montevidéu e o Litoral',
       contactCoverage: 'Montevidéu, Costa de Oro e trajetos para PDE / Colonia',
-      contactLanguages: 'Atendimento em espanhol, inglês e português',
-      contactHours: 'Consultas pelo WhatsApp — resposta rápida',
       contactVehicle: 'Bestune NAT · 100% elétrico',
       qrLabel: 'Escreva no WhatsApp',
       qrAction: 'Abrir WhatsApp',
-      softwareQrAction: 'Abrir WhatsApp',
       phoneNumber: '+598 99 774 019',
       trasladosItems: [
         { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Playa Brava', 'Porto de Punta del Este'] },
@@ -128,8 +115,6 @@
         { image: 'assets/paseos/costa-ai.png', name: 'Costa e hotéis', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] }
       ],
       softwareTitle: 'Software Mac',
-      softwarePhoneLabel: 'WhatsApp',
-      softwarePhone: '+598 91 555 764',
       updateGateTitle: 'Nova versão disponível',
       updateGateText: 'Há uma atualização do app. Atualize para ver o layout mais recente.',
       updateGateAction: 'Atualizar agora'
@@ -195,16 +180,11 @@
     setText('driver-name', t.driverName);
     setText('driver-role', t.driverRole);
     setText('contact-coverage', t.contactCoverage);
-    setText('contact-languages', t.contactLanguages);
-    setText('contact-hours', t.contactHours);
     setText('contact-vehicle', t.contactVehicle);
     setText('qr-label', t.qrLabel);
     setText('qr-action-btn', t.qrAction);
     setText('vehicle-qr-phone', t.phoneNumber);
     setText('software-title', t.softwareTitle);
-    setText('software-phone-label', t.softwarePhoneLabel);
-    setText('software-phone', t.softwarePhone);
-    setText('software-qr-action', t.softwareQrAction);
     setText('update-gate-title', t.updateGateTitle);
     setText('update-gate-text', t.updateGateText);
     setText('update-gate-btn', t.updateGateAction);
