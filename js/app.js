@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v40';
+  var APP_VERSION = 'v41';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var VEHICLE_ROTATE_MS = 8000;
 
