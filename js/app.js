@@ -3,21 +3,25 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v25';
-  var COMFORT_PAGE_SIZE = 4;
+  var APP_VERSION = 'v26';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var IDLE_RESET_MS = 60000;
   var SWIPE_THRESHOLD = 50;
-  var REVIEW_INTERVAL_MS = 4500;
+  var REVIEW_INTERVAL_MS = 5000;
+  var SECTION_AUTO_MS = 13000;
+  var SPOT_AUTO_MS = 6000;
+  var VEHICLE_ROTATE_MS = 8000;
   var TOTAL_DESTINATIONS = 4;
+  var TOTAL_SECTIONS = 5;
 
   var activeLang = 'es';
-  var currentSlide = 0;
-  var totalSlides = 5;
+  var currentSection = 0;
   var idleTimer = null;
-  var touchStartX = 0;
-  var touchStartY = 0;
+  var sectionAutoTimer = null;
+  var spotAutoTimer = null;
+  var vehicleRotateTimer = null;
   var reviewTimer = null;
+  var autoplayPaused = false;
   var shuffledReviews = [];
   var shuffleIndex = 0;
   var lastReviewText = '';
@@ -25,8 +29,9 @@
   var currentSpot = 0;
   var spotTouchStartX = 0;
   var openFaqIndex = -1;
-  var currentComfortPage = 0;
+  var currentVehicleView = 0;
   var swRegistration = null;
+  var sectionObserver = null;
 
   var translations = {
     es: {
@@ -52,10 +57,12 @@
       ],
       qrLabel: 'Escribile por WhatsApp',
       qrAction: 'Abrir WhatsApp',
+      fabLabel: 'WhatsApp',
       phoneNumber: '+598 99 774 019',
       introTitle: 'Traslados privados y seguros',
-      introSubtitle: 'Atención directa con Adrián y reserva inmediata por WhatsApp.',
+      introSubtitle: 'Reservá directo con Adrián',
       spotSectionTitle: 'Puntos de interés',
+      finalCtaLabel: '¿Listo para reservar?',
       finalCtaAction: 'Abrir WhatsApp',
       updateGateTitle: 'Nueva versión disponible',
       updateGateText: 'Hay una actualización de la app. Actualizá para ver el diseño más reciente.',
@@ -134,10 +141,12 @@
       ],
       qrLabel: 'Message on WhatsApp',
       qrAction: 'Open WhatsApp',
+      fabLabel: 'WhatsApp',
       phoneNumber: '+598 99 774 019',
       introTitle: 'Private and reliable transfers',
-      introSubtitle: 'Direct contact with Adrián and instant booking via WhatsApp.',
+      introSubtitle: 'Book directly with Adrián',
       spotSectionTitle: 'Points of interest',
+      finalCtaLabel: 'Ready to book?',
       finalCtaAction: 'Open WhatsApp',
       updateGateTitle: 'New version available',
       updateGateText: 'An app update is ready. Refresh to see the latest layout.',
@@ -216,10 +225,12 @@
       ],
       qrLabel: 'Escreva no WhatsApp',
       qrAction: 'Abrir WhatsApp',
+      fabLabel: 'WhatsApp',
       phoneNumber: '+598 99 774 019',
       introTitle: 'Transfers privados e seguros',
-      introSubtitle: 'Contato direto com Adrián e reserva imediata pelo WhatsApp.',
+      introSubtitle: 'Reserve direto com Adrián',
       spotSectionTitle: 'Pontos de interesse',
+      finalCtaLabel: 'Pronto para reservar?',
       finalCtaAction: 'Abrir WhatsApp',
       updateGateTitle: 'Nova versão disponível',
       updateGateText: 'Há uma atualização do app. Atualize para ver o layout mais recente.',
@@ -288,9 +299,7 @@
 
   function detectLanguage() {
     var saved = localStorage.getItem(LANG_STORAGE_KEY);
-    if (saved && translations[saved]) {
-      return saved;
-    }
+    if (saved && translations[saved]) return saved;
     var browserLang = (navigator.language || 'es').toLowerCase();
     if (browserLang.indexOf('pt') === 0) return 'pt';
     if (browserLang.indexOf('en') === 0) return 'en';
@@ -330,91 +339,128 @@
       setText('benefit-title-' + (i + 1), t.comfortItems[i].title);
       setText('benefit-desc-' + (i + 1), t.comfortItems[i].desc);
     }
-    renderComfortPage();
 
     setText('qr-label', t.qrLabel);
     setText('qr-action-btn', t.qrAction);
     setText('vehicle-qr-phone', t.phoneNumber);
+    setText('final-cta-label', t.finalCtaLabel);
     setText('final-cta-action', t.finalCtaAction);
+    setText('whatsapp-fab', t.fabLabel);
     setText('update-gate-title', t.updateGateTitle);
     setText('update-gate-text', t.updateGateText);
     setText('update-gate-btn', t.updateGateAction);
     setText('spot-section-title', t.spotSectionTitle);
     setText('dest-trip-note', t.tripNote);
+    setText('review-gallery-title', t.reviewLabel);
+    setText('faq-title', t.faqTitle);
 
     renderDestTabs();
     goToDestination(currentDest, false);
-
-    setText('review-gallery-title', t.reviewLabel);
-    setText('faq-title', t.faqTitle);
     renderFaq();
-    showReviewPair(shuffleIndex, false);
+    showReview(shuffleIndex, false);
 
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
       btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));
     });
   }
 
-  function goToSlide(index) {
-    if (index < 0) index = totalSlides - 1;
-    else if (index >= totalSlides) index = 0;
+  function getSectionEl(index) {
+    return document.querySelector('.page-section[data-section="' + index + '"]');
+  }
 
-    currentSlide = index;
+  function scrollToSection(index, behavior) {
+    if (index < 0) index = TOTAL_SECTIONS - 1;
+    else if (index >= TOTAL_SECTIONS) index = 0;
 
-    document.querySelectorAll('.slide').forEach(function (slide, i) {
-      slide.classList.toggle('active', i === currentSlide);
-    });
+    var section = getSectionEl(index);
+    if (!section) return;
 
-    document.querySelectorAll('.dot').forEach(function (dot, i) {
-      var isActive = i === currentSlide;
-      dot.classList.toggle('active', isActive);
-      dot.setAttribute('aria-selected', String(isActive));
-    });
-
+    section.scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
+    setActiveSection(index);
     resetIdleTimer();
-    updateVehicleShowcase(currentSlide);
-
-    if (currentSlide === 2) {
-      startReviewRotation();
-    } else {
-      stopReviewRotation();
-    }
-
-    if (currentSlide !== 3) {
-      currentSpot = 0;
-      updateSpotVisibility();
-    }
   }
 
-  function updateVehicleShowcase(index) {
-    var showcase = $('vehicle-showcase');
-    if (!showcase) return;
+  function setActiveSection(index) {
+    currentSection = index;
 
-    if (index >= 3) {
-      showcase.classList.add('is-hidden');
-      return;
-    }
+    document.querySelectorAll('.section-dot').forEach(function (dot, i) {
+      var active = i === index;
+      dot.classList.toggle('active', active);
+      dot.setAttribute('aria-selected', String(active));
+    });
 
-    showcase.classList.remove('is-hidden');
-    showcase.dataset.slide = String(index);
-    document.querySelectorAll('.vehicle-view').forEach(function (view, i) {
-      view.classList.toggle('active', i === index);
+    var progress = ((index + 1) / TOTAL_SECTIONS) * 100;
+    var fill = $('section-progress-fill');
+    if (fill) fill.style.width = progress + '%';
+
+    var fab = $('whatsapp-fab');
+    if (fab) fab.hidden = index < 1;
+
+    if (index === 2) startReviewRotation();
+    else stopReviewRotation();
+
+    if (index === 3) startSpotRotation();
+    else stopSpotRotation();
+  }
+
+  function setupSectionObserver() {
+    var scrollEl = $('page-scroll');
+    if (!scrollEl || !('IntersectionObserver' in window)) return;
+
+    if (sectionObserver) sectionObserver.disconnect();
+
+    sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting || entry.intersectionRatio < 0.45) return;
+        var index = parseInt(entry.target.getAttribute('data-section'), 10);
+        if (!isNaN(index) && index !== currentSection) {
+          setActiveSection(index);
+        }
+      });
+    }, { root: scrollEl, threshold: [0.45, 0.6] });
+
+    document.querySelectorAll('.page-section').forEach(function (section) {
+      sectionObserver.observe(section);
     });
   }
 
-  function shouldShowSingleReview() {
-    return window.matchMedia('(max-width: 639px) and (orientation: portrait)').matches;
+  function pauseAutoplay() {
+    autoplayPaused = true;
+    stopSectionAutoAdvance();
   }
 
-  function updateReviewLayout() {
-    var secondCard = $('gallery-card-1');
-    var grid = document.querySelector('.review-gallery-grid');
-    if (!secondCard || !grid) return;
+  function resumeAutoplay() {
+    autoplayPaused = false;
+    startSectionAutoAdvance();
+  }
 
-    var single = shouldShowSingleReview();
-    secondCard.hidden = single;
-    grid.classList.toggle('is-single', single);
-    showReviewPair(shuffleIndex, false);
+  function startSectionAutoAdvance() {
+    stopSectionAutoAdvance();
+    if (autoplayPaused || openFaqIndex >= 0) return;
+    sectionAutoTimer = setInterval(function () {
+      if (autoplayPaused || openFaqIndex >= 0) return;
+      scrollToSection(currentSection + 1);
+    }, SECTION_AUTO_MS);
+  }
+
+  function stopSectionAutoAdvance() {
+    clearInterval(sectionAutoTimer);
+    sectionAutoTimer = null;
+  }
+
+  function startVehicleRotation() {
+    stopVehicleRotation();
+    vehicleRotateTimer = setInterval(function () {
+      currentVehicleView = (currentVehicleView + 1) % 3;
+      document.querySelectorAll('.vehicle-view').forEach(function (view, i) {
+        view.classList.toggle('active', i === currentVehicleView);
+      });
+    }, VEHICLE_ROTATE_MS);
+  }
+
+  function stopVehicleRotation() {
+    clearInterval(vehicleRotateTimer);
+    vehicleRotateTimer = null;
   }
 
   function getReviews() {
@@ -453,82 +499,75 @@
     shuffleIndex = 0;
   }
 
-  function showReviewPair(startIndex, animate) {
+  function authorInitials(author) {
+    if (!author) return '?';
+    var parts = author.replace(/[.—\-]/g, '').trim().split(/\s+/);
+    if (!parts.length) return '?';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  function showReview(index, animate) {
     if (!shuffledReviews.length) reshuffleReviews();
     if (!shuffledReviews.length) return;
 
     var len = shuffledReviews.length;
-    if (startIndex >= len || startIndex < 0) {
+    if (index >= len || index < 0) {
       reshuffleReviews();
-      startIndex = 0;
+      index = 0;
       len = shuffledReviews.length;
     }
 
-    shuffleIndex = startIndex;
-    var single = shouldShowSingleReview();
-    var reviewA = shuffledReviews[startIndex];
-    var reviewB = shuffledReviews[(startIndex + 1) % len];
-    lastReviewText = reviewA.text;
+    shuffleIndex = index;
+    var review = shuffledReviews[index];
+    lastReviewText = review.text;
 
-    function applyReviews() {
-      var textEl0 = $('gallery-review-text-0');
-      var authorEl0 = $('gallery-review-author-0');
-      var textEl1 = $('gallery-review-text-1');
-      var authorEl1 = $('gallery-review-author-1');
+    var textEl = $('gallery-review-text-0');
+    var authorEl = $('gallery-review-author-0');
+    var avatarEl = $('review-author-avatar');
+    var card = $('review-kiosk-card');
 
-      if (textEl0 && authorEl0) {
-        textEl0.textContent = reviewA.text;
-        authorEl0.textContent = '— ' + reviewA.author;
-        textEl0.classList.remove('is-fading');
-        authorEl0.classList.remove('is-fading');
+    function applyReview() {
+      if (textEl) {
+        textEl.textContent = review.text;
+        textEl.classList.remove('is-fading');
       }
-
-      if (!single && textEl1 && authorEl1) {
-        textEl1.textContent = reviewB.text;
-        authorEl1.textContent = '— ' + reviewB.author;
-        textEl1.classList.remove('is-fading');
-        authorEl1.classList.remove('is-fading');
+      if (authorEl) {
+        authorEl.textContent = '— ' + review.author;
+        authorEl.classList.remove('is-fading');
       }
+      if (avatarEl) avatarEl.textContent = authorInitials(review.author);
+      if (card) card.classList.remove('is-fading');
     }
 
     if (animate === false) {
-      applyReviews();
+      applyReview();
       return;
     }
 
-    [0, 1].forEach(function (cardIndex) {
-      if (single && cardIndex === 1) return;
-      var textEl = $('gallery-review-text-' + cardIndex);
-      var authorEl = $('gallery-review-author-' + cardIndex);
-      if (textEl) textEl.classList.add('is-fading');
-      if (authorEl) authorEl.classList.add('is-fading');
-    });
-    setTimeout(applyReviews, 320);
-  }
-
-  function reviewStep() {
-    return shouldShowSingleReview() ? 1 : 2;
+    if (textEl) textEl.classList.add('is-fading');
+    if (authorEl) authorEl.classList.add('is-fading');
+    if (card) card.classList.add('is-fading');
+    setTimeout(applyReview, 320);
   }
 
   function nextReview() {
     var len = shuffledReviews.length;
     if (!len) return;
-    var step = reviewStep();
-    var next = shuffleIndex + step;
+    var next = shuffleIndex + 1;
     if (next >= len) {
       reshuffleReviews();
       next = 0;
     }
-    showReviewPair(next, true);
+    showReview(next, true);
   }
 
   function prevReview() {
     var len = shuffledReviews.length;
     if (!len) return;
-    var step = reviewStep();
-    var prev = shuffleIndex - step;
-    if (prev < 0) prev = Math.max(0, len - step);
-    showReviewPair(prev, true);
+    var prev = shuffleIndex - 1;
+    if (prev < 0) prev = len - 1;
+    showReview(prev, true);
   }
 
   function startReviewRotation() {
@@ -550,7 +589,6 @@
         '</button>'
       );
     }).join('');
-
     var spotTabsEl = $('spot-tabs');
     if (spotTabsEl) spotTabsEl.innerHTML = tabMarkup;
   }
@@ -564,7 +602,7 @@
       var activeClass = i === currentSpot ? ' is-active' : '';
       return (
         '<article class="dest-spot' + activeClass + '" data-spot="' + i + '">' +
-          '<div class="dest-spot-media">' +
+          '<div class="dest-spot-media dest-spot-media-tall">' +
             '<img src="' + spot.image + '" alt="' + spot.name + '" class="dest-spot-photo" loading="lazy">' +
           '</div>' +
           '<div class="dest-spot-body">' +
@@ -584,7 +622,6 @@
     if (!dotsEl || !t.destinationSpots[index]) return;
     dotsEl.hidden = false;
     dotsEl.setAttribute('aria-hidden', 'false');
-
     dotsEl.innerHTML = t.destinationSpots[index].map(function (_, i) {
       return (
         '<button type="button" class="dest-spot-dot' + (i === currentSpot ? ' active' : '') + '" data-spot="' + i + '" aria-label="Lugar ' + (i + 1) + '"></button>'
@@ -595,11 +632,9 @@
   function updateSpotVisibility() {
     var spotsEl = $('dest-spots');
     if (!spotsEl) return;
-
     spotsEl.querySelectorAll('.dest-spot').forEach(function (spot, i) {
       spot.classList.toggle('is-active', i === currentSpot);
     });
-
     document.querySelectorAll('.dest-spot-dot').forEach(function (dot, i) {
       dot.classList.toggle('active', i === currentSpot);
     });
@@ -609,10 +644,11 @@
     var t = translations[activeLang];
     var spots = t.destinationSpots[currentDest];
     if (!spots || spotIndex < 0 || spotIndex >= spots.length) return;
-
     currentSpot = spotIndex;
     updateSpotVisibility();
+    pauseAutoplay();
     resetIdleTimer();
+    startSpotRotation();
   }
 
   function nextSpot() {
@@ -620,6 +656,17 @@
     var spots = t.destinationSpots[currentDest];
     if (!spots) return;
     goToSpot((currentSpot + 1) % spots.length);
+  }
+
+  function startSpotRotation() {
+    stopSpotRotation();
+    if (currentSection !== 3) return;
+    spotAutoTimer = setInterval(nextSpot, SPOT_AUTO_MS);
+  }
+
+  function stopSpotRotation() {
+    clearInterval(spotAutoTimer);
+    spotAutoTimer = null;
   }
 
   function goToDestination(index, animate) {
@@ -630,14 +677,13 @@
     currentSpot = 0;
     var t = translations[activeLang];
     var trip = t.tripInfo[index];
-
     var spotNameEl = $('spot-dest-name');
     var spotBadgeEl = $('spot-dest-badge');
     var coverEl = $('spot-category-cover');
     var slideEl = $('dest-slide');
-
     var label = t.services[index];
     var meta = trip.distance + ' · ' + trip.duration;
+
     if (spotNameEl) spotNameEl.textContent = label;
     if (spotBadgeEl) spotBadgeEl.textContent = meta;
     if (coverEl && t.destinationCovers[index]) {
@@ -646,7 +692,6 @@
     }
 
     renderDestSpots(index);
-
     document.querySelectorAll('.dest-tab').forEach(function (tab, i) {
       var isActive = i === index;
       tab.classList.toggle('active', isActive);
@@ -659,15 +704,9 @@
       slideEl.classList.add('is-entering');
     }
 
+    pauseAutoplay();
     resetIdleTimer();
-  }
-
-  function nextDestination() {
-    goToDestination(currentDest + 1, true);
-  }
-
-  function prevDestination() {
-    goToDestination(currentDest - 1, true);
+    startSpotRotation();
   }
 
   function renderFaq() {
@@ -694,79 +733,23 @@
   function toggleFaq(index) {
     openFaqIndex = openFaqIndex === index ? -1 : index;
     renderFaq();
+    if (openFaqIndex >= 0) pauseAutoplay();
+    else resumeAutoplay();
     resetIdleTimer();
-  }
-
-  function nextSlide() {
-    goToSlide(currentSlide + 1);
-  }
-
-  function prevSlide() {
-    goToSlide(currentSlide - 1);
   }
 
   function resetIdleTimer() {
     clearTimeout(idleTimer);
     idleTimer = setTimeout(function () {
-      goToSlide(0);
+      scrollToSection(0);
+      resumeAutoplay();
     }, IDLE_RESET_MS);
-  }
-
-  function shouldPaginateComfort() {
-    return window.matchMedia('(max-width: 639px) and (orientation: portrait)').matches;
-  }
-
-  function renderComfortPage() {
-    var cards = document.querySelectorAll('.benefit-card');
-    var dots = document.querySelectorAll('.comfort-page-dot');
-    var totalPages = Math.ceil(cards.length / COMFORT_PAGE_SIZE);
-    var i;
-    var start;
-    var end;
-
-    if (!shouldPaginateComfort()) {
-      for (i = 0; i < cards.length; i++) {
-        cards[i].hidden = false;
-      }
-      dots.forEach(function (dot) {
-        dot.hidden = true;
-      });
-      return;
-    }
-
-    if (currentComfortPage >= totalPages) {
-      currentComfortPage = 0;
-    }
-
-    start = currentComfortPage * COMFORT_PAGE_SIZE;
-    end = start + COMFORT_PAGE_SIZE;
-
-    for (i = 0; i < cards.length; i++) {
-      cards[i].hidden = i < start || i >= end;
-    }
-
-    dots.forEach(function (dot, index) {
-      var visible = totalPages > 1;
-      dot.hidden = !visible;
-      dot.classList.toggle('active', index === currentComfortPage);
-      dot.setAttribute('aria-selected', String(index === currentComfortPage));
-    });
-  }
-
-  function goToComfortPage(page) {
-    var cards = document.querySelectorAll('.benefit-card');
-    var totalPages = Math.ceil(cards.length / COMFORT_PAGE_SIZE);
-    if (totalPages < 1) return;
-    currentComfortPage = ((page % totalPages) + totalPages) % totalPages;
-    renderComfortPage();
   }
 
   function clearCachesAndReload() {
     if ('caches' in window) {
       caches.keys().then(function (keys) {
-        return Promise.all(keys.map(function (key) {
-          return caches.delete(key);
-        }));
+        return Promise.all(keys.map(function (key) { return caches.delete(key); }));
       }).then(function () {
         localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
         window.location.reload();
@@ -791,11 +774,10 @@
     var gate = $('update-gate');
     var btn = $('update-gate-btn');
     if (!gate || gate.hidden === false) return;
-
     swRegistration = registration;
     gate.hidden = false;
     document.body.classList.add('update-blocked');
-
+    pauseAutoplay();
     if (btn && !btn.dataset.bound) {
       btn.dataset.bound = '1';
       btn.addEventListener('click', function () {
@@ -825,7 +807,6 @@
 
     if ('serviceWorker' in navigator) {
       var refreshing = false;
-
       navigator.serviceWorker.addEventListener('controllerchange', function () {
         if (refreshing) return;
         refreshing = true;
@@ -836,21 +817,14 @@
         navigator.serviceWorker.register('sw.js?v=' + APP_VERSION).then(function (registration) {
           swRegistration = registration;
           handleWaitingWorker(registration);
-
           registration.addEventListener('updatefound', function () {
             var newWorker = registration.installing;
             if (!newWorker) return;
-
             newWorker.addEventListener('statechange', function () {
-              if (newWorker.state === 'installed') {
-                handleWaitingWorker(registration);
-              }
+              if (newWorker.state === 'installed') handleWaitingWorker(registration);
             });
           });
-
-          setInterval(function () {
-            registration.update();
-          }, 60 * 60 * 1000);
+          setInterval(function () { registration.update(); }, 60 * 60 * 1000);
         }).catch(function () {});
       });
     }
@@ -862,18 +836,11 @@
       if (el) el.addEventListener(eventName, handler, options);
     }
 
-    on('nav-prev', 'click', prevSlide);
-    on('nav-next', 'click', nextSlide);
-
-    document.querySelectorAll('.comfort-page-dot').forEach(function (dot) {
+    document.querySelectorAll('.section-dot').forEach(function (dot) {
       dot.addEventListener('click', function () {
-        goToComfortPage(parseInt(dot.getAttribute('data-page'), 10));
-      });
-    });
-
-    document.querySelectorAll('.dot').forEach(function (dot) {
-      dot.addEventListener('click', function () {
-        goToSlide(parseInt(dot.dataset.slide, 10));
+        pauseAutoplay();
+        scrollToSection(parseInt(dot.dataset.section, 10));
+        resumeAutoplay();
       });
     });
 
@@ -884,15 +851,15 @@
     });
 
     on('gallery-prev', 'click', function () {
+      pauseAutoplay();
       prevReview();
-      stopReviewRotation();
-      startReviewRotation();
+      resetIdleTimer();
     });
 
     on('gallery-next', 'click', function () {
+      pauseAutoplay();
       nextReview();
-      stopReviewRotation();
-      startReviewRotation();
+      resetIdleTimer();
     });
 
     on('spot-tabs', 'click', function (e) {
@@ -914,63 +881,50 @@
     });
 
     var spotViewport = $('dest-spots');
-    if (!spotViewport) return;
-    spotViewport.addEventListener('touchstart', function (e) {
-      spotTouchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
+    if (spotViewport) {
+      spotViewport.addEventListener('touchstart', function (e) {
+        spotTouchStartX = e.changedTouches[0].screenX;
+        pauseAutoplay();
+      }, { passive: true });
 
-    spotViewport.addEventListener('touchend', function (e) {
-      var deltaX = e.changedTouches[0].screenX - spotTouchStartX;
-      if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
-      if (deltaX < 0) nextSpot();
-      else {
-        var t = translations[activeLang];
-        var spots = t.destinationSpots[currentDest];
-        if (!spots) return;
-        goToSpot((currentSpot - 1 + spots.length) % spots.length);
-      }
-    }, { passive: true });
+      spotViewport.addEventListener('touchend', function (e) {
+        var deltaX = e.changedTouches[0].screenX - spotTouchStartX;
+        if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
+        if (deltaX < 0) nextSpot();
+        else {
+          var t = translations[activeLang];
+          var spots = t.destinationSpots[currentDest];
+          if (!spots) return;
+          goToSpot((currentSpot - 1 + spots.length) % spots.length);
+        }
+        resumeAutoplay();
+      }, { passive: true });
+    }
 
-    var viewport = $('slides-viewport');
-    viewport.addEventListener('touchstart', function (e) {
-      touchStartX = e.changedTouches[0].screenX;
-      touchStartY = e.changedTouches[0].screenY;
-    }, { passive: true });
-
-    viewport.addEventListener('touchend', function (e) {
-      var touchEndX = e.changedTouches[0].screenX;
-      var touchEndY = e.changedTouches[0].screenY;
-      var deltaX = touchEndX - touchStartX;
-      var deltaY = touchEndY - touchStartY;
-
-      if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaY) > Math.abs(deltaX)) return;
-
-      var activeCard = document.querySelector('.slide.active .slide-card');
-      if (activeCard && activeCard.scrollTop > 10) return;
-
-      if (deltaX < 0) nextSlide();
-      else prevSlide();
-    }, { passive: true });
+    var scrollEl = $('page-scroll');
+    if (scrollEl) {
+      var scrollPauseTimer = null;
+      scrollEl.addEventListener('scroll', function () {
+        pauseAutoplay();
+        clearTimeout(scrollPauseTimer);
+        scrollPauseTimer = setTimeout(resumeAutoplay, 4000);
+        resetIdleTimer();
+      }, { passive: true });
+    }
 
     ['click', 'touchstart', 'keydown'].forEach(function (eventName) {
-      document.addEventListener(eventName, resetIdleTimer, { passive: true });
-    });
-
-    window.addEventListener('resize', function () {
-      renderComfortPage();
-      updateReviewLayout();
-    });
-    window.addEventListener('orientationchange', function () {
-      renderComfortPage();
-      updateReviewLayout();
+      document.addEventListener(eventName, function () {
+        resetIdleTimer();
+      }, { passive: true });
     });
   }
 
   function init() {
     setLanguage(detectLanguage());
-    goToSlide(0);
-    renderComfortPage();
-    updateReviewLayout();
+    setupSectionObserver();
+    setActiveSection(0);
+    startVehicleRotation();
+    startSectionAutoAdvance();
     bindEvents();
     setupPwa();
   }

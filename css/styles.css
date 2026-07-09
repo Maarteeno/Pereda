@@ -25,7 +25,7 @@ body {
   margin: 0;
   height: 100%;
   overflow: hidden;
-  touch-action: pan-x;
+  touch-action: pan-y;
 }
 
 body {
@@ -35,11 +35,256 @@ body {
 }
 
 .app {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100dvh;
   max-height: 100vh;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  overflow: hidden;
+}
+
+.page-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.page-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.sticky-top .app-header {
+  padding: 8px 16px 4px;
+}
+
+.section-progress {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.section-progress-fill {
+  height: 100%;
+  width: 20%;
+  background: var(--transport-green);
+  transition: width 0.35s ease;
+}
+
+.vehicle-showcase-compact {
+  max-width: min(480px, 88vw);
+  height: clamp(110px, 16vh, 150px);
+  margin: 0 auto 6px;
+  padding-bottom: 4px;
+}
+
+.page-section {
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: stretch;
+  padding: 8px 12px 16px;
+}
+
+.section-card {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  background: #111111;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.profile-hero-split {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.stat-value-lg {
+  font-size: clamp(1.1rem, 3.2vw, 1.5rem);
+  font-weight: 800;
+}
+
+.benefit-card {
+  border-left: 3px solid var(--transport-green);
+}
+
+.review-gallery-kiosk {
+  align-items: center;
+  text-align: center;
+}
+
+.review-kiosk-card {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px;
+  background: #1a1a1a;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: opacity 0.35s ease;
+}
+
+.review-kiosk-card.is-fading {
+  opacity: 0;
+}
+
+.review-author-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(122, 156, 132, 0.2);
+  border: 1px solid rgba(122, 156, 132, 0.45);
+  color: var(--transport-green);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.review-kiosk-text {
+  font-size: clamp(0.95rem, 2.4vw, 1.1rem);
+  line-height: 1.55;
+  max-width: 52ch;
+  -webkit-line-clamp: unset;
+  display: block;
+  overflow: visible;
+}
+
+.review-gallery-nav-minimal {
+  margin-top: 4px;
+}
+
+.spot-category-banner-tall {
+  height: clamp(120px, 22vh, 180px);
+}
+
+.dest-spot-media-tall {
+  height: clamp(200px, 38vh, 320px);
+}
+
+.section-nav {
+  position: fixed;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px 6px;
+  background: rgba(10, 10, 10, 0.72);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.section-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: rgba(139, 150, 167, 0.35);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.section-dot.active {
+  background: var(--transport-green);
+  transform: scale(1.2);
+}
+
+.whatsapp-fab {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--whatsapp-green);
+  color: #0b1a10;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
+  transition: opacity 0.25s ease, transform 0.15s ease;
+}
+
+.whatsapp-fab[hidden] {
+  display: none !important;
+}
+
+.whatsapp-fab:active {
+  transform: scale(0.97);
+}
+
+.app-footer-minimal {
+  padding: 12px 16px 20px;
+  gap: 10px;
+}
+
+@media (min-width: 768px) and (orientation: landscape) {
+  :root {
+    --sticky-top-height: 180px;
+  }
+
+  .profile-hero-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(220px, 0.9fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  .benefit-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 639px) {
+  .section-nav {
+    top: auto;
+    bottom: calc(72px + env(safe-area-inset-bottom));
+    right: 50%;
+    transform: translateX(50%);
+    flex-direction: row;
+    border-radius: 999px;
+    padding: 6px 10px;
+  }
+
+  .whatsapp-fab {
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    padding: 10px 14px;
+    font-size: 0.8rem;
+  }
 }
 
 .app-header {
