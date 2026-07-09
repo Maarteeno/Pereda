@@ -48,42 +48,34 @@
       </button>
 
       <div class="slides-track" id="slides-track">
-        <!-- Slide 1: Vehículo y conductor -->
-        <section class="slide active" data-slide="0" aria-label="Vehículo">
-          <div class="slide-card vehicle-slide">
-            <div class="vehicle-layout">
-              <aside class="driver-card">
-                <img src="assets/adrian-pereda.png" alt="Adrián" class="driver-avatar" width="96" height="96" loading="eager">
-                <h2 class="driver-name" id="driver-name">Adrián</h2>
-                <p class="driver-role" id="driver-role">Conductor Profesional. Montevideo y La Costa</p>
-                <div class="driver-stats driver-stats-row">
-                  <div class="stat-pill stat-uber">
-                    <span class="stat-label" id="uber-label">Valoración Uber</span>
-                    <span class="stat-value"><span id="uber-rating">4.99</span> <span class="stars" aria-hidden="true">★★★★★</span></span>
-                  </div>
-                  <div class="stat-pill">
-                    <span class="stat-label" id="trips-label">Viajes realizados</span>
-                    <span class="stat-value" id="trips-count">+40.000</span>
-                  </div>
-                  <div class="stat-pill">
-                    <span class="stat-label" id="years-label">Años de servicio</span>
-                    <span class="stat-value" id="years-value">9,5</span>
-                  </div>
-                </div>
-              </aside>
-              <div class="vehicle-details">
-                <h1 class="slide-title">Bestune NAT</h1>
-                <p class="comfort-subtitle" id="comfort-subtitle">Por qué viajar en Bestune</p>
-                <div class="comfort-grid">
-                  <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">🧳</span><span id="comfort-1">Espacio amplio para valijas</span></article>
-                  <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">🚪</span><span id="comfort-2">Puerta corrediza · acceso cómodo</span></article>
-                  <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">🔇</span><span id="comfort-3">Viaje silencioso, sin vibraciones</span></article>
-                  <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">❄️</span><span id="comfort-4">Climatización confort todo el año</span></article>
-                  <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">💺</span><span id="comfort-5">Asientos amplios · viaje relajado</span></article>
-                  <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">🌿</span><span id="comfort-6">100% eléctrico · aire limpio a bordo</span></article>
+        <!-- Slide 1: Intro -->
+        <section class="slide active" data-slide="0" aria-label="Introducción">
+          <div class="slide-card intro-slide">
+            <div class="intro-panel">
+              <h1 class="slide-title intro-title" id="intro-title">Traslados privados y seguros</h1>
+              <p class="slide-subtitle intro-subtitle" id="intro-subtitle">Atención directa con Adrián y reserva inmediata por WhatsApp.</p>
+              <div class="intro-driver">
+                <img src="assets/adrian-pereda.png" alt="Adrián" class="driver-avatar intro-avatar" width="88" height="88" loading="eager">
+                <div class="intro-driver-meta">
+                  <h2 class="driver-name" id="driver-name">Adrián</h2>
+                  <p class="driver-role" id="driver-role">Conductor Profesional. Montevideo y La Costa</p>
                 </div>
               </div>
-              <div class="vehicle-qr">
+              <div class="driver-stats driver-stats-row intro-stats">
+                <div class="stat-pill stat-uber">
+                  <span class="stat-label" id="uber-label">Valoración Uber</span>
+                  <span class="stat-value"><span id="uber-rating">4.99</span> <span class="stars" aria-hidden="true">★★★★★</span></span>
+                </div>
+                <div class="stat-pill">
+                  <span class="stat-label" id="trips-label">Viajes realizados</span>
+                  <span class="stat-value" id="trips-count">+40.000</span>
+                </div>
+                <div class="stat-pill">
+                  <span class="stat-label" id="years-label">Años de servicio</span>
+                  <span class="stat-value" id="years-value">9,5</span>
+                </div>
+              </div>
+              <div class="vehicle-qr intro-cta">
                 <p class="vehicle-qr-label" id="qr-label">Escribile por WhatsApp</p>
                 <a href="https://wa.me/59899774019" class="vehicle-qr-link" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Adrián Pereda">
                   <img src="assets/whatsapp-qr.png" alt="QR WhatsApp Adrián Pereda" class="vehicle-qr-image" width="100" height="100" loading="lazy">
@@ -94,51 +86,76 @@
           </div>
         </section>
 
-        <!-- Slide 2: Traslados -->
-        <section class="slide" data-slide="1" aria-label="Servicios">
-          <div class="slide-card services-slide" id="services-slide">
+        <!-- Slide 2: Vehículo y confort -->
+        <section class="slide" data-slide="1" aria-label="Vehículo y confort">
+          <div class="slide-card vehicle-info-slide">
+            <div class="vehicle-details vehicle-details-full">
+              <h2 class="slide-title">Bestune NAT</h2>
+              <p class="comfort-subtitle" id="comfort-subtitle">Por qué viajar en Bestune</p>
+              <div class="comfort-grid">
+                <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">🧳</span><span id="comfort-1">Espacio amplio para valijas</span></article>
+                <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">🚪</span><span id="comfort-2">Puerta corrediza · acceso cómodo</span></article>
+                <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">🔇</span><span id="comfort-3">Viaje silencioso, sin vibraciones</span></article>
+                <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">❄️</span><span id="comfort-4">Climatización confort todo el año</span></article>
+                <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">💺</span><span id="comfort-5">Asientos amplios · viaje relajado</span></article>
+                <article class="comfort-chip"><span class="comfort-icon" aria-hidden="true">🌿</span><span id="comfort-6">100% eléctrico · aire limpio a bordo</span></article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 3: Destinos -->
+        <section class="slide" data-slide="2" aria-label="Destinos">
+          <div class="slide-card services-slide">
             <div class="slide-head">
               <h2 class="slide-title" id="services-title">Traslados</h2>
               <p class="slide-subtitle" id="services-subtitle">Destinos desde Montevideo</p>
               <p class="services-intro" id="services-intro">Deslizá para conocer cada destino</p>
             </div>
-            <div class="dest-carousel" id="dest-carousel">
-              <div class="dest-tabs" id="dest-tabs" role="tablist"></div>
-              <div class="dest-viewport" id="dest-viewport">
-                <button type="button" class="dest-arrow dest-arrow-prev" id="dest-prev" aria-label="Destino anterior">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-                </button>
-                <div class="dest-slide" id="dest-slide">
-                  <div class="dest-header">
-                    <div class="dest-header-top">
-                      <h3 class="dest-name" id="dest-name">Traslados a Punta del Este</h3>
-                      <span class="dest-car-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M4 16v2a1 1 0 0 0 1 1h1"/>
-                          <path d="M18 16v2a1 1 0 0 0 1 1h1"/>
-                          <path d="M2 12h20"/>
-                          <path d="M5 12l2-5h10l2 5"/>
-                          <path d="M7 16h10"/>
-                        </svg>
-                      </span>
-                    </div>
-                    <span class="dest-trip-badge" id="dest-trip-badge">~130 km · ~1h 45min</span>
-                  </div>
-                  <div class="dest-spots" id="dest-spots"></div>
-                  <div class="dest-spot-dots" id="dest-spot-dots" role="tablist" aria-hidden="true"></div>
-                </div>
-                <button type="button" class="dest-arrow dest-arrow-next" id="dest-next" aria-label="Destino siguiente">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-                </button>
-              </div>
-              <div class="dest-dots" id="dest-dots" role="tablist"></div>
-              <p class="dest-trip-note" id="dest-trip-note">Tiempos estimados sin tráfico</p>
+            <div class="dest-carousel">
+              <div class="dest-tabs" id="dest-tabs-overview" role="tablist"></div>
+              <article class="dest-summary-card">
+                <h3 class="dest-name" id="dest-summary-name">Traslados a Punta del Este</h3>
+                <span class="dest-trip-badge" id="dest-summary-badge">~130 km · ~1h 45min</span>
+              </article>
             </div>
           </div>
         </section>
 
-        <!-- Slide 3: Reseñas y FAQ -->
-        <section class="slide" data-slide="2" aria-label="Reseñas y FAQ">
+        <!-- Slide 4: Spots -->
+        <section class="slide" data-slide="3" aria-label="Puntos de interés">
+          <div class="slide-card services-slide" id="services-slide">
+            <div class="slide-head">
+              <h2 class="slide-title" id="spot-section-title">Puntos de interés</h2>
+              <p class="services-intro" id="dest-trip-note">Tiempos estimados sin tráfico</p>
+            </div>
+            <div class="dest-carousel" id="dest-carousel">
+              <div class="dest-tabs" id="spot-tabs" role="tablist"></div>
+              <div class="dest-slide" id="dest-slide">
+                <div class="dest-header">
+                  <div class="dest-header-top">
+                    <h3 class="dest-name" id="spot-dest-name">Traslados a Punta del Este</h3>
+                    <span class="dest-car-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 16v2a1 1 0 0 0 1 1h1"/>
+                        <path d="M18 16v2a1 1 0 0 0 1 1h1"/>
+                        <path d="M2 12h20"/>
+                        <path d="M5 12l2-5h10l2 5"/>
+                        <path d="M7 16h10"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <span class="dest-trip-badge" id="spot-dest-badge">~130 km · ~1h 45min</span>
+                </div>
+                <div class="dest-spots" id="dest-spots"></div>
+                <div class="dest-spot-dots" id="dest-spot-dots" role="tablist" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 5: Reseñas -->
+        <section class="slide" data-slide="4" aria-label="Reseñas">
           <div class="slide-card info-slide">
             <div class="review-gallery" id="review-gallery" aria-live="polite">
               <h2 class="review-gallery-title" id="review-gallery-title">Lo dicen los pasajeros</h2>
@@ -164,9 +181,19 @@
                 </button>
               </div>
             </div>
+          </div>
+        </section>
+
+        <!-- Slide 6: FAQ y reserva -->
+        <section class="slide" data-slide="5" aria-label="FAQ y reserva">
+          <div class="slide-card info-slide">
             <div class="faq-section">
               <h2 class="faq-title" id="faq-title">Preguntas frecuentes</h2>
               <div class="faq-list" id="faq-list"></div>
+            </div>
+            <div class="final-cta">
+              <p class="vehicle-qr-label" id="final-cta-label">¿Listo para reservar?</p>
+              <a href="https://wa.me/59899774019" class="final-cta-link" target="_blank" rel="noopener noreferrer" id="final-cta-action">WhatsApp</a>
             </div>
           </div>
         </section>
@@ -182,6 +209,9 @@
         <button type="button" class="dot active" data-slide="0" aria-label="Slide 1" aria-selected="true"></button>
         <button type="button" class="dot" data-slide="1" aria-label="Slide 2" aria-selected="false"></button>
         <button type="button" class="dot" data-slide="2" aria-label="Slide 3" aria-selected="false"></button>
+        <button type="button" class="dot" data-slide="3" aria-label="Slide 4" aria-selected="false"></button>
+        <button type="button" class="dot" data-slide="4" aria-label="Slide 5" aria-selected="false"></button>
+        <button type="button" class="dot" data-slide="5" aria-label="Slide 6" aria-selected="false"></button>
       </div>
       <p class="footer-copy">© Maarteeno 2025</p>
     </footer>

@@ -9,7 +9,7 @@
 
   var activeLang = 'es';
   var currentSlide = 0;
-  var totalSlides = 3;
+  var totalSlides = 6;
   var idleTimer = null;
   var touchStartX = 0;
   var touchStartY = 0;
@@ -46,6 +46,11 @@
       ],
       qrLabel: 'Escribile por WhatsApp',
       phoneNumber: '+598 99 774 019',
+      introTitle: 'Traslados privados y seguros',
+      introSubtitle: 'Atención directa con Adrián y reserva inmediata por WhatsApp.',
+      spotSectionTitle: 'Puntos de interés',
+      finalCtaLabel: '¿Listo para reservar?',
+      finalCtaAction: 'Abrir WhatsApp',
       servicesTitle: 'Traslados',
       servicesSubtitle: 'Destinos desde Montevideo',
       servicesIntro: 'Deslizá para conocer cada destino',
@@ -114,6 +119,11 @@
       ],
       qrLabel: 'Message on WhatsApp',
       phoneNumber: '+598 99 774 019',
+      introTitle: 'Private and reliable transfers',
+      introSubtitle: 'Direct contact with Adrián and instant booking via WhatsApp.',
+      spotSectionTitle: 'Points of interest',
+      finalCtaLabel: 'Ready to book?',
+      finalCtaAction: 'Open WhatsApp',
       servicesTitle: 'Transport',
       servicesSubtitle: 'Destinations from Montevideo',
       servicesIntro: 'Swipe to explore each destination',
@@ -182,6 +192,11 @@
       ],
       qrLabel: 'Escreva no WhatsApp',
       phoneNumber: '+598 99 774 019',
+      introTitle: 'Transfers privados e seguros',
+      introSubtitle: 'Contato direto com Adrián e reserva imediata pelo WhatsApp.',
+      spotSectionTitle: 'Pontos de interesse',
+      finalCtaLabel: 'Pronto para reservar?',
+      finalCtaAction: 'Abrir WhatsApp',
       servicesTitle: 'Transporte',
       servicesSubtitle: 'Destinos desde Montevidéu',
       servicesIntro: 'Deslize para conhecer cada destino',
@@ -233,6 +248,11 @@
     return document.getElementById(id);
   }
 
+  function setText(id, value) {
+    var el = $(id);
+    if (el) el.textContent = value;
+  }
+
   function detectLanguage() {
     var saved = localStorage.getItem(LANG_STORAGE_KEY);
     if (saved && translations[saved]) {
@@ -257,42 +277,47 @@
     var t = translations[lang];
     var i;
 
-    $('brand-name').textContent = t.brandName;
-    $('header-subtitle').textContent = t.headerSubtitle;
-    $('vehicle-badge').textContent = t.vehicleBadge;
-    $('comfort-subtitle').textContent = t.comfortSubtitle;
-    $('driver-name').textContent = t.driverName;
-    $('driver-role').textContent = t.driverRole;
-    $('uber-label').textContent = t.uberLabel;
-    $('uber-rating').textContent = t.uberRating;
-    $('trips-label').textContent = t.tripsLabel;
-    $('trips-count').textContent = t.tripsCount;
-    $('years-label').textContent = t.yearsLabel;
-    $('years-value').textContent = t.yearsValue;
+    setText('brand-name', t.brandName);
+    setText('header-subtitle', t.headerSubtitle);
+    setText('vehicle-badge', t.vehicleBadge);
+    setText('intro-title', t.introTitle);
+    setText('intro-subtitle', t.introSubtitle);
+    setText('comfort-subtitle', t.comfortSubtitle);
+    setText('driver-name', t.driverName);
+    setText('driver-role', t.driverRole);
+    setText('uber-label', t.uberLabel);
+    setText('uber-rating', t.uberRating);
+    setText('trips-label', t.tripsLabel);
+    setText('trips-count', t.tripsCount);
+    setText('years-label', t.yearsLabel);
+    setText('years-value', t.yearsValue);
 
     for (i = 0; i < t.comfortItems.length; i++) {
-      $('comfort-' + (i + 1)).textContent = t.comfortItems[i];
+      setText('comfort-' + (i + 1), t.comfortItems[i]);
     }
 
-    $('qr-label').textContent = t.qrLabel;
-    $('vehicle-qr-phone').textContent = t.phoneNumber;
+    setText('qr-label', t.qrLabel);
+    setText('vehicle-qr-phone', t.phoneNumber);
+    setText('final-cta-label', t.finalCtaLabel);
+    setText('final-cta-action', t.finalCtaAction);
+    setText('spot-section-title', t.spotSectionTitle);
 
-    $('services-title').textContent = t.servicesTitle;
-    $('services-subtitle').textContent = t.servicesSubtitle;
-    $('services-intro').textContent = t.servicesIntro;
-    $('dest-trip-note').textContent = t.tripNote;
+    setText('services-title', t.servicesTitle);
+    setText('services-subtitle', t.servicesSubtitle);
+    setText('services-intro', t.servicesIntro);
+    setText('dest-trip-note', t.tripNote);
 
     renderDestTabs();
     goToDestination(currentDest, false);
 
-    $('review-gallery-title').textContent = t.reviewLabel;
-    $('faq-title').textContent = t.faqTitle;
+    setText('review-gallery-title', t.reviewLabel);
+    setText('faq-title', t.faqTitle);
     renderFaq();
     showReviewPair(shuffleIndex, false);
 
-    $('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
-    $('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
-    $('lang-pt').setAttribute('aria-pressed', String(lang === 'pt'));
+    if ($('lang-es')) $('lang-es').setAttribute('aria-pressed', String(lang === 'es'));
+    if ($('lang-en')) $('lang-en').setAttribute('aria-pressed', String(lang === 'en'));
+    if ($('lang-pt')) $('lang-pt').setAttribute('aria-pressed', String(lang === 'pt'));
   }
 
   function goToSlide(index) {
@@ -314,13 +339,13 @@
     resetIdleTimer();
     updateVehicleShowcase(currentSlide);
 
-    if (currentSlide === 2) {
+    if (currentSlide === 4) {
       startReviewRotation();
     } else {
       stopReviewRotation();
     }
 
-    if (currentSlide !== 1) {
+    if (currentSlide !== 3) {
       currentSpot = 0;
       updateSpotVisibility();
     }
@@ -446,11 +471,7 @@
 
   function renderDestTabs() {
     var t = translations[activeLang];
-    var tabsEl = $('dest-tabs');
-    var dotsEl = $('dest-dots');
-    if (!tabsEl || !dotsEl) return;
-
-    tabsEl.innerHTML = t.services.map(function (name, i) {
+    var tabMarkup = t.services.map(function (name, i) {
       return (
         '<button type="button" class="dest-tab' + (i === currentDest ? ' active' : '') + '" data-dest="' + i + '" role="tab" aria-selected="' + (i === currentDest) + '">' +
           name +
@@ -458,11 +479,10 @@
       );
     }).join('');
 
-    dotsEl.innerHTML = t.services.map(function (_, i) {
-      return (
-        '<button type="button" class="dest-dot' + (i === currentDest ? ' active' : '') + '" data-dest="' + i + '" aria-label="Destino ' + (i + 1) + '"></button>'
-      );
-    }).join('');
+    var overviewTabsEl = $('dest-tabs-overview');
+    var spotTabsEl = $('spot-tabs');
+    if (overviewTabsEl) overviewTabsEl.innerHTML = tabMarkup;
+    if (spotTabsEl) spotTabsEl.innerHTML = tabMarkup;
   }
 
   function renderDestSpots(index) {
@@ -542,12 +562,18 @@
     var t = translations[activeLang];
     var trip = t.tripInfo[index];
 
-    var nameEl = $('dest-name');
-    var badgeEl = $('dest-trip-badge');
+    var summaryNameEl = $('dest-summary-name');
+    var summaryBadgeEl = $('dest-summary-badge');
+    var spotNameEl = $('spot-dest-name');
+    var spotBadgeEl = $('spot-dest-badge');
     var slideEl = $('dest-slide');
 
-    if (nameEl) nameEl.textContent = t.transferToPrefix + ' ' + t.services[index];
-    if (badgeEl) badgeEl.textContent = trip.distance + ' · ' + trip.duration;
+    var label = t.transferToPrefix + ' ' + t.services[index];
+    var meta = trip.distance + ' · ' + trip.duration;
+    if (summaryNameEl) summaryNameEl.textContent = label;
+    if (summaryBadgeEl) summaryBadgeEl.textContent = meta;
+    if (spotNameEl) spotNameEl.textContent = label;
+    if (spotBadgeEl) spotBadgeEl.textContent = meta;
 
     renderDestSpots(index);
 
@@ -555,10 +581,6 @@
       var isActive = i === index;
       tab.classList.toggle('active', isActive);
       tab.setAttribute('aria-selected', String(isActive));
-    });
-
-    document.querySelectorAll('.dest-dot').forEach(function (dot, i) {
-      dot.classList.toggle('active', i === index);
     });
 
     if (slideEl && animate !== false) {
@@ -636,8 +658,13 @@
   }
 
   function bindEvents() {
-    $('nav-prev').addEventListener('click', prevSlide);
-    $('nav-next').addEventListener('click', nextSlide);
+    function on(id, eventName, handler, options) {
+      var el = $(id);
+      if (el) el.addEventListener(eventName, handler, options);
+    }
+
+    on('nav-prev', 'click', prevSlide);
+    on('nav-next', 'click', nextSlide);
 
     document.querySelectorAll('.dot').forEach(function (dot) {
       dot.addEventListener('click', function () {
@@ -646,56 +673,49 @@
     });
 
     ['lang-es', 'lang-en', 'lang-pt'].forEach(function (id) {
-      $(id).addEventListener('click', function () {
+      on(id, 'click', function () {
         setLanguage($(id).dataset.lang);
       });
     });
 
-    $('gallery-prev').addEventListener('click', function () {
+    on('gallery-prev', 'click', function () {
       prevReview();
       stopReviewRotation();
       startReviewRotation();
     });
 
-    $('gallery-next').addEventListener('click', function () {
+    on('gallery-next', 'click', function () {
       nextReview();
       stopReviewRotation();
       startReviewRotation();
     });
 
-    $('dest-prev').addEventListener('click', function () {
-      prevDestination();
-    });
-
-    $('dest-next').addEventListener('click', function () {
-      nextDestination();
-    });
-
-    $('dest-tabs').addEventListener('click', function (e) {
+    on('dest-tabs-overview', 'click', function (e) {
       var tab = e.target.closest('.dest-tab');
       if (!tab) return;
       goToDestination(parseInt(tab.dataset.dest, 10), true);
     });
 
-    $('dest-dots').addEventListener('click', function (e) {
-      var dot = e.target.closest('.dest-dot');
-      if (!dot) return;
-      goToDestination(parseInt(dot.dataset.dest, 10), true);
+    on('spot-tabs', 'click', function (e) {
+      var tab = e.target.closest('.dest-tab');
+      if (!tab) return;
+      goToDestination(parseInt(tab.dataset.dest, 10), true);
     });
 
-    $('dest-spot-dots').addEventListener('click', function (e) {
+    on('dest-spot-dots', 'click', function (e) {
       var dot = e.target.closest('.dest-spot-dot');
       if (!dot) return;
       goToSpot(parseInt(dot.dataset.spot, 10));
     });
 
-    $('faq-list').addEventListener('click', function (e) {
+    on('faq-list', 'click', function (e) {
       var btn = e.target.closest('.faq-question');
       if (!btn) return;
       toggleFaq(parseInt(btn.dataset.faq, 10));
     });
 
     var spotViewport = $('dest-spots');
+    if (!spotViewport) return;
     spotViewport.addEventListener('touchstart', function (e) {
       spotTouchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
