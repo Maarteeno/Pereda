@@ -227,6 +227,9 @@ body {
 .vehicle-layout {
   display: grid;
   grid-template-columns: minmax(200px, 0.9fr) minmax(240px, 1.1fr);
+  grid-template-areas:
+    "driver details"
+    "qr qr";
   gap: 16px;
   width: 100%;
   padding: 16px 20px;
@@ -235,6 +238,7 @@ body {
 }
 
 .driver-card {
+  grid-area: driver;
   background: #161616;
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -334,9 +338,11 @@ body {
 }
 
 .vehicle-details {
+  grid-area: details;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .comfort-grid {
@@ -433,7 +439,7 @@ body {
 }
 
 .vehicle-qr {
-  grid-column: 1 / -1;
+  grid-area: qr;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -512,13 +518,11 @@ body {
 }
 
 .dest-tabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 6px;
   flex-shrink: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 2px;
+  padding-bottom: 0;
 }
 
 .dest-tabs::-webkit-scrollbar {
@@ -526,7 +530,6 @@ body {
 }
 
 .dest-tab {
-  flex: 1 0 auto;
   min-width: 0;
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -534,9 +537,11 @@ body {
   color: var(--text-soft);
   font-size: clamp(0.68rem, 1.6vw, 0.78rem);
   font-weight: 600;
-  padding: 7px 12px;
+  padding: 7px 8px;
   cursor: pointer;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
@@ -1136,13 +1141,25 @@ body {
 
   .vehicle-layout {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "driver"
+      "details"
+      "qr";
     padding: 14px 16px;
     gap: 14px;
   }
 
   .driver-card {
+    width: 100%;
+    max-width: 360px;
+    justify-self: center;
     padding: 14px 12px;
     gap: 8px;
+  }
+
+  .driver-avatar {
+    width: 64px;
+    height: 64px;
   }
 
   .driver-stats-row {
@@ -1156,6 +1173,14 @@ body {
   .comfort-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
+  }
+
+  .slide-title {
+    font-size: clamp(1.1rem, 5.6vw, 1.5rem);
+  }
+
+  .slide-subtitle {
+    font-size: 0.84rem;
   }
 
   .slide {
@@ -1197,7 +1222,7 @@ body {
   }
 
   .review-gallery-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 8px;
   }
 
@@ -1221,22 +1246,6 @@ body {
   .slide-card {
     overflow-y: auto;
     scrollbar-width: none;
-  }
-
-  .dest-spots.is-carousel-mode {
-    flex-direction: column;
-    gap: 0;
-    overflow: hidden;
-  }
-
-  .dest-spots.is-carousel-mode .dest-spot {
-    display: none;
-    flex: none;
-    width: 100%;
-  }
-
-  .dest-spots.is-carousel-mode .dest-spot.is-active {
-    display: flex;
   }
 
   .dest-spot-dots {
@@ -1305,7 +1314,22 @@ body {
 @media (min-width: 640px) and (max-width: 1023px) and (orientation: portrait) {
   .vehicle-layout {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "driver"
+      "details"
+      "qr";
     gap: 16px;
+  }
+
+  .driver-card {
+    width: 100%;
+    max-width: 440px;
+    justify-self: center;
+  }
+
+  .services-slide,
+  .info-slide {
+    padding: 16px 18px;
   }
 
   .comfort-grid {
@@ -1362,6 +1386,15 @@ body {
 }
 
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .services-slide,
+  .info-slide {
+    padding: 14px 20px;
+  }
+
+  .dest-tab {
+    font-size: 0.74rem;
+  }
+
   :root {
     --spot-photo-size: clamp(60px, 10vh, 84px);
   }
