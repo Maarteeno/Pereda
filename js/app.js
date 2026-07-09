@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v32';
+  var APP_VERSION = 'v33';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var IDLE_RESET_MS = 60000;
   var REVIEW_INTERVAL_MS = 5000;
@@ -343,13 +343,13 @@
 
     sectionObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (!entry.isIntersecting || entry.intersectionRatio < 0.25) return;
+        if (!entry.isIntersecting || entry.intersectionRatio < 0.6) return;
         var index = parseInt(entry.target.getAttribute('data-section'), 10);
         if (!isNaN(index) && index !== currentSection) {
           setActiveSection(index);
         }
       });
-    }, { root: scrollEl, threshold: [0.25, 0.4, 0.55] });
+    }, { root: scrollEl, threshold: [0.6, 0.75, 0.9] });
 
     document.querySelectorAll('.page-section').forEach(function (section) {
       sectionObserver.observe(section);
@@ -451,7 +451,9 @@
   }
 
   function isDualCardLayout() {
-    return window.innerHeight >= 640;
+    var scrollEl = $('page-scroll');
+    var slideHeight = scrollEl ? scrollEl.clientHeight : window.innerHeight;
+    return slideHeight >= 560;
   }
 
   function isDualReviewLayout() {
