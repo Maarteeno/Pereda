@@ -299,6 +299,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .brand-name {
@@ -323,6 +325,11 @@ body {
   background: rgba(18, 24, 32, 0.85);
   padding: 4px;
   gap: 4px;
+}
+
+.header-lang {
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .lang-btn {
@@ -1738,26 +1745,59 @@ body {
 }
 
 @media (max-width: 639px) {
-  .header-lang {
-    display: none;
+  .header-lang .lang-btn {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 5px;
   }
 
-  .footer-lang {
-    display: inline-flex;
-    width: 100%;
+  .header-lang .lang-flag {
+    width: 24px;
+    height: 18px;
+  }
+
+  .sticky-top .app-header {
+    padding-inline: 12px;
+    gap: 10px;
+  }
+
+  .brand-name {
+    font-size: 1rem;
+  }
+
+  .brand-sub {
+    font-size: 0.7rem;
+  }
+
+  .hero-profile-band,
+  .profile-hero-main {
+    text-align: center;
+  }
+
+  .intro-title,
+  .intro-subtitle {
+    text-align: center;
+  }
+
+  .profile-identity {
     justify-content: center;
   }
 
-  .footer-lang .lang-btn {
-    flex: 1;
-  }
-
   .profile-stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    max-width: min(280px, 88vw);
+    margin: 0 auto;
+    gap: 8px;
   }
 
   .profile-stats-grid .stat-pill:last-child {
-    grid-column: 1 / -1;
+    grid-column: auto;
+  }
+
+  .stat-pill {
+    text-align: center;
+    padding: 10px 12px;
   }
 
   .review-gallery-grid {
@@ -2487,6 +2527,25 @@ body.update-blocked {
     --hero-vehicle-height: clamp(200px, 36vh, 320px);
   }
 
+  .hero-profile-band,
+  .profile-hero-main {
+    text-align: center;
+  }
+
+  .profile-identity {
+    justify-content: center;
+  }
+
+  .profile-stats-grid {
+    grid-template-columns: 1fr;
+    max-width: min(300px, 70vw);
+    margin: 0 auto;
+  }
+
+  .stat-pill {
+    text-align: center;
+  }
+
   .benefit-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2513,10 +2572,5 @@ body.update-blocked {
 
   .whatsapp-fab {
     bottom: calc(12px + env(safe-area-inset-bottom));
-  }
-
-  .profile-stats-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
   }
 }

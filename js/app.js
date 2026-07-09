@@ -3,10 +3,9 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v29';
+  var APP_VERSION = 'v30';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var IDLE_RESET_MS = 60000;
-  var SWIPE_THRESHOLD = 50;
   var REVIEW_INTERVAL_MS = 5000;
   var SECTION_AUTO_MS = 5000;
   var FAQ_INTERVAL_MS = 5000;
@@ -30,10 +29,9 @@
   var swRegistration = null;
   var sectionObserver = null;
   var isProgrammaticScroll = false;
-  var userScrolledManually = false;
   var lastScrollTop = 0;
-  var touchScrollStartY = 0;
-  var touchScrollActive = false;
+  var touchAutoplayHold = 0;
+  var touchResumeTimer = null;
 
   var translations = {
     es: {
@@ -213,6 +211,7 @@
     document.documentElement.lang = lang;
     reshuffleReviews();
     renderTranslations(lang);
+    resetIdleTimer();
   }
 
   function renderTranslations(lang) {
@@ -281,10 +280,19 @@
     heroScene.style.setProperty('--hero-parallax', offset + 'px');
   }
 
-  function markManualScroll() {
-    if (isProgrammaticScroll) return;
-    userScrolledManually = true;
+  function pauseAutoplayForTouch() {
+    touchAutoplayHold += 1;
+    clearTimeout(touchResumeTimer);
     pauseAutoplay();
+  }
+
+  function resumeAutoplayAfterTouch() {
+    touchAutoplayHold = Math.max(0, touchAutoplayHold - 1);
+    if (touchAutoplayHold > 0) return;
+    clearTimeout(touchResumeTimer);
+    touchResumeTimer = setTimeout(function () {
+      if (touchAutoplayHold === 0) resumeAutoplay();
+    }, 300);
   }
 
   function getSectionEl(index) {
@@ -609,7 +617,6 @@
   function resetIdleTimer() {
     clearTimeout(idleTimer);
     idleTimer = setTimeout(function () {
-      userScrolledManually = false;
       scrollToSection(0);
       resumeAutoplay();
     }, IDLE_RESET_MS);
@@ -707,8 +714,8 @@
 
     document.querySelectorAll('.section-dot').forEach(function (dot) {
       dot.addEventListener('click', function () {
-        markManualScroll();
         scrollToSection(parseInt(dot.dataset.section, 10));
+        resetIdleTimer();
       });
     });
 
@@ -719,25 +726,21 @@
     });
 
     on('gallery-prev', 'click', function () {
-      markManualScroll();
       prevReview();
       resetIdleTimer();
     });
 
     on('gallery-next', 'click', function () {
-      markManualScroll();
       nextReview();
       resetIdleTimer();
     });
 
     on('faq-prev', 'click', function () {
-      markManualScroll();
       prevFaq();
       resetIdleTimer();
     });
 
     on('faq-next', 'click', function () {
-      markManualScroll();
       nextFaq();
       resetIdleTimer();
     });
@@ -745,7 +748,6 @@
     on('faq-dots', 'click', function (e) {
       var dot = e.target.closest('.gallery-dot');
       if (!dot) return;
-      markManualScroll();
       showFaq(parseInt(dot.dataset.faq, 10), true);
       resetIdleTimer();
     });
@@ -757,39 +759,22 @@
       scrollEl.addEventListener('scroll', function () {
         updateScrollProgress();
         updateHeroParallax();
-
-        if (!isProgrammaticScroll) {
-          var delta = Math.abs(scrollEl.scrollTop - lastScrollTop);
-          if (delta > 8) markManualScroll();
-        }
         lastScrollTop = scrollEl.scrollTop;
         resetIdleTimer();
       }, { passive: true });
 
-      scrollEl.addEventListener('wheel', function () {
-        markManualScroll();
-      }, { passive: true });
-
-      scrollEl.addEventListener('touchstart', function (e) {
-        touchScrollStartY = e.changedTouches[0].screenY;
-        touchScrollActive = true;
-      }, { passive: true });
-
-      scrollEl.addEventListener('touchmove', function (e) {
-        if (!touchScrollActive) return;
-        var deltaY = Math.abs(e.changedTouches[0].screenY - touchScrollStartY);
-        if (deltaY > 12) markManualScroll();
+      scrollEl.addEventListener('touchstart', function () {
+        pauseAutoplayForTouch();
       }, { passive: true });
 
       scrollEl.addEventListener('touchend', function () {
-        touchScrollActive = false;
+        resumeAutoplayAfterTouch();
+      }, { passive: true });
+
+      scrollEl.addEventListener('touchcancel', function () {
+        resumeAutoplayAfterTouch();
       }, { passive: true });
     }
-
-    document.addEventListener('keydown', function (e) {
-      var keys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '];
-      if (keys.indexOf(e.key) >= 0) markManualScroll();
-    });
 
     ['click', 'touchstart', 'keydown'].forEach(function (eventName) {
       document.addEventListener(eventName, function () {
