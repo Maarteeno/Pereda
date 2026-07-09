@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pereda Traslados">
+  <meta name="description" content="Adrián Pereda - Traslados en Bestune NAT eléctrico">
+  <title>Adrián Pereda - Traslados</title>
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <div class="sticky-top" id="sticky-top">
+      <header class="app-header">
+        <div class="brand">
+          <span class="brand-name" id="brand-name">Adrián Pereda</span>
+          <span class="brand-sub" id="header-subtitle">Traslados</span>
+        </div>
+        <div class="language-selector header-lang" role="group" aria-label="Idioma">
+          <button type="button" class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="true"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#c60b1e"/><rect y="6" width="32" height="12" fill="#ffc400"/></svg></button>
+          <button type="button" class="lang-btn" data-lang="en" aria-label="English" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#012169"/><path d="M0 0l32 24M32 0L0 24" stroke="#fff" stroke-width="4"/><path d="M0 0l32 24M32 0L0 24" stroke="#c8102e" stroke-width="2"/><path d="M16 0v24M0 12h32" stroke="#fff" stroke-width="6"/><path d="M16 0v24M0 12h32" stroke="#c8102e" stroke-width="3"/></svg></button>
+          <button type="button" class="lang-btn" data-lang="pt" aria-label="Português" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#009b3a"/><polygon points="16,2 30,12 16,22 2,12" fill="#fedf00"/><circle cx="16" cy="12" r="5" fill="#002776"/></svg></button>
+        </div>
+      </header>
+      <div class="section-progress" aria-hidden="true">
+        <div class="section-progress-fill" id="section-progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="page-scroll" id="page-scroll">
+      <section class="page-section page-slide page-hero" id="section-profile" data-section="0" aria-label="Perfil del conductor">
+        <div class="vehicle-hero-scene" id="vehicle-hero-scene">
+          <div class="vehicle-ambient-glow" aria-hidden="true"></div>
+          <div class="vehicle-ground-arc" aria-hidden="true"></div>
+          <section class="vehicle-showcase vehicle-showcase-hero" id="vehicle-showcase">
+            <span class="vehicle-badge" id="vehicle-badge">100% Eléctrico</span>
+            <div class="vehicle-stage">
+              <div class="vehicle-rotator vehicle-rotator-animated" id="vehicle-rotator">
+                <img src="assets/bestune-front.png" class="vehicle-view vehicle-view-photo active" data-angle="0" alt="Bestune NAT blanco vista 3/4 con puerta abierta">
+                <img src="assets/bestune-side.png" class="vehicle-view vehicle-view-photo" data-angle="1" alt="Bestune NAT blanco vista lateral">
+                <img src="assets/bestune-rear.png" class="vehicle-view vehicle-view-photo" data-angle="2" alt="Bestune NAT blanco vista frontal">
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="hero-profile-band">
+          <div class="profile-hero profile-hero-split">
+            <div class="profile-hero-main">
+              <h1 class="slide-title intro-title" id="intro-title">Traslados privados y seguros</h1>
+              <p class="slide-subtitle intro-subtitle" id="intro-subtitle">Reservá directo con Adrián</p>
+              <div class="profile-identity">
+                <img src="assets/adrian-pereda.png" alt="Adrián" class="driver-avatar profile-avatar" width="96" height="96" loading="eager">
+                <div class="profile-identity-meta">
+                  <h2 class="driver-name" id="driver-name">Adrián</h2>
+                  <p class="driver-role" id="driver-role">Conductor Profesional. Montevideo y La Costa</p>
+                </div>
+              </div>
+              <div class="profile-stats-grid">
+                <div class="stat-pill stat-uber">
+                  <span class="stat-label" id="uber-label">Valoración Uber</span>
+                  <span class="stat-value stat-value-lg"><span id="uber-rating">4.99</span> <span class="stars" aria-hidden="true">★★★★★</span></span>
+                </div>
+                <div class="stat-pill">
+                  <span class="stat-label" id="trips-label">Viajes realizados</span>
+                  <span class="stat-value stat-value-lg" id="trips-count">+40.000</span>
+                </div>
+                <div class="stat-pill">
+                  <span class="stat-label" id="years-label">Años de servicio</span>
+                  <span class="stat-value stat-value-lg" id="years-value">9,5</span>
+                </div>
+              </div>
+            </div>
+            <div class="qr-card">
+              <p class="vehicle-qr-label" id="qr-label">Escribile por WhatsApp</p>
+              <a href="https://wa.me/59899774019" class="vehicle-qr-link" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Adrián Pereda">
+                <img src="assets/whatsapp-qr.png" alt="QR WhatsApp Adrián Pereda" class="vehicle-qr-image" width="140" height="140" loading="lazy">
+              </a>
+              <p class="vehicle-qr-phone" id="vehicle-qr-phone">+598 99 774 019</p>
+              <a href="https://wa.me/59899774019" class="qr-action-btn" id="qr-action-btn" target="_blank" rel="noopener noreferrer">Abrir WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-section page-slide page-section-flow" id="section-bestune" data-section="1" aria-label="Vehículo y confort">
+        <div class="section-inner">
+          <h2 class="slide-title">Bestune NAT</h2>
+          <p class="comfort-subtitle" id="comfort-subtitle">Por qué viajar en Bestune</p>
+          <div class="benefit-grid" id="benefit-grid">
+            <article class="benefit-card" data-benefit="0"><span class="benefit-icon" id="benefit-icon-1" aria-hidden="true">🧳</span><div class="benefit-copy"><h3 class="benefit-title" id="benefit-title-1"></h3><p class="benefit-desc" id="benefit-desc-1"></p></div></article>
+            <article class="benefit-card" data-benefit="1"><span class="benefit-icon" id="benefit-icon-2" aria-hidden="true">🚪</span><div class="benefit-copy"><h3 class="benefit-title" id="benefit-title-2"></h3><p class="benefit-desc" id="benefit-desc-2"></p></div></article>
+            <article class="benefit-card" data-benefit="2"><span class="benefit-icon" id="benefit-icon-3" aria-hidden="true">🔇</span><div class="benefit-copy"><h3 class="benefit-title" id="benefit-title-3"></h3><p class="benefit-desc" id="benefit-desc-3"></p></div></article>
+            <article class="benefit-card" data-benefit="3"><span class="benefit-icon" id="benefit-icon-4" aria-hidden="true">❄️</span><div class="benefit-copy"><h3 class="benefit-title" id="benefit-title-4"></h3><p class="benefit-desc" id="benefit-desc-4"></p></div></article>
+            <article class="benefit-card" data-benefit="4"><span class="benefit-icon" id="benefit-icon-5" aria-hidden="true">💺</span><div class="benefit-copy"><h3 class="benefit-title" id="benefit-title-5"></h3><p class="benefit-desc" id="benefit-desc-5"></p></div></article>
+            <article class="benefit-card" data-benefit="5"><span class="benefit-icon" id="benefit-icon-6" aria-hidden="true">🌿</span><div class="benefit-copy"><h3 class="benefit-title" id="benefit-title-6"></h3><p class="benefit-desc" id="benefit-desc-6"></p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-section page-slide page-section-flow" id="section-reviews" data-section="2" aria-label="Reseñas">
+        <div class="section-inner">
+          <div class="review-gallery review-gallery-kiosk" id="review-gallery" aria-live="polite">
+            <h2 class="review-gallery-title" id="review-gallery-title">Lo dicen los pasajeros</h2>
+            <div class="review-cards-stack" id="review-cards-stack">
+              <article class="review-kiosk-card" id="review-kiosk-card-0">
+                <div class="review-author-avatar" id="review-author-avatar-0" aria-hidden="true">LM</div>
+                <span class="review-gallery-stars" aria-hidden="true">★★★★★</span>
+                <p class="review-gallery-text review-kiosk-text" id="gallery-review-text-0">Excelente conductor, muy puntual y amable.</p>
+                <p class="review-gallery-author" id="gallery-review-author-0">— Lucía M.</p>
+              </article>
+              <article class="review-kiosk-card review-kiosk-card-secondary" id="review-kiosk-card-1" hidden>
+                <div class="review-author-avatar" id="review-author-avatar-1" aria-hidden="true">--</div>
+                <span class="review-gallery-stars" aria-hidden="true">★★★★★</span>
+                <p class="review-gallery-text review-kiosk-text" id="gallery-review-text-1"></p>
+                <p class="review-gallery-author" id="gallery-review-author-1"></p>
+              </article>
+            </div>
+            <div class="review-gallery-nav review-gallery-nav-minimal">
+              <button type="button" class="gallery-arrow gallery-arrow-prev" id="gallery-prev" aria-label="Reseña anterior">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              </button>
+              <div class="gallery-dots" id="gallery-dots"></div>
+              <button type="button" class="gallery-arrow gallery-arrow-next" id="gallery-next" aria-label="Reseña siguiente">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-section page-slide page-section-flow" id="section-spots" data-section="3" aria-label="Traslados turísticos">
+        <div class="section-inner">
+          <h2 class="slide-title" id="spot-section-title">Traslados turísticos</h2>
+          <p class="tourist-intro" id="tourist-intro">Próximamente fotos de destinos</p>
+          <div class="tourist-cities" id="tourist-cities"></div>
+        </div>
+      </section>
+
+      <section class="page-section page-slide page-section-flow" id="section-faq" data-section="4" aria-label="FAQ">
+        <div class="section-inner faq-slide">
+          <div class="faq-section">
+            <h2 class="faq-title" id="faq-title">Preguntas frecuentes</h2>
+            <div class="faq-gallery" id="faq-gallery" aria-live="polite">
+              <div class="faq-cards-stack" id="faq-cards-stack">
+                <article class="faq-kiosk-card" id="faq-kiosk-card-0">
+                  <h3 class="faq-card-question" id="faq-card-question-0"></h3>
+                  <p class="faq-card-answer" id="faq-card-answer-0"></p>
+                </article>
+                <article class="faq-kiosk-card faq-kiosk-card-secondary" id="faq-kiosk-card-1" hidden>
+                  <h3 class="faq-card-question" id="faq-card-question-1"></h3>
+                  <p class="faq-card-answer" id="faq-card-answer-1"></p>
+                </article>
+              </div>
+              <div class="faq-gallery-nav review-gallery-nav-minimal">
+                <button type="button" class="gallery-arrow gallery-arrow-prev" id="faq-prev" aria-label="Pregunta anterior">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <div class="gallery-dots" id="faq-dots"></div>
+                <button type="button" class="gallery-arrow gallery-arrow-next" id="faq-next" aria-label="Pregunta siguiente">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="app-footer app-footer-minimal" hidden aria-hidden="true">
+      <p class="footer-copy">© Maarteeno 2025</p>
+    </footer>
+
+    <nav class="section-nav" id="section-nav" role="tablist" aria-label="Secciones">
+      <button type="button" class="section-dot active" data-section="0" aria-label="Perfil" aria-selected="true"></button>
+      <button type="button" class="section-dot" data-section="1" aria-label="Bestune" aria-selected="false"></button>
+      <button type="button" class="section-dot" data-section="2" aria-label="Reseñas" aria-selected="false"></button>
+      <button type="button" class="section-dot" data-section="3" aria-label="Traslados turísticos" aria-selected="false"></button>
+      <button type="button" class="section-dot" data-section="4" aria-label="FAQ" aria-selected="false"></button>
+    </nav>
+
+    <a href="https://wa.me/59899774019" class="whatsapp-fab" id="whatsapp-fab" target="_blank" rel="noopener noreferrer" hidden>WhatsApp</a>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="update-gate" id="update-gate" hidden>
+    <div class="update-gate-card" role="dialog" aria-modal="true" aria-labelledby="update-gate-title">
+      <h2 class="update-gate-title" id="update-gate-title">Nueva versión disponible</h2>
+      <p class="update-gate-text" id="update-gate-text">Hay una actualización de la app. Actualizá para ver el diseño más reciente.</p>
+      <button type="button" class="update-gate-btn" id="update-gate-btn">Actualizar ahora</button>
+    </div>
+  </div>
+
+  <script src="js/reviews-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

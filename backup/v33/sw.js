@@ -1,26 +1,40 @@
-var APP_VERSION = 'v34';
+var APP_VERSION = 'v33';
 var CACHE_NAME = 'pereda-tablet-' + APP_VERSION;
 var ASSETS = [
   './',
   './index.html',
   './css/styles.css',
+  './js/reviews-data.js',
   './js/app.js',
   './manifest.json',
   './assets/adrian-pereda.png',
   './assets/bestune-front.png',
   './assets/bestune-side.png',
   './assets/bestune-rear.png',
+  './assets/destinations/punta-del-este.jpg',
+  './assets/destinations/colonia.jpg',
+  './assets/destinations/eventos.jpg',
+  './assets/destinations/aeropuerto.jpg',
+  './assets/spots/la-mano.jpg',
+  './assets/spots/playa-brava.jpg',
+  './assets/spots/puerto-punta.jpg',
+  './assets/spots/barrio-historico.jpg',
+  './assets/spots/faro-colonia.jpg',
+  './assets/spots/calle-suspiros.jpg',
+  './assets/spots/salones-pde.jpg',
+  './assets/spots/hoteles-costa.jpg',
+  './assets/spots/montevideo-centro.jpg',
+  './assets/spots/carrasco.jpg',
+  './assets/spots/buquebus.jpg',
+  './assets/spots/hoteles-mvd.jpg',
+  './assets/spots/gorriti.jpg',
+  './assets/spots/rambla-colonia.jpg',
+  './assets/spots/boda-costa.jpg',
+  './assets/spots/vuelo-seguimiento.jpg',
   './assets/whatsapp-qr.png',
-  './assets/software-whatsapp-qr.png',
-  './assets/destinations/punta-del-este-ai.png',
-  './assets/destinations/colonia-ai.png',
-  './assets/destinations/montevideo-ai.png',
-  './assets/paseos/montevideo-ai.png',
-  './assets/paseos/eventos-ai.png',
-  './assets/paseos/costa-ai.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
-  'https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap'
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap'
 ];
 
 function isNetworkFirstAsset(url) {
