@@ -3377,114 +3377,11 @@ body.update-blocked {
   text-align: center;
 }
 
-.software-catalog-image {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  display: block;
-}
-
-.software-panel-image-only {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(8px, 2vh, 16px);
-  overflow-y: auto;
-}
-
-.software-panel-image-only .software-catalog-image {
-  width: 100%;
-  max-width: min(960px, 100%);
-  height: auto;
-  object-fit: contain;
-  border-radius: 12px;
-  margin: 0 auto;
-  display: block;
-}
-
 .contact-qr {
   width: 100%;
   max-width: 280px;
   border-top: none;
   padding-top: 0;
-}
-
-.software-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.software-brand {
-  margin: 0;
-  text-align: center;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--transport-green);
-}
-
-.software-service-list {
-  margin: 0;
-  padding: 0 0 0 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.software-service-item {
-  font-size: 0.85rem;
-  color: var(--text-soft);
-  line-height: 1.4;
-}
-
-.software-apps-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.software-app-card {
-  padding: 10px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.software-app-name {
-  margin: 0 0 4px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
-.software-app-desc {
-  margin: 0;
-  font-size: 0.68rem;
-  color: var(--text-soft);
-  line-height: 1.35;
-}
-
-.software-payments {
-  margin: 0;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.software-qr-image {
-  width: 88px;
-  height: 88px;
-  border-radius: 8px;
-  background: #fff;
-  padding: 4px;
-}
-
-.software-site-link {
-  color: var(--transport-green);
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
 }
 
 .sticky-top {
@@ -3513,7 +3410,7 @@ body.update-blocked {
 
 @media (min-width: 640px) {
   .hub-nav-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    max-width: 720px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 560px;
   }
 }

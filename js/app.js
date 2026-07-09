@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v37';
+  var APP_VERSION = 'v38';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var VEHICLE_ROTATE_MS = 8000;
 
@@ -21,7 +21,6 @@
       hubTraslados: 'Traslados',
       hubPaseos: 'Paseos',
       hubContacto: 'Contacto',
-      hubSoftware: 'Software',
       backLabel: 'Volver',
       trasladosTitle: 'Traslados',
       paseosTitle: 'Paseos',
@@ -45,7 +44,6 @@
         { image: 'assets/paseos/costa-ai.png', name: 'Costa y hoteles', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] },
         { image: 'assets/paseos/bodegas-ai.png', name: 'Bodegas', spots: ['Juanicó', 'Garzón', 'Carmelo'] }
       ],
-      softwareTitle: 'Software Mac',
       updateGateTitle: 'Nueva versión disponible',
       updateGateText: 'Hay una actualización de la app. Actualizá para ver el diseño más reciente.',
       updateGateAction: 'Actualizar ahora'
@@ -57,7 +55,6 @@
       hubTraslados: 'Transfers',
       hubPaseos: 'Tours',
       hubContacto: 'Contact',
-      hubSoftware: 'Software',
       backLabel: 'Back',
       trasladosTitle: 'Transfers',
       paseosTitle: 'Tours',
@@ -81,7 +78,6 @@
         { image: 'assets/paseos/costa-ai.png', name: 'Coast and hotels', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] },
         { image: 'assets/paseos/bodegas-ai.png', name: 'Wineries', spots: ['Juanicó', 'Garzón', 'Carmelo'] }
       ],
-      softwareTitle: 'Mac Software',
       updateGateTitle: 'New version available',
       updateGateText: 'An app update is ready. Refresh to see the latest layout.',
       updateGateAction: 'Update now'
@@ -93,7 +89,6 @@
       hubTraslados: 'Transfers',
       hubPaseos: 'Passeios',
       hubContacto: 'Contato',
-      hubSoftware: 'Software',
       backLabel: 'Voltar',
       trasladosTitle: 'Transfers',
       paseosTitle: 'Passeios',
@@ -117,7 +112,6 @@
         { image: 'assets/paseos/costa-ai.png', name: 'Costa e hotéis', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] },
         { image: 'assets/paseos/bodegas-ai.png', name: 'Vinícolas', spots: ['Juanicó', 'Garzón', 'Carmelo'] }
       ],
-      softwareTitle: 'Software Mac',
       updateGateTitle: 'Nova versão disponível',
       updateGateText: 'Há uma atualização do app. Atualize para ver o layout mais recente.',
       updateGateAction: 'Atualizar agora'
@@ -171,11 +165,9 @@
     setText('hub-traslados-label', t.hubTraslados);
     setText('hub-paseos-label', t.hubPaseos);
     setText('hub-contacto-label', t.hubContacto);
-    setText('hub-software-label', t.hubSoftware);
     setText('back-traslados-label', t.backLabel);
     setText('back-paseos-label', t.backLabel);
     setText('back-contacto-label', t.backLabel);
-    setText('back-software-label', t.backLabel);
     setText('traslados-title', t.trasladosTitle);
     setText('paseos-title', t.paseosTitle);
     setText('paseos-intro', t.paseosIntro);
@@ -187,7 +179,6 @@
     setText('qr-label', t.qrLabel);
     setText('qr-action-btn', t.qrAction);
     setText('vehicle-qr-phone', t.phoneNumber);
-    setText('software-title', t.softwareTitle);
     setText('update-gate-title', t.updateGateTitle);
     setText('update-gate-text', t.updateGateText);
     setText('update-gate-btn', t.updateGateAction);
