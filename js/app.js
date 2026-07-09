@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v30';
+  var APP_VERSION = 'v31';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var IDLE_RESET_MS = 60000;
   var REVIEW_INTERVAL_MS = 5000;
@@ -450,25 +450,17 @@
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   }
 
-  function showReview(index, animate) {
-    if (!shuffledReviews.length) reshuffleReviews();
-    if (!shuffledReviews.length) return;
+  function isDualReviewLayout() {
+    return window.innerHeight >= 640;
+  }
 
-    var len = shuffledReviews.length;
-    if (index >= len || index < 0) {
-      reshuffleReviews();
-      index = 0;
-      len = shuffledReviews.length;
-    }
+  function fillReviewCard(slot, review, animate) {
+    if (!review) return;
 
-    shuffleIndex = index;
-    var review = shuffledReviews[index];
-    lastReviewText = review.text;
-
-    var textEl = $('gallery-review-text-0');
-    var authorEl = $('gallery-review-author-0');
-    var avatarEl = $('review-author-avatar');
-    var card = $('review-kiosk-card');
+    var textEl = $('gallery-review-text-' + slot);
+    var authorEl = $('gallery-review-author-' + slot);
+    var avatarEl = $('review-author-avatar-' + slot);
+    var card = $('review-kiosk-card-' + slot);
 
     function applyReview() {
       if (textEl) {
@@ -492,6 +484,37 @@
     if (authorEl) authorEl.classList.add('is-fading');
     if (card) card.classList.add('is-fading');
     setTimeout(applyReview, 320);
+  }
+
+  function updateReviewSecondaryVisibility() {
+    var secondary = $('review-kiosk-card-1');
+    if (!secondary) return;
+    var showDual = isDualReviewLayout();
+    secondary.hidden = !showDual;
+  }
+
+  function showReview(index, animate) {
+    if (!shuffledReviews.length) reshuffleReviews();
+    if (!shuffledReviews.length) return;
+
+    var len = shuffledReviews.length;
+    if (index >= len || index < 0) {
+      reshuffleReviews();
+      index = 0;
+      len = shuffledReviews.length;
+    }
+
+    shuffleIndex = index;
+    lastReviewText = shuffledReviews[index].text;
+
+    updateReviewSecondaryVisibility();
+    fillReviewCard(0, shuffledReviews[index], animate);
+
+    if (isDualReviewLayout()) {
+      var nextIndex = index + 1;
+      if (nextIndex >= len) nextIndex = 0;
+      fillReviewCard(1, shuffledReviews[nextIndex], animate);
+    }
   }
 
   function nextReview() {
@@ -780,6 +803,11 @@
       document.addEventListener(eventName, function () {
         resetIdleTimer();
       }, { passive: true });
+    });
+
+    window.addEventListener('resize', function () {
+      updateReviewSecondaryVisibility();
+      showReview(shuffleIndex, false);
     });
   }
 

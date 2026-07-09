@@ -111,12 +111,20 @@
         <div class="section-inner">
           <div class="review-gallery review-gallery-kiosk" id="review-gallery" aria-live="polite">
             <h2 class="review-gallery-title" id="review-gallery-title">Lo dicen los pasajeros</h2>
-            <article class="review-kiosk-card" id="review-kiosk-card">
-              <div class="review-author-avatar" id="review-author-avatar" aria-hidden="true">LM</div>
-              <span class="review-gallery-stars" aria-hidden="true">★★★★★</span>
-              <p class="review-gallery-text review-kiosk-text" id="gallery-review-text-0">Excelente conductor, muy puntual y amable.</p>
-              <p class="review-gallery-author" id="gallery-review-author-0">— Lucía M.</p>
-            </article>
+            <div class="review-cards-stack" id="review-cards-stack">
+              <article class="review-kiosk-card" id="review-kiosk-card-0">
+                <div class="review-author-avatar" id="review-author-avatar-0" aria-hidden="true">LM</div>
+                <span class="review-gallery-stars" aria-hidden="true">★★★★★</span>
+                <p class="review-gallery-text review-kiosk-text" id="gallery-review-text-0">Excelente conductor, muy puntual y amable.</p>
+                <p class="review-gallery-author" id="gallery-review-author-0">— Lucía M.</p>
+              </article>
+              <article class="review-kiosk-card review-kiosk-card-secondary" id="review-kiosk-card-1" hidden>
+                <div class="review-author-avatar" id="review-author-avatar-1" aria-hidden="true">--</div>
+                <span class="review-gallery-stars" aria-hidden="true">★★★★★</span>
+                <p class="review-gallery-text review-kiosk-text" id="gallery-review-text-1"></p>
+                <p class="review-gallery-author" id="gallery-review-author-1"></p>
+              </article>
+            </div>
             <div class="review-gallery-nav review-gallery-nav-minimal">
               <button type="button" class="gallery-arrow gallery-arrow-prev" id="gallery-prev" aria-label="Reseña anterior">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
@@ -157,10 +165,6 @@
                 </button>
               </div>
             </div>
-          </div>
-          <div class="final-cta final-cta-compact">
-            <p class="vehicle-qr-label" id="final-cta-label">¿Listo para reservar?</p>
-            <a href="https://wa.me/59899774019" class="final-cta-link" target="_blank" rel="noopener noreferrer" id="final-cta-action">WhatsApp</a>
           </div>
         </div>
       </section>

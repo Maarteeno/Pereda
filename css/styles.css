@@ -269,13 +269,7 @@ body {
 
 @media (max-width: 639px) {
   .section-nav {
-    top: auto;
-    bottom: calc(72px + env(safe-area-inset-bottom));
-    right: 50%;
-    transform: translateX(50%);
-    flex-direction: row;
-    border-radius: 999px;
-    padding: 6px 10px;
+    display: none !important;
   }
 
   .whatsapp-fab {
@@ -494,9 +488,12 @@ body {
   font-size: 1.1rem;
 }
 
-.benefit-copy {
-  min-width: 0;
-}
+  .benefit-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
 
 .benefit-title {
   margin: 0;
@@ -2436,18 +2433,31 @@ body.update-blocked {
   width: 100%;
 }
 
+.review-cards-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 640px;
+}
+
+.review-kiosk-card-secondary[hidden] {
+  display: none !important;
+}
+
 .faq-kiosk-card {
   width: 100%;
   max-width: 640px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 24px 20px;
+  padding: 28px 22px;
   background: var(--surface-elevated);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(122, 156, 132, 0.2);
   border-radius: var(--radius-xl);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
   transition: opacity 0.35s ease;
   text-align: center;
 }
@@ -2553,24 +2563,146 @@ body.update-blocked {
 
 @media (max-width: 639px) {
   :root {
-    --header-height: 56px;
-    --hero-vehicle-height: clamp(180px, 32vh, 260px);
+    --header-height: 52px;
+    --hero-vehicle-height: clamp(140px, 26vh, 200px);
+  }
+
+  .sticky-top .app-header {
+    width: 100%;
+    padding-inline: 14px;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .header-lang .lang-btn {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 6px;
+  }
+
+  .header-lang .lang-flag {
+    width: 28px;
+    height: 21px;
+  }
+
+  .brand-name {
+    font-size: clamp(1.2rem, 5vw, 1.4rem);
+  }
+
+  .brand-sub {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+
+  .page-hero {
+    padding-top: 8px;
+    padding-bottom: 20px;
+  }
+
+  .intro-title {
+    font-size: clamp(1.5rem, 6vw, 1.9rem);
+  }
+
+  .profile-stats-grid {
+    max-width: min(260px, 86vw);
+  }
+
+  .vehicle-showcase-hero,
+  .vehicle-showcase {
+    max-width: min(420px, 92vw);
+  }
+
+  .vehicle-badge {
+    font-size: 0.62rem;
+    padding: 5px 9px;
+  }
+
+  .page-section-flow {
+    min-height: calc(100dvh - var(--header-height));
+    padding-top: clamp(20px, 4vh, 32px);
+    padding-bottom: clamp(20px, 4vh, 32px);
+    justify-content: center;
+  }
+
+  .page-section-flow .section-inner {
+    justify-content: center;
+    flex: 1;
+  }
+
+  #section-bestune .slide-title,
+  #section-bestune .comfort-subtitle {
+    text-align: center;
+  }
+
+  .benefit-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .benefit-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 12px 0;
+  }
+
+  .benefit-copy {
+    align-items: center;
+  }
+
+  .review-cards-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .review-kiosk-card {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .review-kiosk-text {
+    font-size: 0.9rem;
+  }
+
+  #section-spots .slide-title,
+  #section-spots .tourist-intro {
+    text-align: center;
+  }
+
+  .tourist-city {
+    padding: 12px 0;
+    text-align: center;
+  }
+
+  .tourist-spots {
+    justify-content: center;
+  }
+
+  .faq-kiosk-card {
+    padding: 28px 22px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+    border-color: rgba(122, 156, 132, 0.2);
+  }
+
+  .faq-card-question {
+    font-size: clamp(1.05rem, 3.2vw, 1.15rem);
+  }
+
+  .faq-card-answer {
+    line-height: 1.6;
   }
 
   .page-section {
     padding-inline: 14px;
-    padding-bottom: 80px;
+    padding-bottom: 24px;
   }
 
   .dest-spot-media.dest-spot-media-tall {
     height: clamp(150px, 28vh, 220px);
-  }
-
-  .section-nav {
-    bottom: calc(62px + env(safe-area-inset-bottom));
-  }
-
-  .whatsapp-fab {
-    bottom: calc(12px + env(safe-area-inset-bottom));
   }
 }
