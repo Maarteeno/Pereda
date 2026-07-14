@@ -3,6 +3,9 @@
 
   var SESSION_KEY = 'pereda-driver-session';
   var ADMIN_EMAIL = String(global.PEREDA_ADMIN_EMAIL || 'malerovi2014@gmail.com').toLowerCase();
+  var TRIAL_DAYS = 15;
+  var SUB_DAYS = 30;
+  var SUB_PRICE_USD = 4.99;
   var db = null;
   var auth = null;
   var currentDriver = null;
@@ -38,6 +41,64 @@
     var p = String(pin || '');
     if (p.length <= 2) return p;
     return p.slice(-2);
+  }
+
+  function toDate(value) {
+    if (!value) return null;
+    if (value.toDate) {
+      try { return value.toDate(); } catch (e) { return null; }
+    }
+    if (value instanceof Date) return isNaN(value.getTime()) ? null : value;
+    var d = new Date(value);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  function daysFromNow(days) {
+    return new Date(Date.now() + (Number(days) || 0) * 24 * 60 * 60 * 1000);
+  }
+
+  function daysLeft(until) {
+    var d = toDate(until);
+    if (!d) return 0;
+    return Math.max(0, Math.ceil((d.getTime() - Date.now()) / (24 * 60 * 60 * 1000)));
+  }
+
+  function subscriptionAllowsAccess(account) {
+    if (!account) return false;
+    if (!account.billingStatus) return true;
+    if (account.billingStatus === 'trial') {
+      var trialEnd = toDate(account.trialEndsAt);
+      return !!(trialEnd && trialEnd.getTime() > Date.now());
+    }
+    if (account.billingStatus === 'active') {
+      var subEnd = toDate(account.subscribedUntil);
+      return !!(subEnd && subEnd.getTime() > Date.now());
+    }
+    return false;
+  }
+
+  function subscriptionBlockMessage(account) {
+    if (!account || !account.billingStatus) return 'Tu cuenta está desactivada. Contactá al admin.';
+    if (account.billingStatus === 'trial') return 'Terminó el período de prueba de 15 días. Pedile al admin renovar (US$ ' + SUB_PRICE_USD + '/mes).';
+    if (account.billingStatus === 'active') return 'Suscripción vencida. Pedile al admin renovar (US$ ' + SUB_PRICE_USD + '/mes).';
+    return 'Suscripción vencida. Contactá al admin.';
+  }
+
+  function billingBadgeInfo(account) {
+    if (!account) return { label: 'Sin billing', className: 'is-expired' };
+    var status = account.billingStatus;
+    if (!status) return { label: 'Legacy', className: 'is-active' };
+    if (status === 'trial') {
+      var left = daysLeft(account.trialEndsAt);
+      if (left <= 0) return { label: 'Trial vencido', className: 'is-expired' };
+      return { label: 'Trial (' + left + 'd)', className: 'is-trial' };
+    }
+    if (status === 'active') {
+      var subLeft = daysLeft(account.subscribedUntil);
+      if (subLeft <= 0) return { label: 'Sub vencida', className: 'is-expired' };
+      return { label: 'Suscripto (' + subLeft + 'd)', className: 'is-subscribed' };
+    }
+    return { label: 'Vencido', className: 'is-expired' };
   }
 
   function sha256(text) {
@@ -373,12 +434,23 @@
 
       if (account.status === 'disabled') {
         setAuthView('pending');
-        setGateError('Tu cuenta está desactivada. Contactá al admin.');
+        setGateError(
+          account.billingStatus === 'expired' || (account.billingStatus && !subscriptionAllowsAccess(account))
+            ? subscriptionBlockMessage(account)
+            : 'Tu cuenta está desactivada. Contactá al admin.'
+        );
         routeReady();
         return;
       }
 
       if (account.status === 'active') {
+        if (!subscriptionAllowsAccess(account)) {
+          setAuthView('pending');
+          setGateError(subscriptionBlockMessage(account));
+          routeReady();
+          return;
+        }
+
         if (account.pinRevealOnce) {
           var revealEl = $('auth-pin-reveal');
           if (revealEl) revealEl.textContent = String(account.pinRevealOnce);
@@ -452,6 +524,11 @@
         setGateError('Cuenta no activa');
         return false;
       }
+      if (!subscriptionAllowsAccess(account)) {
+        setGateError(subscriptionBlockMessage(account));
+        setAuthView('pending');
+        return false;
+      }
       return sha256(pin).then(function (hash) {
         if (hash !== account.pinHash) {
           setGateError('PIN incorrecto');
@@ -484,7 +561,7 @@
   }
 
   function setAdminView(view) {
-    if (view === 'logs' || view === 'requests') adminView = view;
+    if (view === 'logs' || view === 'requests' || view === 'changelog') adminView = view;
     else adminView = 'drivers';
     document.querySelectorAll('[data-admin-nav]').forEach(function (btn) {
       btn.classList.toggle('is-active', btn.getAttribute('data-admin-nav') === adminView);
@@ -495,6 +572,7 @@
     if (adminView === 'logs') loadLogs();
     if (adminView === 'requests') refreshRequests();
     if (adminView === 'drivers') refreshAdminList();
+    if (adminView === 'changelog') refreshChangelog();
   }
 
   function updateRequestsBadge(count) {
@@ -640,19 +718,29 @@
         var pins = uniquePins(cfg.driverPins);
         if (pins.indexOf(pin) === -1) pins.push(pin);
         return sha256(pin).then(function (hash) {
+          var trialEndsAt = account.trialEndsAt || daysFromNow(TRIAL_DAYS);
+          var billingPayload = {
+            email: account.email || '',
+            name: account.name || '',
+            phone: phoneDigits(account.phone),
+            vehicleMake: account.vehicleMake || '',
+            vehicleModel: account.vehicleModel || '',
+            status: 'active',
+            pinHash: hash,
+            pinRevealOnce: pin,
+            activatedAt: account.activatedAt || firebase.firestore.FieldValue.serverTimestamp(),
+            createdAt: account.createdAt || firebase.firestore.FieldValue.serverTimestamp(),
+            billingStatus: account.billingStatus || 'trial',
+            subscriptionPriceUsd: SUB_PRICE_USD
+          };
+          if (!account.trialEndsAt) {
+            billingPayload.trialEndsAt = trialEndsAt;
+          }
+          if (!account.billingStatus) {
+            billingPayload.billingStatus = 'trial';
+          }
           var batch = [
-            accountRef(uid).set({
-              email: account.email || '',
-              name: account.name || '',
-              phone: phoneDigits(account.phone),
-              vehicleMake: account.vehicleMake || '',
-              vehicleModel: account.vehicleModel || '',
-              status: 'active',
-              pinHash: hash,
-              pinRevealOnce: pin,
-              activatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-              createdAt: account.createdAt || firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true }),
+            accountRef(uid).set(billingPayload, { merge: true }),
             db.collection('drivers').doc(pin).set({
               name: account.name || '',
               phone: phoneDigits(account.phone),
@@ -665,7 +753,7 @@
         });
       });
     }).then(function () {
-      setAdminMsg('Activado. El conductor verá el PIN al ingresar.');
+      setAdminMsg('Activado con trial de 15 días. El conductor verá el PIN al ingresar.');
       refreshRequests();
       refreshAdminList();
       refreshPendingBadge();
@@ -697,7 +785,6 @@
               status: 'active',
               pinHash: hash,
               pinRevealOnce: newPin,
-              activatedAt: firebase.firestore.FieldValue.serverTimestamp(),
               createdAt: account.createdAt || null
             }, { merge: true }),
             db.collection('drivers').doc(newPin).set({
@@ -748,6 +835,45 @@
     }).catch(function (e) {
       console.error(e);
       setAdminMsg('Error al activar', true);
+    });
+  }
+
+  function markSubscribed(uid, pin) {
+    var until = daysFromNow(SUB_DAYS);
+    return accountRef(uid).set({
+      status: 'active',
+      billingStatus: 'active',
+      subscribedUntil: until,
+      subscriptionPriceUsd: SUB_PRICE_USD
+    }, { merge: true }).then(function () {
+      if (!pin) return null;
+      return db.collection('drivers').doc(pin).set({ active: true }, { merge: true });
+    }).then(function () {
+      setAdminMsg('Suscripto por ' + SUB_DAYS + ' días (US$ ' + SUB_PRICE_USD + '/mes).');
+      refreshAdminList();
+      return true;
+    }).catch(function (e) {
+      console.error(e);
+      setAdminMsg('Error al marcar suscripto', true);
+      return false;
+    });
+  }
+
+  function markExpired(uid, pin) {
+    return accountRef(uid).set({
+      status: 'disabled',
+      billingStatus: 'expired'
+    }, { merge: true }).then(function () {
+      if (!pin) return null;
+      return db.collection('drivers').doc(pin).set({ active: false }, { merge: true });
+    }).then(function () {
+      setAdminMsg('Marcado como vencido / desactivado');
+      refreshAdminList();
+      return true;
+    }).catch(function (e) {
+      console.error(e);
+      setAdminMsg('Error al marcar vencido', true);
+      return false;
     });
   }
 
@@ -808,26 +934,34 @@
           enriched.forEach(function (item) {
             var account = item.account;
             var isDisabled = account.status === 'disabled';
+            var billing = billingBadgeInfo(account);
             var el = document.createElement('article');
             el.className = 'admin-card' + (isDisabled ? ' is-disabled' : '');
             el.innerHTML =
               '<div class="admin-card-main">' +
               '<div class="admin-card-top">' +
               '<strong class="admin-card-name"></strong>' +
-              '<span class="admin-status"></span>' +
+              '<span class="admin-status" data-status></span>' +
+              '<span class="admin-status" data-billing></span>' +
               '</div>' +
               '<div class="admin-card-pin-row">' +
               '<span class="admin-pin-chip"></span>' +
               '</div>' +
               '<p class="admin-card-meta"></p>' +
+              '<p class="admin-card-billing-note">Suscripción US$ ' + SUB_PRICE_USD + ' / mes · trial ' + TRIAL_DAYS + ' días</p>' +
               '</div>' +
               '<div class="admin-card-actions">' +
               '<button type="button" class="admin-btn" data-regen></button>' +
+              '<button type="button" class="admin-btn admin-btn-ok" data-subscribe></button>' +
+              '<button type="button" class="admin-btn admin-btn-warn" data-expire></button>' +
               '<button type="button" class="admin-btn" data-toggle></button></div>';
             el.querySelector('.admin-card-name').textContent = account.name || 'Conductor';
-            var statusEl = el.querySelector('.admin-status');
+            var statusEl = el.querySelector('[data-status]');
             statusEl.textContent = statusLabel(account.status);
             statusEl.className = 'admin-status is-' + (isDisabled ? 'disabled' : 'active');
+            var billEl = el.querySelector('[data-billing]');
+            billEl.textContent = billing.label;
+            billEl.className = 'admin-status ' + billing.className;
             var pinChip = el.querySelector('.admin-pin-chip');
             if (item.pin) {
               pinChip.textContent = 'PIN ' + item.pin;
@@ -839,13 +973,25 @@
             fillAdminMeta(el.querySelector('.admin-card-meta'), account);
             var regen = el.querySelector('[data-regen]');
             var toggle = el.querySelector('[data-toggle]');
+            var subscribeBtn = el.querySelector('[data-subscribe]');
+            var expireBtn = el.querySelector('[data-expire]');
             regen.textContent = 'Regenerar PIN';
+            subscribeBtn.textContent = 'Marcar suscripto';
+            expireBtn.textContent = 'Marcar vencido';
             toggle.textContent = isDisabled ? 'Activar' : 'Desactivar';
             toggle.classList.toggle('admin-btn-warn', !isDisabled);
             toggle.classList.toggle('admin-btn-ok', isDisabled);
             regen.addEventListener('click', function () {
               if (!confirm('¿Regenerar PIN? El valor anterior deja de servir.')) return;
               regeneratePin(account.id, item.pin);
+            });
+            subscribeBtn.addEventListener('click', function () {
+              if (!confirm('¿Marcar suscripto por ' + SUB_DAYS + ' días a US$ ' + SUB_PRICE_USD + '/mes?')) return;
+              markSubscribed(account.id, item.pin);
+            });
+            expireBtn.addEventListener('click', function () {
+              if (!confirm('¿Marcar vencido y desactivar a ' + (account.name || '') + '?')) return;
+              markExpired(account.id, item.pin);
             });
             toggle.addEventListener('click', function () {
               if (isDisabled) {
@@ -911,7 +1057,7 @@
           el.querySelector('[data-activate]').addEventListener('click', function () {
             var pin = pinInput.value.trim() || generateUnusedPin();
             pinInput.value = pin;
-            if (!confirm('¿Activar a ' + (account.name || 'este conductor') + ' con PIN ' + pin + '?\nLo verá una vez al ingresar.')) return;
+            if (!confirm('¿Activar a ' + (account.name || 'este conductor') + ' con PIN ' + pin + '?\nArranca trial de 15 días. El conductor verá el PIN una vez.')) return;
             activateAccount(account.id, pin);
           });
           list.appendChild(el);
@@ -974,6 +1120,79 @@
         console.error(e);
         list.innerHTML = '<p class="admin-logs-empty is-error">No se pudieron cargar los logs.</p>';
       });
+  }
+
+  function refreshChangelog() {
+    var list = $('admin-changelog-list');
+    if (!list || !db) return;
+    list.innerHTML = '<p class="admin-logs-empty">Cargando…</p>';
+    db.collection('changelog')
+      .orderBy('at', 'desc')
+      .limit(40)
+      .get()
+      .then(function (snap) {
+        list.innerHTML = '';
+        if (snap.empty) {
+          list.innerHTML = '<p class="admin-logs-empty">Sin entradas. Agregá la primera abajo.</p>';
+          return;
+        }
+        snap.forEach(function (doc) {
+          var row = Object.assign({ id: doc.id }, doc.data() || {});
+          var item = document.createElement('article');
+          item.className = 'admin-log admin-changelog-entry';
+          item.innerHTML =
+            '<div class="admin-log-top"><strong></strong><em></em></div>' +
+            '<span class="admin-log-meta"></span>' +
+            '<p class="admin-changelog-body"></p>';
+          item.querySelector('strong').textContent =
+            (row.version ? String(row.version) + ' · ' : '') + (row.title || 'Sin título');
+          item.querySelector('em').textContent = formatLogTime(row.at);
+          item.querySelector('.admin-log-meta').textContent = row.createdBy || '';
+          item.querySelector('.admin-changelog-body').textContent = row.body || '';
+          list.appendChild(item);
+        });
+      })
+      .catch(function (e) {
+        console.error(e);
+        list.innerHTML = '<p class="admin-logs-empty is-error">No se pudo cargar el changelog.</p>';
+      });
+  }
+
+  function setChangelogMsg(text, isError) {
+    var el = $('admin-changelog-msg');
+    if (!el) return;
+    el.hidden = !text;
+    el.textContent = text || '';
+    el.classList.toggle('is-error', !!isError);
+  }
+
+  function submitChangelogEntry() {
+    var version = sanitizeText(($('changelog-version') || {}).value, 20);
+    var title = sanitizeText(($('changelog-title') || {}).value, 120);
+    var body = sanitizeText(($('changelog-body') || {}).value, 2000);
+    if (!version || !title) {
+      setChangelogMsg('Completá versión y título', true);
+      return Promise.resolve(false);
+    }
+    var user = auth.currentUser;
+    return db.collection('changelog').add({
+      version: version,
+      title: title,
+      body: body,
+      at: firebase.firestore.FieldValue.serverTimestamp(),
+      createdBy: (user && user.email) || ADMIN_EMAIL
+    }).then(function () {
+      if ($('changelog-version')) $('changelog-version').value = '';
+      if ($('changelog-title')) $('changelog-title').value = '';
+      if ($('changelog-body')) $('changelog-body').value = '';
+      setChangelogMsg('Entrada agregada');
+      refreshChangelog();
+      return true;
+    }).catch(function (e) {
+      console.error(e);
+      setChangelogMsg('Error al guardar changelog', true);
+      return false;
+    });
   }
 
   function bindUi() {
@@ -1040,6 +1259,14 @@
 
     var refreshLogs = $('admin-refresh-logs');
     if (refreshLogs) refreshLogs.addEventListener('click', loadLogs);
+
+    var changelogForm = $('changelog-form');
+    if (changelogForm) {
+      changelogForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitChangelogEntry();
+      });
+    }
 
     document.querySelectorAll('[data-admin-nav]').forEach(function (btn) {
       btn.addEventListener('click', function () {

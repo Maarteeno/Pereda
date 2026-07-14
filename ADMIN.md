@@ -1,4 +1,4 @@
-# Admin & driver onboarding (v57)
+# Admin & driver onboarding (v58)
 
 ## Enable Google Sign-In (once)
 
@@ -15,43 +15,47 @@
 2. Sign in with **`malerovi2014@gmail.com`** only
 3. Admin panel opens
 
-Admin sidebar: **Conductores** | **Solicitudes** (badge con pendientes) | **Ver logs**
+Admin sidebar: **Conductores** | **Solicitudes** | **Ver logs** | **Changelog**
 
-On **Conductores** you can:
-- See status badge (Activo / Desactivado) and **PIN** chip
-- Phone, vehicle, and email as meta
-- **Regenerar PIN** (driver sees the new value once on next login)
-- **Activar / Desactivar**
+### Conductores
+- Status badge + billing badge (**Trial (Xd)**, **Suscripto**, **Vencido**)
+- PIN chip, phone / vehicle / email
+- **Regenerar PIN**
+- **Marcar suscripto** → 30 días a **US$ 4,99 / mes** (manual hasta pasarela de pago)
+- **Marcar vencido** → desactiva la cuenta
+- Activar / Desactivar
 
-On **Solicitudes**:
-- Pending Google accounts with a suggested PIN ready
-- **Generar** a new PIN / **Activar**
+### Solicitudes
+- Activar con PIN → arranca **trial de 15 días**
 
-## Driver onboarding
+### Changelog
+- Lista de entradas + formulario (versión, título, notas)
+- Colección Firestore `changelog` (solo admin)
 
-1. Driver: Google Sign-In (“Bienvenido Conductor”)
-2. Form: **nombre**, **celular**, **marca** y **modelo** del vehículo → `pending`
-3. Admin → **Solicitudes** → Generar PIN → **Activar**
-4. Driver sees PIN once → then unlocks with PIN daily (Google + PIN)
+## Driver onboarding + trial
 
-## Migration (seed Adrián / PIN 1001)
+1. Driver: Google Sign-In → formulario → `pending`
+2. Admin activa → `billingStatus: trial`, `trialEndsAt` (+15 días), PIN una vez
+3. Diario: Google + PIN mientras el trial/suscripción esté vigente
+4. Si venció: mensaje de trial/suscripción vencida (sin acceso)
+5. Admin **Marcar suscripto** para renovar 30 días
 
-1. Adrián signs in with Google and submits name, phone, vehicle
-2. Admin opens **Solicitudes**, sets PIN **`1001`** (or Generate), Activar
+Cuentas antiguas sin `billingStatus` siguen pudiendo entrar (legacy) hasta que el admin las gestione.
 
-## Security (v57)
+## Destinos / QR
 
-- Hosting: CSP, `nosniff`, `Referrer-Policy`, `X-Frame-Options: DENY`, COOP for Google popup
-- Firestore: create account only with **own** email; name/vehicle ≤ 80; phone 8–20 digits
-- `accessLogs` store **`pinHint`** (last 2 digits), not the full PIN
-- Client sanitizes registration inputs; seed PIN is not exposed on `window`
+En Paseos y Traslados, cada destino muestra un **QR** (`Escaneá para cotizar`) que abre WhatsApp al celular del conductor logueado con el mensaje `waWantGo` (lugar + nombre). FAB y Contacto se mantienen.
 
-Residual: Firebase `apiKey` is public (normal); authenticated drivers can still read their own `pinHash`; admin sees PIN as `drivers/{pin}` doc id.
+## Security (from v57)
+
+- Hosting CSP / nosniff / referrer / frame / COOP
+- Firestore: email propio en create; `accessLogs` con `pinHint`
+- Sanitize en registro
 
 ## Data
 
-- `driverAccounts/{uid}` — email, name, phone, vehicleMake, vehicleModel, status, pinHash, optional pinRevealOnce
-- `drivers/{pin}` — name, phone, active, uid
-- `accessLogs` — pinHint, name, phone, uid, at, ua
+- `driverAccounts/{uid}` — + `billingStatus`, `trialEndsAt`, `subscribedUntil`, `subscriptionPriceUsd`
+- `drivers/{pin}`, `config/app`, `accessLogs`
+- `changelog/{id}` — version, title, body, at, createdBy
 
 App title / PWA name: **App Traslados**

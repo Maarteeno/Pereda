@@ -734,7 +734,7 @@
       line-height: 1.5;
       max-width: 48ch;
     }
-    .spot-body .dest-go {
+    .spot-body .dest-qr {
       margin-top: 0.75rem;
     }
 
@@ -1099,28 +1099,38 @@ body.update-blocked { overflow: hidden; }
   }
 }
 
-.dest-go {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  margin-top: 0.35rem;
-  min-height: 40px;
-  padding: 0.4rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid oklch(0.72 0.06 150 / 0.35);
-  background: transparent;
-  color: var(--accent);
-  font-size: 0.84rem;
+.dest-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+}
+.dest-qr-canvas {
+  width: 112px;
+  height: 112px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid var(--border);
+  box-sizing: content-box;
+}
+.dest-qr-canvas img,
+.dest-qr-canvas canvas {
+  display: block;
+  width: 112px !important;
+  height: 112px !important;
+}
+.dest-qr-label {
+  margin: 0;
+  font-size: 0.78rem;
   font-weight: 600;
+  color: var(--accent);
   letter-spacing: 0.01em;
-  transition: border-color 0.2s var(--ease-out), background 0.2s var(--ease-out), color 0.2s var(--ease-out);
 }
-.dest-go:hover {
-  background: oklch(0.72 0.06 150 / 0.1);
-  border-color: var(--accent);
+.dest-card .dest-qr {
+  margin-top: 0.65rem;
 }
-.dest-go:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .btn-switch-driver { display: none !important; }
 
@@ -1545,6 +1555,46 @@ body.pin-locked .btn-wa-fab { visibility: hidden; pointer-events: none; }
   color: oklch(0.82 0.1 85);
   background: oklch(0.82 0.1 85 / 0.12);
   border-color: oklch(0.82 0.1 85 / 0.3);
+}
+.admin-status.is-trial {
+  color: oklch(0.82 0.1 85);
+  background: oklch(0.82 0.1 85 / 0.12);
+  border-color: oklch(0.82 0.1 85 / 0.3);
+}
+.admin-status.is-subscribed {
+  color: oklch(0.78 0.1 145);
+  background: oklch(0.78 0.1 145 / 0.12);
+  border-color: oklch(0.78 0.1 145 / 0.28);
+}
+.admin-status.is-expired {
+  color: #f0a0a4;
+  background: oklch(0.55 0.12 20 / 0.14);
+  border-color: oklch(0.55 0.12 20 / 0.28);
+}
+.admin-card-billing-note {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.admin-form textarea {
+  min-height: 96px;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: oklch(0.14 0.005 145);
+  color: var(--fg);
+  resize: vertical;
+  font: inherit;
+}
+.admin-changelog-form {
+  margin-top: 1.25rem;
+}
+.admin-changelog-body {
+  margin: 0.35rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  color: var(--fg);
 }
 .admin-card-pin-row { margin-top: 0.55rem; }
 .admin-pin-chip {

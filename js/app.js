@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v57';
+  var APP_VERSION = 'v58';
   var WA_NUMBER = '59899774019';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
@@ -131,6 +131,7 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'Quiero ir',
+      scanQuote: 'Escaneá para cotizar',
       waWantGo: 'Hola {name}, quiero ir a {place}. ¿Me cotizás un traslado?',
       switchDriver: 'Cambiar PIN',
       pinBrand: 'Bienvenido Conductor',
@@ -153,11 +154,12 @@
       authRevealContinue: 'Entendido, continuar',
       authSwitchAccount: 'Cambiar cuenta Google',
       adminTitle: 'Administración',
-      adminIntro: 'Conductores activos y desactivados. Ves el PIN, podés regenerarlo y activar/desactivar.',
+      adminIntro: 'Conductores con trial (15 días) o suscripción US$ 4,99/mes. PIN, regenerar y billing.',
       adminExit: 'Salir',
       adminNavDrivers: 'Conductores',
       adminNavRequests: 'Solicitudes',
       adminNavLogs: 'Ver logs',
+      adminNavChangelog: 'Changelog',
       adminPinLabel: 'PIN',
       adminNameLabel: 'Nombre',
       adminPhoneLabel: 'Teléfono (con código país)',
@@ -166,10 +168,13 @@
       adminGeneratePin: 'Generar PIN',
       adminDriversTitle: 'Conductores',
       adminRequestsTitle: 'Solicitudes',
-      adminRequestsHint: 'Cuentas Google pendientes. Asigná un PIN y activá.',
+      adminRequestsHint: 'Cuentas Google pendientes. Al activar arranca trial de 15 días.',
       adminLogsTitle: 'Logs de ingreso',
       adminRefreshLogs: 'Actualizar',
       adminLogsHint: 'Últimos ingresos de conductores (quién y cuándo).',
+      adminChangelogTitle: 'Changelog',
+      adminChangelogHint: 'Notas de versión internas. Visible solo para admin.',
+      adminChangelogSave: 'Guardar entrada',
       logoutTitle: '¿Cerrar sesión?',
       logoutText: 'Cerrás la sesión del conductor. Vas a tener que entrar de nuevo con Google y tu PIN.',
       logoutCancel: 'Cancelar',
@@ -283,6 +288,7 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'I want to go',
+      scanQuote: 'Scan to get a quote',
       waWantGo: 'Hi {name}, I want to go to {place}. Could you quote a transfer?',
       switchDriver: 'Change PIN',
       pinBrand: 'Welcome, Driver',
@@ -305,11 +311,12 @@
       authRevealContinue: 'Got it, continue',
       authSwitchAccount: 'Switch Google account',
       adminTitle: 'Administration',
-      adminIntro: 'Active and disabled drivers. You can see the PIN, regenerate it, and enable/disable accounts.',
+      adminIntro: 'Drivers on a 15-day trial or US$ 4.99/mo subscription. PIN, regenerate, billing.',
       adminExit: 'Exit',
       adminNavDrivers: 'Drivers',
       adminNavRequests: 'Requests',
       adminNavLogs: 'View logs',
+      adminNavChangelog: 'Changelog',
       adminPinLabel: 'PIN',
       adminNameLabel: 'Name',
       adminPhoneLabel: 'Phone (with country code)',
@@ -318,10 +325,13 @@
       adminGeneratePin: 'Generate PIN',
       adminDriversTitle: 'Drivers',
       adminRequestsTitle: 'Requests',
-      adminRequestsHint: 'Pending Google accounts. Assign a PIN and activate.',
+      adminRequestsHint: 'Pending Google accounts. Activation starts a 15-day trial.',
       adminLogsTitle: 'Login logs',
       adminRefreshLogs: 'Refresh',
       adminLogsHint: 'Recent driver logins (who and when).',
+      adminChangelogTitle: 'Changelog',
+      adminChangelogHint: 'Internal release notes. Admin only.',
+      adminChangelogSave: 'Save entry',
       logoutTitle: 'Log out?',
       logoutText: 'This ends the driver session. You will need to sign in again with Google and your PIN.',
       logoutCancel: 'Cancel',
@@ -435,6 +445,7 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'Quero ir',
+      scanQuote: 'Escaneie para cotar',
       waWantGo: 'Olá {name}, quero ir a {place}. Pode cotar um transfer?',
       switchDriver: 'Trocar PIN',
       pinBrand: 'Bem-vindo, Motorista',
@@ -457,11 +468,12 @@
       authRevealContinue: 'Entendi, continuar',
       authSwitchAccount: 'Trocar conta Google',
       adminTitle: 'Administração',
-      adminIntro: 'Motoristas ativos e desativados. Você vê o PIN, pode regenerá-lo e ativar/desativar.',
+      adminIntro: 'Motoristas em trial de 15 dias ou assinatura US$ 4,99/mês. PIN, regenerar, billing.',
       adminExit: 'Sair',
       adminNavDrivers: 'Motoristas',
       adminNavRequests: 'Solicitações',
       adminNavLogs: 'Ver logs',
+      adminNavChangelog: 'Changelog',
       adminPinLabel: 'PIN',
       adminNameLabel: 'Nome',
       adminPhoneLabel: 'Telefone (com código do país)',
@@ -470,10 +482,13 @@
       adminGeneratePin: 'Gerar PIN',
       adminDriversTitle: 'Motoristas',
       adminRequestsTitle: 'Solicitações',
-      adminRequestsHint: 'Contas Google pendentes. Atribua um PIN e ative.',
+      adminRequestsHint: 'Contas Google pendentes. Ao ativar começa o trial de 15 dias.',
       adminLogsTitle: 'Logs de acesso',
       adminRefreshLogs: 'Atualizar',
       adminLogsHint: 'Últimos acessos de motoristas (quem e quando).',
+      adminChangelogTitle: 'Changelog',
+      adminChangelogHint: 'Notas de versão internas. Só admin.',
+      adminChangelogSave: 'Salvar entrada',
       logoutTitle: 'Sair da sessão?',
       logoutText: 'Você encerra a sessão do motorista. Precisará entrar de novo com Google e seu PIN.',
       logoutCancel: 'Cancelar',
@@ -520,16 +535,37 @@
     return 'https://wa.me/' + activePhone() + '?text=' + encodeURIComponent(text || '');
   }
 
-  function updateDestLinks(lang) {
+  function updateDestQrs(lang) {
     var t = T[lang] || T.es;
     var name = activeDriverName();
-    document.querySelectorAll('.dest-go[data-dest]').forEach(function (link) {
-      var key = link.getAttribute('data-dest');
+    document.querySelectorAll('.dest-qr[data-dest]').forEach(function (wrap) {
+      var key = wrap.getAttribute('data-dest');
       var place = (DEST_NAMES[key] && DEST_NAMES[key][lang]) || key;
       var msg = (t.waWantGo || '')
         .replace('{place}', place)
         .replace('{name}', name);
-      link.href = waUrl(msg);
+      var url = waUrl(msg);
+      var canvasHost = wrap.querySelector('.dest-qr-canvas');
+      if (!canvasHost) return;
+      canvasHost.innerHTML = '';
+      if (typeof QRCode === 'undefined') {
+        canvasHost.textContent = 'QR';
+        return;
+      }
+      try {
+        new QRCode(canvasHost, {
+          text: url,
+          width: 112,
+          height: 112,
+          colorDark: '#0b140f',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      } catch (e) {
+        console.warn('QR', e);
+        canvasHost.textContent = 'QR';
+      }
+      wrap.setAttribute('title', place);
     });
   }
 
@@ -542,7 +578,7 @@
     if (waFab) waFab.href = base;
     if (contactQr) contactQr.href = base;
     if (contactBtn) contactBtn.href = base;
-    updateDestLinks(activeLang);
+    updateDestQrs(activeLang);
     var t = T[activeLang] || T.es;
     if (t.waAria) {
       document.querySelectorAll('[data-i18n-aria="waAria"]').forEach(function (el) {
