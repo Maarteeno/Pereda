@@ -1,29 +1,36 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function hasWriteToken() {
-      return request.resource != null
-        && request.resource.data.writeToken == 'APT_WRITE_2026';
-    }
-
-    function deleteHasWriteToken() {
-      return resource != null && resource.data.writeToken == 'APT_WRITE_2026';
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'malerovi2014@gmail.com';
     }
 
     match /drivers/{pin} {
       allow get: if true;
       allow list: if false;
-      allow create, update: if hasWriteToken()
-        && request.resource.data.keys().hasAll(['name', 'phone', 'active', 'writeToken']);
-      allow delete: if deleteHasWriteToken();
+      allow create, update: if isAdmin()
+        && request.resource.data.keys().hasAll(['name', 'phone', 'active']);
+      allow delete: if isAdmin();
     }
 
     match /config/{docId} {
       allow get: if true;
       allow list: if false;
-      allow create, update: if hasWriteToken()
-        && request.resource.data.keys().hasAll(['adminPinHash', 'driverPins', 'writeToken']);
+      allow create, update: if isAdmin()
+        && request.resource.data.keys().hasAll(['adminPinHash', 'driverPins']);
       allow delete: if false;
+    }
+
+    match /accessLogs/{logId} {
+      allow create: if request.resource.data.keys().hasOnly(['pin', 'name', 'phone', 'at', 'ua'])
+        && request.resource.data.pin is string
+        && request.resource.data.name is string
+        && request.resource.data.phone is string
+        && request.resource.data.at is timestamp
+        && request.resource.data.ua is string;
+      allow read, list: if isAdmin();
+      allow update, delete: if isAdmin();
     }
   }
 }

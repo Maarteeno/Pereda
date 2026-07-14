@@ -2,11 +2,14 @@
   'use strict';
 
   var SESSION_KEY = 'pereda-driver-session';
-  var WRITE_TOKEN = global.PEREDA_WRITE_TOKEN || 'APT_WRITE_2026';
+  var ADMIN_PIN = String(global.PEREDA_DEFAULT_ADMIN_PIN || '2991');
+  var ADMIN_EMAIL = String(global.PEREDA_ADMIN_EMAIL || 'malerovi2014@gmail.com').toLowerCase();
   var db = null;
+  var auth = null;
   var currentDriver = null;
   var isAdmin = false;
   var editingPin = null;
+  var cachedPins = [];
 
   function $(id) { return document.getElementById(id); }
 
@@ -27,6 +30,7 @@
       firebase.initializeApp(global.PEREDA_FIREBASE);
     }
     db = firebase.firestore();
+    auth = firebase.auth();
   }
 
   function getSession() {
@@ -63,11 +67,22 @@
     return String(full || '').trim().split(/\s+/)[0] || full || '';
   }
 
+  function isAdminUser(user) {
+    return !!(user && user.email && user.email.toLowerCase() === ADMIN_EMAIL);
+  }
+
+  function syncLock() {
+    var gate = $('pin-gate');
+    var panel = $('admin-panel');
+    var locked = (gate && !gate.hidden) || (panel && !panel.hidden);
+    document.body.classList.toggle('pin-locked', !!locked);
+  }
+
   function showPinGate(on) {
     var gate = $('pin-gate');
     if (!gate) return;
     gate.hidden = !on;
-    document.body.classList.toggle('pin-locked', !!on);
+    syncLock();
     if (on) {
       var input = $('pin-input');
       if (input) {
@@ -82,8 +97,18 @@
     if (!panel) return;
     panel.hidden = !on;
     isAdmin = !!on;
-    document.body.classList.toggle('pin-locked', !!on);
-    if (on) refreshAdminList();
+    syncLock();
+    if (on) {
+      ensureSeedAsAdmin()
+        .then(function () {
+          refreshAdminList();
+          loadLogs();
+        })
+        .catch(function (e) {
+          console.error(e);
+          setAdminMsg('Error al inicializar datos', true);
+        });
+    }
   }
 
   function applyDriverToUi(driver) {
@@ -102,84 +127,144 @@
     }
   }
 
+  function logAccess(driver) {
+    if (!db || !driver) return Promise.resolve();
+    var ua = String(navigator.userAgent || '').slice(0, 160);
+    return db.collection('accessLogs').add({
+      pin: String(driver.pin || ''),
+      name: String(driver.name || ''),
+      phone: String(driver.phone || ''),
+      at: firebase.firestore.FieldValue.serverTimestamp(),
+      ua: ua
+    }).catch(function (e) {
+      console.warn('accessLog', e);
+    });
+  }
+
   function unlockDriver(driver) {
     setSession({ pin: driver.pin, name: driver.name, phone: driver.phone });
     showPinGate(false);
     showAdmin(false);
     applyDriverToUi(getDriver());
+    logAccess(driver);
   }
 
   function clearSessionAndLock() {
     setSession(null);
     editingPin = null;
     showAdmin(false);
-    showPinGate(true);
+    var done = function () {
+      showPinGate(true);
+    };
+    if (auth && auth.currentUser) {
+      auth.signOut().then(done).catch(done);
+    } else {
+      done();
+    }
   }
 
   function configRef() {
     return db.collection('config').doc('app');
   }
 
-  function ensureSeed() {
+  function ensureSeedAsAdmin() {
     return configRef().get().then(function (snap) {
-      if (snap.exists) return snap.data();
+      if (snap.exists) {
+        cachedPins = (snap.data().driverPins || []).slice();
+        return snap.data();
+      }
       var def = global.PEREDA_DEFAULT_DRIVER || { pin: '1001', name: 'Adrián Pereda', phone: '59899774019' };
-      var adminPin = global.PEREDA_DEFAULT_ADMIN_PIN || '2468';
-      return sha256(adminPin).then(function (hash) {
+      return sha256(ADMIN_PIN).then(function (hash) {
         var payload = {
           adminPinHash: hash,
-          driverPins: [def.pin],
-          writeToken: WRITE_TOKEN
+          driverPins: [def.pin]
         };
         var driverPayload = {
           name: def.name,
           phone: phoneDigits(def.phone),
-          active: true,
-          writeToken: WRITE_TOKEN
+          active: true
         };
         return configRef().set(payload).then(function () {
           return db.collection('drivers').doc(def.pin).set(driverPayload);
         }).then(function () {
+          cachedPins = [def.pin];
           return payload;
         });
       });
     });
   }
 
+  function signInAdminWithGoogle() {
+    var err = $('pin-error');
+    if (err) {
+      err.hidden = true;
+      err.textContent = err.getAttribute('data-i18n-default') || 'PIN incorrecto';
+    }
+    var provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    return auth.signInWithPopup(provider).then(function (result) {
+      var user = result.user;
+      if (!isAdminUser(user)) {
+        return auth.signOut().then(function () {
+          if (err) {
+            err.hidden = false;
+            err.textContent = 'No autorizado. Solo ' + ADMIN_EMAIL;
+          }
+          showPinGate(true);
+          return false;
+        });
+      }
+      showPinGate(false);
+      showAdmin(true);
+      return true;
+    }).catch(function (e) {
+      console.error(e);
+      if (err) {
+        err.hidden = false;
+        err.textContent = e.code === 'auth/popup-closed-by-user'
+          ? 'Login cancelado'
+          : 'Error de Google Sign-In. ¿Auth Google habilitado?';
+      }
+      showPinGate(true);
+      return false;
+    });
+  }
+
   function tryUnlock(pin) {
     var err = $('pin-error');
-    if (err) err.hidden = true;
+    if (err) {
+      err.hidden = true;
+      if (!err.getAttribute('data-i18n-default')) {
+        err.setAttribute('data-i18n-default', err.textContent || 'PIN incorrecto');
+      }
+      err.textContent = err.getAttribute('data-i18n-default');
+    }
     pin = String(pin || '').trim();
     if (!/^\d{3,8}$/.test(pin)) {
       if (err) err.hidden = false;
       return Promise.resolve(false);
     }
 
-    return ensureSeed().then(function (cfg) {
-      return sha256(pin).then(function (hash) {
-        if (cfg && cfg.adminPinHash && cfg.adminPinHash === hash) {
-          showPinGate(false);
-          showAdmin(true);
-          return true;
-        }
-        return db.collection('drivers').doc(pin).get().then(function (snap) {
-          if (!snap.exists) {
-            if (err) err.hidden = false;
-            return false;
-          }
-          var data = snap.data() || {};
-          if (data.active === false) {
-            if (err) err.hidden = false;
-            return false;
-          }
-          unlockDriver({
-            pin: pin,
-            name: data.name || 'Conductor',
-            phone: phoneDigits(data.phone)
-          });
-          return true;
-        });
+    if (pin === ADMIN_PIN) {
+      return signInAdminWithGoogle();
+    }
+
+    return db.collection('drivers').doc(pin).get().then(function (snap) {
+      if (!snap.exists) {
+        if (err) err.hidden = false;
+        return false;
+      }
+      var data = snap.data() || {};
+      if (data.active === false) {
+        if (err) err.hidden = false;
+        return false;
+      }
+      unlockDriver({
+        pin: pin,
+        name: data.name || 'Conductor',
+        phone: phoneDigits(data.phone)
       });
+      return true;
     }).catch(function (e) {
       console.error(e);
       if (err) {
@@ -204,6 +289,7 @@
     list.innerHTML = '';
     configRef().get().then(function (snap) {
       var pins = (snap.exists && snap.data().driverPins) || [];
+      cachedPins = pins.slice();
       return Promise.all(pins.map(function (pin) {
         return db.collection('drivers').doc(pin).get().then(function (d) {
           return { pin: pin, data: d.exists ? d.data() : null };
@@ -246,6 +332,72 @@
     });
   }
 
+  function formatLogTime(ts) {
+    if (!ts) return '—';
+    var d = ts.toDate ? ts.toDate() : new Date(ts);
+    if (isNaN(d.getTime())) return '—';
+    try {
+      return d.toLocaleString('es-UY', {
+        dateStyle: 'short',
+        timeStyle: 'short'
+      });
+    } catch (e) {
+      return d.toISOString();
+    }
+  }
+
+  function loadLogs() {
+    var list = $('admin-logs');
+    if (!list || !db) return;
+    list.innerHTML = '<p class="admin-logs-empty">Cargando…</p>';
+    db.collection('accessLogs')
+      .orderBy('at', 'desc')
+      .limit(50)
+      .get()
+      .then(function (snap) {
+        list.innerHTML = '';
+        if (snap.empty) {
+          list.innerHTML = '<p class="admin-logs-empty">Sin ingresos todavía.</p>';
+          return;
+        }
+        snap.forEach(function (doc) {
+          var row = doc.data() || {};
+          var item = document.createElement('div');
+          item.className = 'admin-log';
+          item.innerHTML = '<strong></strong><span></span><em></em>';
+          item.querySelector('strong').textContent = row.name || 'Conductor';
+          item.querySelector('span').textContent =
+            'PIN ' + (row.pin || '—') + ' · ' + formatPhoneDisplay(row.phone || '');
+          item.querySelector('em').textContent = formatLogTime(row.at);
+          list.appendChild(item);
+        });
+      })
+      .catch(function (e) {
+        console.error(e);
+        list.innerHTML = '<p class="admin-logs-empty is-error">No se pudieron cargar los logs.</p>';
+      });
+  }
+
+  function generatePin() {
+    var used = {};
+    cachedPins.forEach(function (p) { used[p] = true; });
+    used[ADMIN_PIN] = true;
+    var pin = '';
+    var tries = 0;
+    do {
+      pin = String(Math.floor(1000 + Math.random() * 9000));
+      tries += 1;
+    } while (used[pin] && tries < 200);
+    var form = $('admin-form');
+    if (form && form.pin) {
+      form.pin.readOnly = false;
+      form.pin.value = pin;
+      editingPin = null;
+      form.pin.focus();
+    }
+    setAdminMsg('PIN generado: ' + pin);
+  }
+
   function upsertDriver(pin, name, phone) {
     pin = String(pin || '').trim();
     name = String(name || '').trim();
@@ -254,21 +406,25 @@
       setAdminMsg('Datos inválidos', true);
       return Promise.resolve();
     }
+    if (pin === ADMIN_PIN) {
+      setAdminMsg('Ese PIN está reservado para admin', true);
+      return Promise.resolve();
+    }
     return configRef().get().then(function (snap) {
       var cfg = snap.exists ? snap.data() : { adminPinHash: '', driverPins: [] };
       var pins = (cfg.driverPins || []).slice();
       if (pins.indexOf(pin) === -1) pins.push(pin);
-      return db.collection('drivers').doc(pin).set({
-        name: name,
-        phone: phone,
-        active: true,
-        writeToken: WRITE_TOKEN
-      }).then(function () {
-        return configRef().set({
-          adminPinHash: cfg.adminPinHash,
-          driverPins: pins,
-          writeToken: WRITE_TOKEN
-        }, { merge: true });
+      return sha256(ADMIN_PIN).then(function (hash) {
+        return db.collection('drivers').doc(pin).set({
+          name: name,
+          phone: phone,
+          active: true
+        }).then(function () {
+          return configRef().set({
+            adminPinHash: cfg.adminPinHash || hash,
+            driverPins: pins
+          });
+        });
       });
     }).then(function () {
       setAdminMsg('Guardado');
@@ -281,7 +437,7 @@
       refreshAdminList();
     }).catch(function (e) {
       console.error(e);
-      setAdminMsg('Error al guardar', true);
+      setAdminMsg('Error al guardar (¿sesión Google?)', true);
     });
   }
 
@@ -289,12 +445,13 @@
     return configRef().get().then(function (snap) {
       var cfg = snap.exists ? snap.data() : { driverPins: [] };
       var pins = (cfg.driverPins || []).filter(function (p) { return p !== pin; });
-      return db.collection('drivers').doc(pin).delete().then(function () {
-        return configRef().set({
-          adminPinHash: cfg.adminPinHash,
-          driverPins: pins,
-          writeToken: WRITE_TOKEN
-        }, { merge: true });
+      return sha256(ADMIN_PIN).then(function (hash) {
+        return db.collection('drivers').doc(pin).delete().then(function () {
+          return configRef().set({
+            adminPinHash: cfg.adminPinHash || hash,
+            driverPins: pins
+          });
+        });
       });
     }).then(function () {
       setAdminMsg('Eliminado');
@@ -327,6 +484,10 @@
         setAdminMsg('');
       });
     }
+    var gen = $('admin-generate-pin');
+    if (gen) gen.addEventListener('click', generatePin);
+    var refreshLogs = $('admin-refresh-logs');
+    if (refreshLogs) refreshLogs.addEventListener('click', loadLogs);
     var adminForm = $('admin-form');
     if (adminForm) {
       adminForm.addEventListener('submit', function (e) {
@@ -337,6 +498,13 @@
   }
 
   function start(onReady) {
+    var readyOnce = false;
+    function ready(driver) {
+      if (readyOnce) return;
+      readyOnce = true;
+      if (onReady) onReady(driver);
+    }
+
     try {
       initFirebase();
     } catch (e) {
@@ -347,21 +515,36 @@
         err.hidden = false;
         err.textContent = 'Firebase no cargó';
       }
-      if (onReady) onReady(null);
+      ready(null);
       return;
     }
     bindUi();
-    var existing = getSession();
-    if (existing && existing.phone) {
-      currentDriver = existing;
-      showPinGate(false);
-      applyDriverToUi(existing);
-      if (onReady) onReady(existing);
-      return;
-    }
-    showPinGate(true);
-    ensureSeed().catch(function (e) { console.warn('seed', e); });
-    if (onReady) onReady(null);
+
+    auth.onAuthStateChanged(function (user) {
+      if (isAdminUser(user)) {
+        setSession(null);
+        showPinGate(false);
+        showAdmin(true);
+        ready(null);
+        return;
+      }
+      if (user && !isAdminUser(user)) {
+        auth.signOut();
+        return;
+      }
+      var existing = getSession();
+      if (existing && existing.phone) {
+        currentDriver = existing;
+        showAdmin(false);
+        showPinGate(false);
+        applyDriverToUi(existing);
+        ready(existing);
+        return;
+      }
+      showAdmin(false);
+      showPinGate(true);
+      ready(null);
+    });
   }
 
   global.PeredaSession = {

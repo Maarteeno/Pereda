@@ -8,11 +8,10 @@ window.PEREDA_FIREBASE = {
   appId: '1:323588975408:web:589e7de119e3e7fb4576f5'
 };
 
-/* Client write token must match firestore.rules. Acceptable for private tablet fleet. */
-window.PEREDA_WRITE_TOKEN = 'APT_WRITE_2026';
+/* Fixed admin unlock PIN (then Google Sign-In). */
+window.PEREDA_DEFAULT_ADMIN_PIN = '2991';
+window.PEREDA_ADMIN_EMAIL = 'malerovi2014@gmail.com';
 
-/* Default admin PIN until changed in Firestore config/app (hash). Document for ops: 2468 */
-window.PEREDA_DEFAULT_ADMIN_PIN = '2468';
 window.PEREDA_DEFAULT_DRIVER = {
   pin: '1001',
   name: 'Adrián Pereda',

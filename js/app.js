@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v47';
+  var APP_VERSION = 'v48';
   var WA_NUMBER = '59899774019';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
@@ -132,6 +132,11 @@
       adminPhoneLabel: 'Teléfono (con código país)',
       adminSave: 'Guardar',
       adminClear: 'Limpiar',
+      adminGeneratePin: 'Generar PIN',
+      adminDriversTitle: 'Conductores',
+      adminLogsTitle: 'Logs de ingreso',
+      adminRefreshLogs: 'Actualizar',
+      adminLogsHint: 'Últimos ingresos de conductores (quién y cuándo).',
       contactKicker: 'Hablemos',
       contactIntro: 'Contale destino, horario y cantidad de pasajeros. Respuesta por WhatsApp.',
       driverRole: 'Conductor profesional. Montevideo y La Costa',
@@ -255,6 +260,11 @@
       adminPhoneLabel: 'Phone (with country code)',
       adminSave: 'Save',
       adminClear: 'Clear',
+      adminGeneratePin: 'Generate PIN',
+      adminDriversTitle: 'Drivers',
+      adminLogsTitle: 'Login logs',
+      adminRefreshLogs: 'Refresh',
+      adminLogsHint: 'Recent driver logins (who and when).',
       contactKicker: "Let's talk",
       contactIntro: 'Tell the destination, time and number of passengers. Reply on WhatsApp.',
       driverRole: 'Professional driver. Montevideo and the Coast',
@@ -378,6 +388,11 @@
       adminPhoneLabel: 'Telefone (com código do país)',
       adminSave: 'Salvar',
       adminClear: 'Limpar',
+      adminGeneratePin: 'Gerar PIN',
+      adminDriversTitle: 'Motoristas',
+      adminLogsTitle: 'Logs de acesso',
+      adminRefreshLogs: 'Atualizar',
+      adminLogsHint: 'Últimos acessos de motoristas (quem e quando).',
       contactKicker: 'Vamos conversar',
       contactIntro: 'Informe destino, horário e número de passageiros. Resposta no WhatsApp.',
       driverRole: 'Motorista profissional. Montevidéu e a Costa',
