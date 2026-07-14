@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v43';
+  var APP_VERSION = 'v44';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
 
@@ -313,7 +313,6 @@
   function initUi() {
 
           var imgs = Array.prototype.slice.call(document.querySelectorAll("#vehicle-rotator img"));
-          var dots = Array.prototype.slice.call(document.querySelectorAll(".vehicle-dot"));
           var idx = 0;
           var timer = null;
           var ROTATE_MS = 7000;
@@ -322,11 +321,6 @@
             idx = (i + imgs.length) % imgs.length;
             imgs.forEach(function (img, n) {
               img.classList.toggle("is-active", n === idx);
-            });
-            dots.forEach(function (dot, n) {
-              var on = n === idx;
-              dot.classList.toggle("is-active", on);
-              dot.setAttribute("aria-selected", on ? "true" : "false");
             });
           }
 
@@ -340,13 +334,6 @@
             if (timer) window.clearInterval(timer);
             timer = null;
           }
-
-          dots.forEach(function (dot) {
-            dot.addEventListener("click", function () {
-              show(Number(dot.getAttribute("data-index")) || 0);
-              start();
-            });
-          });
 
           var stage = document.querySelector(".vehicle-stage");
           if (stage) {
