@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v55';
+  var APP_VERSION = 'v56';
   var WA_NUMBER = '59899774019';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
