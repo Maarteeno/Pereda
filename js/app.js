@@ -3,9 +3,9 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v64';
+  var APP_VERSION = 'v65';
   var WA_NUMBER = '59899774019';
-  var QR_DEST = 36;
+  var QR_DEST = 72;
   var QR_CONTACT = 148;
   var QR_DARK = '#25d366';
   var QR_LIGHT = '#0a0a0a';
