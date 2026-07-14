@@ -1,4 +1,4 @@
-var APP_VERSION = 'v60';
+var APP_VERSION = 'v61';
 var CACHE_NAME = 'pereda-tablet-' + APP_VERSION;
 var ASSETS = [
   './',
@@ -7,12 +7,11 @@ var ASSETS = [
   './js/app.js',
   './js/session.js',
   './js/firebase-config.js',
+  './js/qrcode.min.js',
   './manifest.json',
-  './assets/adrian-pereda.png',
   './assets/bestune-front.png',
   './assets/bestune-side.png',
   './assets/bestune-rear.png',
-  './assets/whatsapp-qr.png',
   './assets/paseos/paseos-hero-ai.png',
   './assets/destinations/traslados-hero-ai.png',
   './assets/destinations/punta-del-este-ai.png',
@@ -34,6 +33,7 @@ var ASSETS = [
   './assets/paseos/detalle/evt-boda.png',
   './assets/paseos/detalle/evt-salon.png',
   './assets/paseos/detalle/evt-congreso.png',
+  './assets/paseos/detalle/bodega-bouza.png',
   './assets/paseos/detalle/bodega-juanico.png',
   './assets/paseos/detalle/bodega-garzon.png',
   './assets/paseos/detalle/bodega-carmelo.png',

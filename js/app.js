@@ -3,9 +3,10 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v60';
+  var APP_VERSION = 'v61';
   var WA_NUMBER = '59899774019';
-  var QR_SIZE = 96;
+  var QR_DEST = 128;
+  var QR_CONTACT = 148;
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
   var activeLang = 'es';
@@ -542,63 +543,108 @@
     return 'Adrián';
   }
 
+  function asciiFold(text) {
+    try {
+      return String(text || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^\x20-\x7E]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    } catch (e) {
+      return String(text || '').replace(/[^\x20-\x7E]/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+  }
+
   function waUrl(text) {
-    return 'https://wa.me/' + activePhone() + '?text=' + encodeURIComponent(String(text || ''));
+    var phone = activePhone();
+    var msg = asciiFold(text || '');
+    if (!msg) return 'https://wa.me/' + phone;
+    return 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
+  }
+
+  function drawCleanQr(container, text, size) {
+    if (!container) return;
+    container.innerHTML = '';
+    if (typeof QRCode === 'undefined') {
+      container.textContent = 'QR';
+      return;
+    }
+    var holder = document.createElement('div');
+    holder.setAttribute('aria-hidden', 'true');
+    holder.style.cssText = 'position:absolute;left:-9999px;top:0;width:0;height:0;overflow:hidden;';
+    document.body.appendChild(holder);
+    try {
+      var qr = new QRCode(holder, {
+        text: String(text || ''),
+        width: size,
+        height: size,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+      var model = qr._oQRCode;
+      if (!model) throw new Error('QR sin modelo');
+      var n = model.getModuleCount();
+      var canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      canvas.setAttribute('aria-hidden', 'true');
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, size, size);
+      var cell = size / n;
+      ctx.fillStyle = '#000000';
+      var r;
+      var c;
+      for (r = 0; r < n; r += 1) {
+        for (c = 0; c < n; c += 1) {
+          if (model.isDark(r, c)) {
+            ctx.fillRect(
+              Math.floor(c * cell),
+              Math.floor(r * cell),
+              Math.ceil(cell),
+              Math.ceil(cell)
+            );
+          }
+        }
+      }
+      container.appendChild(canvas);
+    } catch (e) {
+      console.warn('QR', e);
+      container.textContent = 'QR';
+    }
+    if (holder.parentNode) holder.parentNode.removeChild(holder);
   }
 
   function updateDestQrs(lang) {
     var t = T[lang] || T.es;
-    var name = activeDriverName();
+    var name = asciiFold(activeDriverName());
     document.querySelectorAll('.dest-qr[data-dest]').forEach(function (wrap) {
       var key = wrap.getAttribute('data-dest');
-      var place = (DEST_NAMES[key] && DEST_NAMES[key][lang]) || key;
+      var place = asciiFold((DEST_NAMES[key] && DEST_NAMES[key][lang]) || key);
       var tpl = t.waWantGoQr || t.waWantGo || '';
-      var msg = tpl.replace('{place}', place).replace('{name}', name);
+      var msg = asciiFold(
+        tpl.replace('{place}', place).replace('{name}', name)
+      );
       var url = waUrl(msg);
       var canvasHost = wrap.querySelector('.dest-qr-canvas');
-      if (!canvasHost) return;
-      canvasHost.innerHTML = '';
-      if (typeof QRCode === 'undefined') {
-        canvasHost.textContent = 'QR';
-        return;
-      }
-      try {
-        new QRCode(canvasHost, {
-          text: url,
-          width: QR_SIZE,
-          height: QR_SIZE,
-          colorDark: '#000000',
-          colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.M
-        });
-        var spareCanvas = canvasHost.querySelector('canvas');
-        var spareImg = canvasHost.querySelector('img');
-        if (spareCanvas && spareImg) {
-          spareCanvas.style.display = 'none';
-          spareImg.style.width = QR_SIZE + 'px';
-          spareImg.style.height = QR_SIZE + 'px';
-          spareImg.style.imageRendering = 'pixelated';
-        } else if (spareCanvas) {
-          spareCanvas.style.width = QR_SIZE + 'px';
-          spareCanvas.style.height = QR_SIZE + 'px';
-        }
-      } catch (e) {
-        console.warn('QR', e);
-        canvasHost.textContent = 'QR';
-      }
+      drawCleanQr(canvasHost, url, QR_DEST);
       wrap.setAttribute('title', place);
     });
+  }
+
+  function updateContactQr() {
+    var host = document.getElementById('contact-wa-qr-canvas');
+    drawCleanQr(host, 'https://wa.me/' + activePhone(), QR_CONTACT);
   }
 
   function applyDriverLinks(driver) {
     var phone = driver && driver.phone ? String(driver.phone).replace(/\D/g, '') : WA_NUMBER;
     var base = 'https://wa.me/' + phone;
-    var waFab = document.getElementById('wa-fab');
     var contactQr = document.getElementById('contact-wa-qr');
     var contactBtn = document.getElementById('contact-wa-btn');
-    if (waFab) waFab.href = base;
     if (contactQr) contactQr.href = base;
     if (contactBtn) contactBtn.href = base;
+    updateContactQr();
     updateDestQrs(activeLang);
     var t = T[activeLang] || T.es;
     if (t.waAria) {
