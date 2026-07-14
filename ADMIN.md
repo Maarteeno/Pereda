@@ -29,8 +29,8 @@ Admin sidebar: **Conductores** | **Solicitudes** | **Ver logs** | **Changelog**
 - Activar con PIN → arranca **trial de 15 días**
 
 ### Changelog
-- Lista de entradas + formulario (versión, título, notas)
-- Colección Firestore `changelog` (solo admin)
+- Historial de versiones **solo lectura** (semillas en código, actualizado en cada release)
+- Sin formulario de alta manual
 
 ## Driver onboarding + trial
 
@@ -56,6 +56,6 @@ En Paseos y Traslados, cada destino muestra un **QR** (`Escaneá para cotizar`) 
 
 - `driverAccounts/{uid}` — + `billingStatus`, `trialEndsAt`, `subscribedUntil`, `subscriptionPriceUsd`
 - `drivers/{pin}`, `config/app`, `accessLogs`
-- `changelog/{id}` — version, title, body, at, createdBy
+- `changelog/{id}` — legado (ya no se escribe desde la UI)
 
 App title / PWA name: **App Traslados**

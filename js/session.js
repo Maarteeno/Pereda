@@ -8,172 +8,32 @@
   var SUB_PRICE_USD = 4.99;
   var SEED_CHANGELOG = [
     {
-      version: 'v65',
-      title: 'QR destino 72px + changelog completo',
-      body: 'Destinos vuelven a QR de 72px (Contacto 148). Changelog del admin incluye notas sembradas v42–v65; las entradas de Firestore con la misma versión pisan la semilla.',
-      at: '2026-07-14T18:10:00.000Z',
-      createdBy: 'seed'
+      version: '1.0 Beta',
+      title: 'Lanzamiento público',
+      body: 'QR de destino en blanco y negro, centrados y con módulos enteros para mejor escaneo. Changelog admin solo lectura. Versión visible en el footer. Contacto mantiene el QR verde WhatsApp.',
+      at: '2026-07-14T18:30:00.000Z',
+      createdBy: 'release'
     },
     {
-      version: 'v64',
-      title: 'QR por destino con texto precargado',
-      body: 'Cada destino arma wa.me con mensaje waWantGo (lugar + nombre del conductor). Contacto sigue sin texto. Prefijo 598. Label “Escaneá para cotizar”.',
-      at: '2026-07-14T18:04:14.000Z',
-      createdBy: 'seed'
+      version: 'v58–v65',
+      title: 'WhatsApp, QRs y suscripción',
+      body: 'Trial 15 días y billing en admin. QRs por destino con wa.me 598 y texto precargado por lugar. Dibujo limpio, Contacto dinámico por conductor, tamaño destino 72px. Changelog interno y polish de tamaño.',
+      at: '2026-07-14T17:00:00.000Z',
+      createdBy: 'release'
     },
     {
-      version: 'v63',
-      title: 'Prefijo Uruguay 598 en wa.me',
-      body: 'toWaPhone / normalizeUyPhone fuerzan 598 en el número del QR. Estilo verde sobre fondo oscuro. Sin botón Abrir WhatsApp; ícono WA solo en Contacto.',
-      at: '2026-07-14T17:58:47.000Z',
-      createdBy: 'seed'
+      version: 'v46–v57',
+      title: 'Auth, admin y seguridad',
+      body: 'Gate PIN + Google onboarding, sidebar admin, logs de acceso, COOP. Trial/gates de sesión. Hardening CSP/headers, reglas Firestore, sanitize y panel admin pulido.',
+      at: '2026-07-14T16:00:00.000Z',
+      createdBy: 'release'
     },
     {
-      version: 'v62',
-      title: 'Mismos QR de Contacto en destinos',
-      body: 'Destinos reutilizan el enlace de Contacto sin ?text=. Menos destello del gate al recargar sesión.',
-      at: '2026-07-14T17:52:30.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v61',
-      title: 'QR limpios y Contacto dinámico',
-      body: 'drawCleanQr unifica el dibujo. QR de Contacto por conductor. Se quitan foto de Adrián y FAB de WhatsApp.',
-      at: '2026-07-14T17:46:51.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v60',
-      title: 'Arreglo de links QR de destino',
-      body: 'Vuelta a wa.me y QR nítidos; corrección de enlaces de cotización por destino.',
-      at: '2026-07-14T17:38:11.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v59',
-      title: 'Bodega Bouza y fiabilidad de scan',
-      body: 'Bouza primero en bodegas con imagen nueva. Mejoras de escaneo de QR de destino.',
-      at: '2026-07-14T17:33:38.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v58',
-      title: 'Trial, suscripción, QR y changelog',
-      body: 'Trial 15 días y campos de billing. Admin: Marcar suscripto / vencido. Tab Changelog. QR por destino (primera versión).',
-      at: '2026-07-14T17:27:59.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v57',
-      title: 'Seguridad y polish del admin',
-      body: 'CSP/headers, reglas Firestore, pinHint en logs, sanitize. Panel admin más pulido.',
-      at: '2026-07-14T17:12:59.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v56',
-      title: 'Montevideo, rol y nav web',
-      body: 'Fix card Montevideo; rol bajo el nombre; nav web centrada.',
-      at: '2026-07-14T17:05:56.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v55',
-      title: 'Header y FAB WhatsApp',
-      body: 'Nombre + banderas alineados; FAB WhatsApp abajo a la derecha, por encima del overlay.',
-      at: '2026-07-14T16:59:00.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v54',
-      title: 'Header WA/flags y Quiero ir',
-      body: 'Sin solapamiento WA/banderas en header. CTA Quiero ir en cada lugar.',
-      at: '2026-07-14T16:49:40.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v53',
-      title: 'Gate de login al tema oscuro',
-      body: 'Pantalla de login alineada al dark theme y DM Sans.',
-      at: '2026-07-14T16:38:48.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v52',
-      title: 'App Traslados y gate Google',
-      body: 'Título App Traslados, gate con estilo Google, vehículo + PIN admin.',
-      at: '2026-07-14T16:35:31.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v51',
-      title: 'Onboarding Google + PIN',
-      body: 'Registro de conductores con Google y segundo factor PIN.',
-      at: '2026-07-14T16:26:02.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v50',
-      title: 'Sidebar admin y COOP',
-      body: 'Sidebar de admin, dedupe de conductores, COOP para auth Google.',
-      at: '2026-07-14T16:18:05.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v49',
-      title: 'Triple-click logout',
-      body: 'Triple clic en el nombre del conductor cierra la sesión.',
-      at: '2026-07-14T16:09:22.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v48',
-      title: 'Admin Google, PIN y logs',
-      body: 'Auth admin con Google, generación de PIN y access logs.',
-      at: '2026-07-14T15:58:43.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v47',
-      title: 'PIN autocomplete y welcome',
-      body: 'Fix autocomplete PIN, sin switch PIN, copy de bienvenida.',
-      at: '2026-07-14T15:47:49.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v46',
-      title: 'PIN Firestore y aeropuerto',
-      body: 'Gate PIN con drivers en Firestore; Aeropuerto/Buquebus; CTA QUIERO IR más sutil.',
-      at: '2026-07-14T15:34:52.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v45',
-      title: 'i18n ES/EN/PT completo',
-      body: 'Idiomas completos, banderas fijas, CTAs WhatsApp QUIERO IR.',
-      at: '2026-07-14T15:15:13.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v44',
-      title: 'Showcase del vehículo',
-      body: 'Apertura del vehicle showcase sin pager dots.',
-      at: '2026-07-14T15:08:07.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v43',
-      title: 'Open Design y paseos anidados',
-      body: 'Handoff Open Design con detalle anidado de paseos.',
-      at: '2026-07-14T15:00:00.000Z',
-      createdBy: 'seed'
-    },
-    {
-      version: 'v42',
-      title: 'Firebase Hosting aptraslados',
-      body: 'Config de Firebase Hosting y deploy a aptraslados.web.app.',
-      at: '2026-07-14T14:03:11.000Z',
-      createdBy: 'seed'
+      version: 'v42–v45',
+      title: 'Producto y hosting',
+      body: 'Deploy Firebase a aptraslados.web.app. Hub de paseos/traslados/contacto, i18n ES/EN/PT, CTAs WhatsApp y showcase del vehículo.',
+      at: '2026-07-14T14:00:00.000Z',
+      createdBy: 'release'
     }
   ];
   var db = null;
@@ -1319,110 +1179,27 @@
     item.className = 'admin-log admin-changelog-entry';
     item.innerHTML =
       '<div class="admin-log-top"><strong></strong><em></em></div>' +
-      '<span class="admin-log-meta"></span>' +
       '<p class="admin-changelog-body"></p>';
     item.querySelector('strong').textContent =
       (row.version ? String(row.version) + ' · ' : '') + (row.title || 'Sin título');
     item.querySelector('em').textContent = formatLogTime(row.at);
-    item.querySelector('.admin-log-meta').textContent = row.createdBy || '';
     item.querySelector('.admin-changelog-body').textContent = row.body || '';
     return item;
   }
 
-  function mergeChangelogRows(firestoreRows) {
-    var byVersion = {};
-    SEED_CHANGELOG.forEach(function (row) {
-      if (!row || !row.version) return;
-      byVersion[String(row.version)] = {
-        version: row.version,
-        title: row.title || '',
-        body: row.body || '',
-        at: row.at,
-        createdBy: row.createdBy || 'seed'
-      };
-    });
-    (firestoreRows || []).forEach(function (row) {
-      if (!row || !row.version) return;
-      byVersion[String(row.version)] = row;
-    });
-    return Object.keys(byVersion)
-      .map(function (key) { return byVersion[key]; })
-      .sort(function (a, b) {
-        return changelogAtMs(b.at) - changelogAtMs(a.at);
-      });
-  }
-
   function refreshChangelog() {
     var list = $('admin-changelog-list');
-    if (!list || !db) return;
-    list.innerHTML = '<p class="admin-logs-empty">Cargando…</p>';
-    db.collection('changelog')
-      .orderBy('at', 'desc')
-      .limit(40)
-      .get()
-      .then(function (snap) {
-        var firestoreRows = [];
-        snap.forEach(function (doc) {
-          firestoreRows.push(Object.assign({ id: doc.id }, doc.data() || {}));
-        });
-        var rows = mergeChangelogRows(firestoreRows);
-        list.innerHTML = '';
-        if (!rows.length) {
-          list.innerHTML = '<p class="admin-logs-empty">Sin entradas. Agregá la primera abajo.</p>';
-          return;
-        }
-        rows.forEach(function (row) {
-          list.appendChild(renderChangelogEntry(row));
-        });
-      })
-      .catch(function (e) {
-        console.error(e);
-        var rows = mergeChangelogRows([]);
-        list.innerHTML = '';
-        if (!rows.length) {
-          list.innerHTML = '<p class="admin-logs-empty is-error">No se pudo cargar el changelog.</p>';
-          return;
-        }
-        rows.forEach(function (row) {
-          list.appendChild(renderChangelogEntry(row));
-        });
-      });
-  }
-
-  function setChangelogMsg(text, isError) {
-    var el = $('admin-changelog-msg');
-    if (!el) return;
-    el.hidden = !text;
-    el.textContent = text || '';
-    el.classList.toggle('is-error', !!isError);
-  }
-
-  function submitChangelogEntry() {
-    var version = sanitizeText(($('changelog-version') || {}).value, 20);
-    var title = sanitizeText(($('changelog-title') || {}).value, 120);
-    var body = sanitizeText(($('changelog-body') || {}).value, 2000);
-    if (!version || !title) {
-      setChangelogMsg('Completá versión y título', true);
-      return Promise.resolve(false);
+    if (!list) return;
+    var rows = SEED_CHANGELOG.slice().sort(function (a, b) {
+      return changelogAtMs(b.at) - changelogAtMs(a.at);
+    });
+    list.innerHTML = '';
+    if (!rows.length) {
+      list.innerHTML = '<p class="admin-logs-empty">Sin entradas.</p>';
+      return;
     }
-    var user = auth.currentUser;
-    return db.collection('changelog').add({
-      version: version,
-      title: title,
-      body: body,
-      at: firebase.firestore.FieldValue.serverTimestamp(),
-      createdBy: (user && user.email) || ADMIN_EMAIL
-    }).then(function () {
-      if ($('changelog-version')) $('changelog-version').value = '';
-      if ($('changelog-title')) $('changelog-title').value = '';
-      if ($('changelog-body')) $('changelog-body').value = '';
-      setChangelogMsg('Entrada agregada');
-      refreshChangelog();
-      return true;
-    }).catch(function (e) {
-      console.error(e);
-      setChangelogMsg('Error al guardar changelog', true);
-      return false;
+    rows.forEach(function (row) {
+      list.appendChild(renderChangelogEntry(row));
     });
   }
 
@@ -1490,14 +1267,6 @@
 
     var refreshLogs = $('admin-refresh-logs');
     if (refreshLogs) refreshLogs.addEventListener('click', loadLogs);
-
-    var changelogForm = $('changelog-form');
-    if (changelogForm) {
-      changelogForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        submitChangelogEntry();
-      });
-    }
 
     document.querySelectorAll('[data-admin-nav]').forEach(function (btn) {
       btn.addEventListener('click', function () {

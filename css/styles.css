@@ -937,6 +937,19 @@
       font-size: 0.82rem;
       letter-spacing: 0.01em;
     }
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .footer-version {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      opacity: 0.85;
+      letter-spacing: 0.04em;
+    }
 
     @media (min-width: 640px) {
       .hub { grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
@@ -1069,21 +1082,22 @@ body.update-blocked { overflow: hidden; }
 .dest-qr {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  width: 100%;
   gap: 0.3rem;
   margin-top: 0.45rem;
+  text-align: center;
 }
 .dest-qr-canvas {
   width: 72px;
   height: 72px;
-  padding: 8px;
-  border-radius: 12px;
-  background: #0a0a0a;
-  border: 2px solid var(--whatsapp);
+  padding: 6px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid var(--border);
   box-sizing: content-box;
   line-height: 0;
   overflow: hidden;
-  box-shadow: 0 0 0 3px oklch(0.72 0.14 145 / 0.18);
 }
 .dest-qr-canvas canvas {
   display: block;
@@ -1096,8 +1110,9 @@ body.update-blocked { overflow: hidden; }
   margin: 0;
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--whatsapp);
+  color: var(--muted);
   letter-spacing: 0.01em;
+  text-align: center;
 }
 .dest-card .dest-qr {
   margin-top: 0.5rem;
@@ -1607,9 +1622,6 @@ body.pin-locked footer { visibility: hidden; pointer-events: none; }
   color: var(--fg);
   resize: vertical;
   font: inherit;
-}
-.admin-changelog-form {
-  margin-top: 1.25rem;
 }
 .admin-changelog-body {
   margin: 0.35rem 0 0;

@@ -3,12 +3,15 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v65';
+  var APP_VERSION = '1.0-beta';
+  var APP_VERSION_LABEL = '1.0 Beta';
   var WA_NUMBER = '59899774019';
   var QR_DEST = 72;
   var QR_CONTACT = 148;
-  var QR_DARK = '#25d366';
-  var QR_LIGHT = '#0a0a0a';
+  var QR_CONTACT_DARK = '#25d366';
+  var QR_CONTACT_LIGHT = '#0a0a0a';
+  var QR_DEST_DARK = '#000000';
+  var QR_DEST_LIGHT = '#ffffff';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
   var activeLang = 'es';
@@ -181,8 +184,7 @@
       adminRefreshLogs: 'Actualizar',
       adminLogsHint: 'Últimos ingresos de conductores (quién y cuándo).',
       adminChangelogTitle: 'Changelog',
-      adminChangelogHint: 'Notas de versión internas. Visible solo para admin.',
-      adminChangelogSave: 'Guardar entrada',
+      adminChangelogHint: 'Historial de versiones (solo lectura).',
       logoutTitle: '¿Cerrar sesión?',
       logoutText: 'Cerrás la sesión del conductor. Vas a tener que entrar de nuevo con Google y tu PIN.',
       logoutCancel: 'Cancelar',
@@ -341,8 +343,7 @@
       adminRefreshLogs: 'Refresh',
       adminLogsHint: 'Recent driver logins (who and when).',
       adminChangelogTitle: 'Changelog',
-      adminChangelogHint: 'Internal release notes. Admin only.',
-      adminChangelogSave: 'Save entry',
+      adminChangelogHint: 'Version history (read-only).',
       logoutTitle: 'Log out?',
       logoutText: 'This ends the driver session. You will need to sign in again with Google and your PIN.',
       logoutCancel: 'Cancel',
@@ -501,8 +502,7 @@
       adminRefreshLogs: 'Atualizar',
       adminLogsHint: 'Últimos acessos de motoristas (quem e quando).',
       adminChangelogTitle: 'Changelog',
-      adminChangelogHint: 'Notas de versão internas. Só admin.',
-      adminChangelogSave: 'Salvar entrada',
+      adminChangelogHint: 'Histórico de versões (somente leitura).',
       logoutTitle: 'Sair da sessão?',
       logoutText: 'Você encerra a sessão do motorista. Precisará entrar de novo com Google e seu PIN.',
       logoutCancel: 'Cancelar',
@@ -565,13 +565,15 @@
     return base + '?text=' + encodeURIComponent(msg);
   }
 
-  function drawCleanQr(container, text, size) {
+  function drawCleanQr(container, text, size, dark, light) {
     if (!container) return;
     container.innerHTML = '';
     if (typeof QRCode === 'undefined') {
       container.textContent = 'QR';
       return;
     }
+    var darkColor = dark || QR_DEST_DARK;
+    var lightColor = light || QR_DEST_LIGHT;
     var holder = document.createElement('div');
     holder.setAttribute('aria-hidden', 'true');
     holder.style.cssText = 'position:absolute;left:-9999px;top:0;width:0;height:0;overflow:hidden;';
@@ -586,26 +588,22 @@
       var model = qr._oQRCode;
       if (!model) throw new Error('QR sin modelo');
       var n = model.getModuleCount();
+      var modulePx = Math.max(3, Math.floor(size / n));
+      var canvasSize = n * modulePx;
       var canvas = document.createElement('canvas');
-      canvas.width = size;
-      canvas.height = size;
+      canvas.width = canvasSize;
+      canvas.height = canvasSize;
       canvas.setAttribute('aria-hidden', 'true');
       var ctx = canvas.getContext('2d');
-      ctx.fillStyle = QR_LIGHT;
-      ctx.fillRect(0, 0, size, size);
-      var cell = size / n;
-      ctx.fillStyle = QR_DARK;
+      ctx.fillStyle = lightColor;
+      ctx.fillRect(0, 0, canvasSize, canvasSize);
+      ctx.fillStyle = darkColor;
       var r;
       var c;
       for (r = 0; r < n; r += 1) {
         for (c = 0; c < n; c += 1) {
           if (model.isDark(r, c)) {
-            ctx.fillRect(
-              Math.floor(c * cell),
-              Math.floor(r * cell),
-              Math.ceil(cell),
-              Math.ceil(cell)
-            );
+            ctx.fillRect(c * modulePx, r * modulePx, modulePx, modulePx);
           }
         }
       }
@@ -628,14 +626,14 @@
         .replace('{name}', name);
       var url = driverWaUrl(msg);
       var canvasHost = wrap.querySelector('.dest-qr-canvas');
-      drawCleanQr(canvasHost, url, QR_DEST);
+      drawCleanQr(canvasHost, url, QR_DEST, QR_DEST_DARK, QR_DEST_LIGHT);
       wrap.setAttribute('title', place);
     });
   }
 
   function updateContactQr() {
     var host = document.getElementById('contact-wa-qr-canvas');
-    drawCleanQr(host, driverWaUrl(), QR_CONTACT);
+    drawCleanQr(host, driverWaUrl(), QR_CONTACT, QR_CONTACT_DARK, QR_CONTACT_LIGHT);
   }
 
   function applyDriverLinks(driver) {
@@ -675,6 +673,11 @@
     });
 
     applyDriverLinks(window.PeredaSession && PeredaSession.getDriver());
+  }
+
+  function applyFooterVersion() {
+    var el = document.getElementById('app-version');
+    if (el) el.textContent = APP_VERSION_LABEL;
   }
 
   function clearCachesAndReload() {
@@ -974,6 +977,7 @@
   });
 
   applyLang(detectLanguage());
+  applyFooterVersion();
   if (window.PeredaSession) {
     PeredaSession.start(function () {
       applyDriverLinks(PeredaSession.getDriver());

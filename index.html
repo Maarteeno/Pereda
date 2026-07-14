@@ -523,7 +523,10 @@
   </div>
 
   <footer>
-    <div class="shell" data-i18n="footer">Adrián Pereda — Traslados · Bestune NAT eléctrico · Montevideo, Uruguay</div>
+    <div class="shell footer-inner">
+      <span data-i18n="footer">Traslados · Bestune NAT eléctrico · Montevideo, Uruguay</span>
+      <span class="footer-version" id="app-version">1.0 Beta</span>
+    </div>
   </footer>
 
   <div class="pin-gate" id="pin-gate" role="dialog" aria-modal="true" aria-labelledby="pin-gate-brand">
@@ -677,24 +680,9 @@
         <section class="admin-view" data-admin-view="changelog" hidden>
           <header class="admin-view-head">
             <h3 data-i18n="adminChangelogTitle">Changelog</h3>
-            <p data-i18n="adminChangelogHint">Notas de versión internas. Visible solo para admin.</p>
+            <p data-i18n="adminChangelogHint">Historial de versiones (solo lectura).</p>
           </header>
           <div class="admin-logs" id="admin-changelog-list"></div>
-          <p class="admin-msg" id="admin-changelog-msg" hidden></p>
-          <form class="admin-form admin-changelog-form" id="changelog-form">
-            <label>Versión
-              <input type="text" id="changelog-version" maxlength="20" placeholder="v58" required />
-            </label>
-            <label>Título
-              <input type="text" id="changelog-title" maxlength="120" placeholder="Trial, QR y changelog" required />
-            </label>
-            <label>Notas
-              <textarea id="changelog-body" maxlength="2000" rows="4" placeholder="Qué cambió…"></textarea>
-            </label>
-            <div class="admin-form-actions">
-              <button type="submit" class="admin-save" data-i18n="adminChangelogSave">Guardar entrada</button>
-            </div>
-          </form>
         </section>
       </div>
     </div>
