@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v54';
+  var APP_VERSION = 'v55';
   var WA_NUMBER = '59899774019';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
@@ -536,10 +536,10 @@
   function applyDriverLinks(driver) {
     var phone = driver && driver.phone ? String(driver.phone).replace(/\D/g, '') : WA_NUMBER;
     var base = 'https://wa.me/' + phone;
-    var headerWa = document.getElementById('header-wa');
+    var waFab = document.getElementById('wa-fab');
     var contactQr = document.getElementById('contact-wa-qr');
     var contactBtn = document.getElementById('contact-wa-btn');
-    if (headerWa) headerWa.href = base;
+    if (waFab) waFab.href = base;
     if (contactQr) contactQr.href = base;
     if (contactBtn) contactBtn.href = base;
     updateDestLinks(activeLang);
