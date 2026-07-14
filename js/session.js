@@ -6,7 +6,21 @@
   var TRIAL_DAYS = 15;
   var SUB_DAYS = 30;
   var SUB_PRICE_USD = 4.99;
+  var ACCESS_PRESETS = [
+    { label: '24h', amount: 24, unit: 'hours' },
+    { label: '7d', amount: 7, unit: 'days' },
+    { label: '15d', amount: 15, unit: 'days' },
+    { label: '30d', amount: 30, unit: 'days' }
+  ];
+  var adminCountdownTimer = null;
   var SEED_CHANGELOG = [
+    {
+      version: '1.0.1 Beta',
+      title: 'Accesos por duración',
+      body: 'Control de acceso estilo InfraHub: otorgar/extender horas, días, semanas o meses; presets 24h/7d/15d/30d; countdown en vivo en cada conductor; vencer ahora. Trial default sigue en 15 días al activar.',
+      at: '2026-07-14T18:45:00.000Z',
+      createdBy: 'release'
+    },
     {
       version: '1.0 Beta',
       title: 'Lanzamiento público',
@@ -102,48 +116,112 @@
     return new Date(Date.now() + (Number(days) || 0) * 24 * 60 * 60 * 1000);
   }
 
-  function daysLeft(until) {
-    var d = toDate(until);
-    if (!d) return 0;
-    return Math.max(0, Math.ceil((d.getTime() - Date.now()) / (24 * 60 * 60 * 1000)));
+  function durationMs(amount, unit) {
+    var n = Math.max(0, Number(amount) || 0);
+    var u = String(unit || 'days');
+    if (u === 'hours') return n * 60 * 60 * 1000;
+    if (u === 'weeks') return n * 7 * 24 * 60 * 60 * 1000;
+    if (u === 'months') return n * 30 * 24 * 60 * 60 * 1000;
+    return n * 24 * 60 * 60 * 1000;
+  }
+
+  function resolveAccessUntil(account) {
+    if (!account) return null;
+    return toDate(account.accessUntil) || toDate(account.trialEndsAt) || toDate(account.subscribedUntil);
+  }
+
+  function remainingMs(account) {
+    if (!account) return 0;
+    if (!account.billingStatus && !account.accessUntil && !account.trialEndsAt && !account.subscribedUntil) {
+      return Number.POSITIVE_INFINITY;
+    }
+    var until = resolveAccessUntil(account);
+    if (!until) return 0;
+    return until.getTime() - Date.now();
+  }
+
+  function formatRemaining(ms) {
+    if (!isFinite(ms)) return 'Legacy';
+    if (ms <= 0) return 'Vencido';
+    var totalMin = Math.floor(ms / 60000);
+    var days = Math.floor(totalMin / (60 * 24));
+    var hours = Math.floor((totalMin % (60 * 24)) / 60);
+    var mins = totalMin % 60;
+    if (days >= 2) return days + 'd ' + hours + 'h';
+    if (days === 1) return '1d ' + hours + 'h';
+    if (hours >= 1) return hours + 'h ' + mins + 'm';
+    return Math.max(1, mins) + 'm';
   }
 
   function subscriptionAllowsAccess(account) {
     if (!account) return false;
-    if (!account.billingStatus) return true;
-    if (account.billingStatus === 'trial') {
-      var trialEnd = toDate(account.trialEndsAt);
-      return !!(trialEnd && trialEnd.getTime() > Date.now());
+    if (account.billingStatus === 'expired') return false;
+    if (!account.billingStatus && !account.accessUntil && !account.trialEndsAt && !account.subscribedUntil) {
+      return true;
     }
-    if (account.billingStatus === 'active') {
-      var subEnd = toDate(account.subscribedUntil);
-      return !!(subEnd && subEnd.getTime() > Date.now());
-    }
-    return false;
+    var until = resolveAccessUntil(account);
+    return !!(until && until.getTime() > Date.now());
   }
 
   function subscriptionBlockMessage(account) {
-    if (!account || !account.billingStatus) return 'Tu cuenta está desactivada. Contactá al admin.';
-    if (account.billingStatus === 'trial') return 'Terminó el período de prueba de 15 días. Pedile al admin renovar (US$ ' + SUB_PRICE_USD + '/mes).';
-    if (account.billingStatus === 'active') return 'Suscripción vencida. Pedile al admin renovar (US$ ' + SUB_PRICE_USD + '/mes).';
-    return 'Suscripción vencida. Contactá al admin.';
+    if (!account) return 'Tu cuenta está desactivada. Contactá al admin.';
+    if (account.billingStatus === 'expired' || !subscriptionAllowsAccess(account)) {
+      return 'Terminó tu acceso. Pedile al admin renovar (US$ ' + SUB_PRICE_USD + '/mes).';
+    }
+    return 'Tu cuenta está desactivada. Contactá al admin.';
   }
 
   function billingBadgeInfo(account) {
-    if (!account) return { label: 'Sin billing', className: 'is-expired' };
-    var status = account.billingStatus;
-    if (!status) return { label: 'Legacy', className: 'is-active' };
-    if (status === 'trial') {
-      var left = daysLeft(account.trialEndsAt);
-      if (left <= 0) return { label: 'Trial vencido', className: 'is-expired' };
-      return { label: 'Trial (' + left + 'd)', className: 'is-trial' };
+    if (!account) return { label: 'Sin acceso', className: 'is-expired', remainingLabel: '—' };
+    if (!account.billingStatus && !resolveAccessUntil(account)) {
+      return { label: 'Legacy', className: 'is-active', remainingLabel: 'Legacy' };
     }
-    if (status === 'active') {
-      var subLeft = daysLeft(account.subscribedUntil);
-      if (subLeft <= 0) return { label: 'Sub vencida', className: 'is-expired' };
-      return { label: 'Suscripto (' + subLeft + 'd)', className: 'is-subscribed' };
+    var ms = remainingMs(account);
+    if (!isFinite(ms)) return { label: 'Legacy', className: 'is-active', remainingLabel: 'Legacy' };
+    var left = formatRemaining(ms);
+    if (ms <= 0 || account.billingStatus === 'expired') {
+      return { label: 'Vencido', className: 'is-expired', remainingLabel: 'Vencido' };
     }
-    return { label: 'Vencido', className: 'is-expired' };
+    if (account.billingStatus === 'trial') {
+      return { label: 'Trial · ' + left, className: 'is-trial', remainingLabel: left };
+    }
+    return { label: 'Activo · ' + left, className: 'is-subscribed', remainingLabel: left };
+  }
+
+  function stopAdminCountdown() {
+    if (adminCountdownTimer) {
+      clearInterval(adminCountdownTimer);
+      adminCountdownTimer = null;
+    }
+  }
+
+  function tickAdminCountdowns() {
+    document.querySelectorAll('[data-access-until]').forEach(function (el) {
+      var raw = el.getAttribute('data-access-until');
+      var status = el.getAttribute('data-billing-status') || '';
+      if (!raw) {
+        el.textContent = status === 'expired' ? 'Vencido' : 'Legacy';
+        el.className = 'admin-status ' + (status === 'expired' ? 'is-expired' : 'is-active');
+        return;
+      }
+      var until = new Date(raw);
+      var ms = until.getTime() - Date.now();
+      var left = formatRemaining(ms);
+      var prefix = status === 'trial' ? 'Trial · ' : (status === 'active' ? 'Activo · ' : 'Acceso · ');
+      if (ms <= 0) {
+        el.textContent = 'Vencido';
+        el.className = 'admin-status is-expired';
+        return;
+      }
+      el.textContent = prefix + left;
+      el.className = 'admin-status ' + (status === 'trial' ? 'is-trial' : 'is-subscribed');
+    });
+  }
+
+  function startAdminCountdown() {
+    stopAdminCountdown();
+    tickAdminCountdowns();
+    adminCountdownTimer = setInterval(tickAdminCountdowns, 1000);
   }
 
   function sha256(text) {
@@ -765,7 +843,10 @@
         var pins = uniquePins(cfg.driverPins);
         if (pins.indexOf(pin) === -1) pins.push(pin);
         return sha256(pin).then(function (hash) {
-          var trialEndsAt = account.trialEndsAt || daysFromNow(TRIAL_DAYS);
+          var trialEndsAt = account.accessUntil
+            ? toDate(account.accessUntil)
+            : (account.trialEndsAt ? toDate(account.trialEndsAt) : daysFromNow(TRIAL_DAYS));
+          if (!trialEndsAt) trialEndsAt = daysFromNow(TRIAL_DAYS);
           var billingPayload = {
             email: account.email || '',
             name: account.name || '',
@@ -778,11 +859,10 @@
             activatedAt: account.activatedAt || firebase.firestore.FieldValue.serverTimestamp(),
             createdAt: account.createdAt || firebase.firestore.FieldValue.serverTimestamp(),
             billingStatus: account.billingStatus || 'trial',
-            subscriptionPriceUsd: SUB_PRICE_USD
+            subscriptionPriceUsd: SUB_PRICE_USD,
+            accessUntil: trialEndsAt,
+            trialEndsAt: trialEndsAt
           };
-          if (!account.trialEndsAt) {
-            billingPayload.trialEndsAt = trialEndsAt;
-          }
           if (!account.billingStatus) {
             billingPayload.billingStatus = 'trial';
           }
@@ -800,7 +880,7 @@
         });
       });
     }).then(function () {
-      setAdminMsg('Activado con trial de 15 días. El conductor verá el PIN al ingresar.');
+      setAdminMsg('Activado con trial de ' + TRIAL_DAYS + ' días. El conductor verá el PIN al ingresar.');
       refreshRequests();
       refreshAdminList();
       refreshPendingBadge();
@@ -885,36 +965,56 @@
     });
   }
 
-  function markSubscribed(uid, pin) {
-    var until = daysFromNow(SUB_DAYS);
-    return accountRef(uid).set({
-      status: 'active',
-      billingStatus: 'active',
-      subscribedUntil: until,
-      subscriptionPriceUsd: SUB_PRICE_USD
-    }, { merge: true }).then(function () {
-      if (!pin) return null;
-      return db.collection('drivers').doc(pin).set({ active: true }, { merge: true });
-    }).then(function () {
-      setAdminMsg('Suscripto por ' + SUB_DAYS + ' días (US$ ' + SUB_PRICE_USD + '/mes).');
-      refreshAdminList();
-      return true;
+  function grantAccess(uid, pin, amount, unit) {
+    var ms = durationMs(amount, unit);
+    if (ms <= 0) {
+      setAdminMsg('Duración inválida', true);
+      return Promise.resolve(false);
+    }
+    return accountRef(uid).get().then(function (snap) {
+      var account = snap.exists ? (snap.data() || {}) : {};
+      var base = Date.now();
+      var cur = resolveAccessUntil(account);
+      if (cur && cur.getTime() > base) base = cur.getTime();
+      var until = new Date(base + ms);
+      var nextBilling = 'active';
+      if (account.billingStatus === 'trial' && subscriptionAllowsAccess(account)) {
+        nextBilling = 'trial';
+      }
+      return accountRef(uid).set({
+        status: 'active',
+        billingStatus: nextBilling,
+        accessUntil: until,
+        subscribedUntil: until,
+        trialEndsAt: nextBilling === 'trial' ? until : (account.trialEndsAt || until),
+        subscriptionPriceUsd: SUB_PRICE_USD
+      }, { merge: true }).then(function () {
+        if (!pin) return null;
+        return db.collection('drivers').doc(pin).set({ active: true }, { merge: true });
+      }).then(function () {
+        setAdminMsg('Acceso otorgado hasta ' + until.toLocaleString('es-UY') + '.');
+        refreshAdminList();
+        return true;
+      });
     }).catch(function (e) {
       console.error(e);
-      setAdminMsg('Error al marcar suscripto', true);
+      setAdminMsg('Error al otorgar acceso', true);
       return false;
     });
   }
 
   function markExpired(uid, pin) {
+    var past = new Date(Date.now() - 1000);
     return accountRef(uid).set({
       status: 'disabled',
-      billingStatus: 'expired'
+      billingStatus: 'expired',
+      accessUntil: past,
+      subscribedUntil: past
     }, { merge: true }).then(function () {
       if (!pin) return null;
       return db.collection('drivers').doc(pin).set({ active: false }, { merge: true });
     }).then(function () {
-      setAdminMsg('Marcado como vencido / desactivado');
+      setAdminMsg('Acceso vencido / desactivado');
       refreshAdminList();
       return true;
     }).catch(function (e) {
@@ -952,6 +1052,7 @@
     var list = $('admin-list');
     if (!list || !db) return;
     var seq = ++adminListSeq;
+    stopAdminCountdown();
     list.innerHTML = '<p class="admin-logs-empty">Cargando…</p>';
     db.collection('driverAccounts').where('status', 'in', ['active', 'disabled']).get()
       .then(function (snap) {
@@ -982,8 +1083,9 @@
             var account = item.account;
             var isDisabled = account.status === 'disabled';
             var billing = billingBadgeInfo(account);
+            var until = resolveAccessUntil(account);
             var el = document.createElement('article');
-            el.className = 'admin-card' + (isDisabled ? ' is-disabled' : '');
+            el.className = 'admin-card admin-card-access' + (isDisabled ? ' is-disabled' : '');
             el.innerHTML =
               '<div class="admin-card-main">' +
               '<div class="admin-card-top">' +
@@ -995,11 +1097,23 @@
               '<span class="admin-pin-chip"></span>' +
               '</div>' +
               '<p class="admin-card-meta"></p>' +
-              '<p class="admin-card-billing-note">Suscripción US$ ' + SUB_PRICE_USD + ' / mes · trial ' + TRIAL_DAYS + ' días</p>' +
+              '<p class="admin-card-billing-note">US$ ' + SUB_PRICE_USD + '/mes · otorgá horas, días, semanas o meses</p>' +
+              '<div class="admin-access-panel">' +
+              '<div class="admin-access-presets" data-presets></div>' +
+              '<div class="admin-access-custom">' +
+              '<input type="number" min="1" step="1" value="15" class="admin-access-amount" data-amount aria-label="Cantidad" />' +
+              '<select class="admin-access-unit" data-unit aria-label="Unidad">' +
+              '<option value="hours">Horas</option>' +
+              '<option value="days" selected>Días</option>' +
+              '<option value="weeks">Semanas</option>' +
+              '<option value="months">Meses</option>' +
+              '</select>' +
+              '<button type="button" class="admin-btn admin-btn-ok" data-grant>Otorgar / Extender</button>' +
+              '</div>' +
+              '</div>' +
               '</div>' +
               '<div class="admin-card-actions">' +
               '<button type="button" class="admin-btn" data-regen></button>' +
-              '<button type="button" class="admin-btn admin-btn-ok" data-subscribe></button>' +
               '<button type="button" class="admin-btn admin-btn-warn" data-expire></button>' +
               '<button type="button" class="admin-btn" data-toggle></button></div>';
             el.querySelector('.admin-card-name').textContent = account.name || 'Conductor';
@@ -1009,6 +1123,9 @@
             var billEl = el.querySelector('[data-billing]');
             billEl.textContent = billing.label;
             billEl.className = 'admin-status ' + billing.className;
+            if (until) billEl.setAttribute('data-access-until', until.toISOString());
+            else billEl.removeAttribute('data-access-until');
+            billEl.setAttribute('data-billing-status', account.billingStatus || '');
             var pinChip = el.querySelector('.admin-pin-chip');
             if (item.pin) {
               pinChip.textContent = 'PIN ' + item.pin;
@@ -1017,14 +1134,35 @@
               pinChip.textContent = 'Sin PIN';
               pinChip.classList.add('no-pin');
             }
-            fillAdminMeta(el.querySelector('.admin-card-meta'), account);
+            fillAdminMeta(el.querySelector('.admin-card-meta'), account, until
+              ? ['Expira ' + until.toLocaleString('es-UY')]
+              : null);
+            var presetsHost = el.querySelector('[data-presets]');
+            ACCESS_PRESETS.forEach(function (preset) {
+              var btn = document.createElement('button');
+              btn.type = 'button';
+              btn.className = 'admin-access-preset';
+              btn.textContent = preset.label;
+              btn.addEventListener('click', function () {
+                if (!confirm('¿Otorgar / extender ' + preset.label + ' a ' + (account.name || '') + '?')) return;
+                grantAccess(account.id, item.pin, preset.amount, preset.unit);
+              });
+              presetsHost.appendChild(btn);
+            });
+            var amountInput = el.querySelector('[data-amount]');
+            var unitSelect = el.querySelector('[data-unit]');
+            var grantBtn = el.querySelector('[data-grant]');
+            grantBtn.addEventListener('click', function () {
+              var amount = amountInput.value;
+              var unit = unitSelect.value;
+              if (!confirm('¿Otorgar / extender ' + amount + ' ' + unit + ' a ' + (account.name || '') + '?')) return;
+              grantAccess(account.id, item.pin, amount, unit);
+            });
             var regen = el.querySelector('[data-regen]');
             var toggle = el.querySelector('[data-toggle]');
-            var subscribeBtn = el.querySelector('[data-subscribe]');
             var expireBtn = el.querySelector('[data-expire]');
             regen.textContent = 'Regenerar PIN';
-            subscribeBtn.textContent = 'Marcar suscripto';
-            expireBtn.textContent = 'Marcar vencido';
+            expireBtn.textContent = 'Vencer ahora';
             toggle.textContent = isDisabled ? 'Activar' : 'Desactivar';
             toggle.classList.toggle('admin-btn-warn', !isDisabled);
             toggle.classList.toggle('admin-btn-ok', isDisabled);
@@ -1032,12 +1170,8 @@
               if (!confirm('¿Regenerar PIN? El valor anterior deja de servir.')) return;
               regeneratePin(account.id, item.pin);
             });
-            subscribeBtn.addEventListener('click', function () {
-              if (!confirm('¿Marcar suscripto por ' + SUB_DAYS + ' días a US$ ' + SUB_PRICE_USD + '/mes?')) return;
-              markSubscribed(account.id, item.pin);
-            });
             expireBtn.addEventListener('click', function () {
-              if (!confirm('¿Marcar vencido y desactivar a ' + (account.name || '') + '?')) return;
+              if (!confirm('¿Vencer acceso y desactivar a ' + (account.name || '') + '?')) return;
               markExpired(account.id, item.pin);
             });
             toggle.addEventListener('click', function () {
@@ -1051,6 +1185,7 @@
             });
             list.appendChild(el);
           });
+          startAdminCountdown();
         });
       })
       .catch(function (e) {

@@ -1613,6 +1613,59 @@ body.pin-locked footer { visibility: hidden; pointer-events: none; }
   font-size: 0.72rem;
   color: var(--muted);
 }
+.admin-access-panel {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.55rem;
+}
+.admin-access-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.admin-access-preset {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: oklch(0.2 0.01 145);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.admin-access-preset:hover {
+  border-color: oklch(0.72 0.12 145 / 0.55);
+  color: oklch(0.86 0.08 145);
+}
+.admin-access-custom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+.admin-access-amount,
+.admin-access-unit {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: oklch(0.16 0.008 145);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.85rem;
+  border-radius: 10px;
+  padding: 0.4rem 0.55rem;
+  min-height: 2.2rem;
+}
+.admin-access-amount {
+  width: 4.5rem;
+}
+.admin-access-unit {
+  min-width: 7rem;
+}
+.admin-card-access {
+  flex-wrap: wrap;
+}
 .admin-form textarea {
   min-height: 96px;
   padding: 0.55rem 0.75rem;

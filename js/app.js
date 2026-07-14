@@ -3,8 +3,8 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = '1.0-beta';
-  var APP_VERSION_LABEL = '1.0 Beta';
+  var APP_VERSION = '1.0.1-beta';
+  var APP_VERSION_LABEL = '1.0.1 Beta';
   var WA_NUMBER = '59899774019';
   var QR_DEST = 72;
   var QR_CONTACT = 148;
@@ -165,7 +165,7 @@
       authRevealContinue: 'Entendido, continuar',
       authSwitchAccount: 'Cambiar cuenta Google',
       adminTitle: 'Administración',
-      adminIntro: 'Conductores con trial (15 días) o suscripción US$ 4,99/mes. PIN, regenerar y billing.',
+      adminIntro: 'Acceso por duración (horas/días/semanas/meses) con countdown. US$ 4,99/mes de referencia.',
       adminExit: 'Salir',
       adminNavDrivers: 'Conductores',
       adminNavRequests: 'Solicitudes',
@@ -179,7 +179,7 @@
       adminGeneratePin: 'Generar PIN',
       adminDriversTitle: 'Conductores',
       adminRequestsTitle: 'Solicitudes',
-      adminRequestsHint: 'Cuentas Google pendientes. Al activar arranca trial de 15 días.',
+      adminRequestsHint: 'Cuentas Google pendientes. Al activar arranca trial de 15 días (podés extender después).',
       adminLogsTitle: 'Logs de ingreso',
       adminRefreshLogs: 'Actualizar',
       adminLogsHint: 'Últimos ingresos de conductores (quién y cuándo).',
@@ -324,7 +324,7 @@
       authRevealContinue: 'Got it, continue',
       authSwitchAccount: 'Switch Google account',
       adminTitle: 'Administration',
-      adminIntro: 'Drivers on a 15-day trial or US$ 4.99/mo subscription. PIN, regenerate, billing.',
+      adminIntro: 'Duration-based access (hours/days/weeks/months) with countdown. US$ 4.99/mo reference.',
       adminExit: 'Exit',
       adminNavDrivers: 'Drivers',
       adminNavRequests: 'Requests',
@@ -483,7 +483,7 @@
       authRevealContinue: 'Entendi, continuar',
       authSwitchAccount: 'Trocar conta Google',
       adminTitle: 'Administração',
-      adminIntro: 'Motoristas em trial de 15 dias ou assinatura US$ 4,99/mês. PIN, regenerar, billing.',
+      adminIntro: 'Acesso por duração (horas/dias/semanas/meses) com countdown. US$ 4,99/mês de referência.',
       adminExit: 'Sair',
       adminNavDrivers: 'Motoristas',
       adminNavRequests: 'Solicitações',

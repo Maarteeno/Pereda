@@ -1,4 +1,4 @@
-# Admin & driver onboarding (v58)
+# Admin & driver onboarding (1.0.1 Beta)
 
 ## Enable Google Sign-In (once)
 
@@ -18,33 +18,34 @@
 Admin sidebar: **Conductores** | **Solicitudes** | **Ver logs** | **Changelog**
 
 ### Conductores
-- Status badge + billing badge (**Trial (Xd)**, **Suscripto**, **Vencido**)
-- PIN chip, phone / vehicle / email
-- **Regenerar PIN**
-- **Marcar suscripto** → 30 días a **US$ 4,99 / mes** (manual hasta pasarela de pago)
-- **Marcar vencido** → desactiva la cuenta
-- Activar / Desactivar
+- Badge de estado + **countdown vivo** (`Trial · 2d 14h`, `Activo · 5h 12m`, `Vencido`)
+- PIN chip, phone / vehicle / email, fecha de expiración
+- **Presets**: 24h · 7d · 15d · 30d (otorgan / extienden sobre el fin actual)
+- **Cantidad + unidad**: horas | días | semanas | meses → **Otorgar / Extender**
+- **Vencer ahora** → desactiva y marca acceso vencido
+- Regenerar PIN · Activar / Desactivar
+
+La extensión suma tiempo a `max(ahora, accessUntilActual)` (estilo InfraHub “cuando expire”).
 
 ### Solicitudes
-- Activar con PIN → arranca **trial de 15 días**
+- Activar con PIN → **trial de 15 días** (`accessUntil`)
 
 ### Changelog
 - Historial de versiones **solo lectura** (semillas en código, actualizado en cada release)
-- Sin formulario de alta manual
 
-## Driver onboarding + trial
+## Driver onboarding + acceso
 
 1. Driver: Google Sign-In → formulario → `pending`
-2. Admin activa → `billingStatus: trial`, `trialEndsAt` (+15 días), PIN una vez
-3. Diario: Google + PIN mientras el trial/suscripción esté vigente
-4. Si venció: mensaje de trial/suscripción vencida (sin acceso)
-5. Admin **Marcar suscripto** para renovar 30 días
+2. Admin activa → `billingStatus: trial`, `accessUntil` (+15 días), PIN una vez
+3. Diario: Google + PIN mientras `accessUntil` esté vigente
+4. Si venció: bloqueo con mensaje genérico (sin “15 días” fijo)
+5. Admin otorga / extiende duración flexible (US$ 4,99/mes como referencia de precio)
 
-Cuentas antiguas sin `billingStatus` siguen pudiendo entrar (legacy) hasta que el admin las gestione.
+Cuentas antiguas sin `billingStatus` ni fechas siguen pudiendo entrar (legacy) hasta que el admin las gestione.
 
 ## Destinos / QR
 
-En Paseos y Traslados, cada destino muestra un **QR** (`Escaneá para cotizar`) que abre WhatsApp al celular del conductor logueado con el mensaje `waWantGo` (lugar + nombre). FAB y Contacto se mantienen.
+En Paseos y Traslados, cada destino muestra un **QR** (`Escaneá para cotizar`) que abre WhatsApp al celular del conductor logueado con el mensaje `waWantGo` (lugar + nombre). Contacto mantiene QR verde.
 
 ## Security (from v57)
 
@@ -54,8 +55,8 @@ En Paseos y Traslados, cada destino muestra un **QR** (`Escaneá para cotizar`) 
 
 ## Data
 
-- `driverAccounts/{uid}` — + `billingStatus`, `trialEndsAt`, `subscribedUntil`, `subscriptionPriceUsd`
+- `driverAccounts/{uid}` — `billingStatus`, `accessUntil`, `trialEndsAt`, `subscribedUntil` (legacy sync), `subscriptionPriceUsd`
 - `drivers/{pin}`, `config/app`, `accessLogs`
 - `changelog/{id}` — legado (ya no se escribe desde la UI)
 
-App title / PWA name: **App Traslados**
+App title / PWA name: **App Traslados** · Version **1.0.1 Beta**
