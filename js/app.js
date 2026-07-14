@@ -3,10 +3,9 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v59';
+  var APP_VERSION = 'v60';
   var WA_NUMBER = '59899774019';
-  var QR_PIXELS = 200;
-  var QR_DISPLAY = 72;
+  var QR_SIZE = 96;
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
   var activeLang = 'es';
@@ -544,10 +543,7 @@
   }
 
   function waUrl(text) {
-    var phone = activePhone();
-    var msg = String(text || '');
-    /* api.whatsapp.com is more reliable in phone QR cameras than wa.me + long query. */
-    return 'https://api.whatsapp.com/send?phone=' + phone + '&text=' + encodeURIComponent(msg);
+    return 'https://wa.me/' + activePhone() + '?text=' + encodeURIComponent(String(text || ''));
   }
 
   function updateDestQrs(lang) {
@@ -569,21 +565,23 @@
       try {
         new QRCode(canvasHost, {
           text: url,
-          width: QR_PIXELS,
-          height: QR_PIXELS,
+          width: QR_SIZE,
+          height: QR_SIZE,
           colorDark: '#000000',
           colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.L
+          correctLevel: QRCode.CorrectLevel.M
         });
-        var drawn = canvasHost.querySelector('img') || canvasHost.querySelector('canvas');
-        if (drawn) {
-          drawn.style.width = QR_DISPLAY + 'px';
-          drawn.style.height = QR_DISPLAY + 'px';
-          drawn.style.imageRendering = 'pixelated';
-        }
         var spareCanvas = canvasHost.querySelector('canvas');
         var spareImg = canvasHost.querySelector('img');
-        if (spareCanvas && spareImg) spareCanvas.style.display = 'none';
+        if (spareCanvas && spareImg) {
+          spareCanvas.style.display = 'none';
+          spareImg.style.width = QR_SIZE + 'px';
+          spareImg.style.height = QR_SIZE + 'px';
+          spareImg.style.imageRendering = 'pixelated';
+        } else if (spareCanvas) {
+          spareCanvas.style.width = QR_SIZE + 'px';
+          spareCanvas.style.height = QR_SIZE + 'px';
+        }
       } catch (e) {
         console.warn('QR', e);
         canvasHost.textContent = 'QR';

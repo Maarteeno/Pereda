@@ -1107,9 +1107,9 @@ body.update-blocked { overflow: hidden; }
   margin-top: 0.4rem;
 }
 .dest-qr-canvas {
-  width: 72px;
-  height: 72px;
-  padding: 6px;
+  width: 96px;
+  height: 96px;
+  padding: 8px;
   border-radius: 10px;
   background: #fff;
   border: 1px solid var(--border);
@@ -1120,8 +1120,8 @@ body.update-blocked { overflow: hidden; }
 .dest-qr-canvas img,
 .dest-qr-canvas canvas {
   display: block;
-  width: 72px !important;
-  height: 72px !important;
+  width: 96px !important;
+  height: 96px !important;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
