@@ -149,9 +149,60 @@
     logAccess(driver);
   }
 
+  function showLogoutConfirm(on) {
+    var el = $('logout-confirm');
+    if (!el) return;
+    el.hidden = !on;
+  }
+
+  function bindBrandTripleClick() {
+    var clicks = 0;
+    var timer = null;
+    var brand = document.querySelector('[data-driver-name]');
+    if (!brand) return;
+
+    function onTriple() {
+      if (!getDriver()) return;
+      showLogoutConfirm(true);
+    }
+
+    brand.addEventListener('click', function (e) {
+      e.preventDefault();
+      clicks += 1;
+      if (timer) window.clearTimeout(timer);
+      if (clicks >= 3) {
+        clicks = 0;
+        onTriple();
+        return;
+      }
+      timer = window.setTimeout(function () { clicks = 0; }, 550);
+    });
+
+    var cancel = $('logout-cancel');
+    var ok = $('logout-ok');
+    if (cancel) {
+      cancel.addEventListener('click', function () {
+        showLogoutConfirm(false);
+      });
+    }
+    if (ok) {
+      ok.addEventListener('click', function () {
+        showLogoutConfirm(false);
+        clearSessionAndLock();
+      });
+    }
+    var overlay = $('logout-confirm');
+    if (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) showLogoutConfirm(false);
+      });
+    }
+  }
+
   function clearSessionAndLock() {
     setSession(null);
     editingPin = null;
+    showLogoutConfirm(false);
     showAdmin(false);
     var done = function () {
       showPinGate(true);
@@ -463,6 +514,7 @@
   }
 
   function bindUi() {
+    bindBrandTripleClick();
     var form = $('pin-form');
     if (form) {
       form.addEventListener('submit', function (e) {

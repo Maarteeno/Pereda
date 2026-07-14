@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v48';
+  var APP_VERSION = 'v49';
   var WA_NUMBER = '59899774019';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
@@ -137,6 +137,10 @@
       adminLogsTitle: 'Logs de ingreso',
       adminRefreshLogs: 'Actualizar',
       adminLogsHint: 'Últimos ingresos de conductores (quién y cuándo).',
+      logoutTitle: '¿Cerrar sesión?',
+      logoutText: 'Volvés a la pantalla de PIN. El conductor actual se desconecta.',
+      logoutCancel: 'Cancelar',
+      logoutOk: 'Salir',
       contactKicker: 'Hablemos',
       contactIntro: 'Contale destino, horario y cantidad de pasajeros. Respuesta por WhatsApp.',
       driverRole: 'Conductor profesional. Montevideo y La Costa',
@@ -265,6 +269,10 @@
       adminLogsTitle: 'Login logs',
       adminRefreshLogs: 'Refresh',
       adminLogsHint: 'Recent driver logins (who and when).',
+      logoutTitle: 'Log out?',
+      logoutText: 'You will return to the PIN screen. The current driver will be disconnected.',
+      logoutCancel: 'Cancel',
+      logoutOk: 'Log out',
       contactKicker: "Let's talk",
       contactIntro: 'Tell the destination, time and number of passengers. Reply on WhatsApp.',
       driverRole: 'Professional driver. Montevideo and the Coast',
@@ -393,6 +401,10 @@
       adminLogsTitle: 'Logs de acesso',
       adminRefreshLogs: 'Atualizar',
       adminLogsHint: 'Últimos acessos de motoristas (quem e quando).',
+      logoutTitle: 'Sair da sessão?',
+      logoutText: 'Você volta à tela de PIN. O motorista atual será desconectado.',
+      logoutCancel: 'Cancelar',
+      logoutOk: 'Sair',
       contactKicker: 'Vamos conversar',
       contactIntro: 'Informe destino, horário e número de passageiros. Resposta no WhatsApp.',
       driverRole: 'Motorista profissional. Montevidéu e a Costa',

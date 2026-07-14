@@ -27,7 +27,7 @@
 <header class="site-header">
     <div class="shell site-header-inner">
       <div class="brand">
-        <span class="brand-name" data-driver-name>Adrián Pereda</span>
+        <span class="brand-name" data-driver-name role="button" tabindex="0" title="">Adrián Pereda</span>
         <span class="brand-sub" data-i18n="role">Conductor profesional</span>
       </div>
       <nav class="header-nav" data-i18n-aria="navSections" aria-label="Secciones">
@@ -544,6 +544,17 @@
         <button type="submit" class="pin-submit" data-i18n="pinSubmit">Entrar</button>
       </form>
       <p class="pin-error" id="pin-error" hidden data-i18n="pinError">PIN incorrecto</p>
+    </div>
+  </div>
+
+  <div class="logout-confirm" id="logout-confirm" hidden>
+    <div class="logout-confirm-card" role="dialog" aria-modal="true" aria-labelledby="logout-confirm-title">
+      <h2 class="logout-confirm-title" id="logout-confirm-title" data-i18n="logoutTitle">¿Cerrar sesión?</h2>
+      <p class="logout-confirm-text" data-i18n="logoutText">Volvés a la pantalla de PIN. El conductor actual se desconecta.</p>
+      <div class="logout-confirm-actions">
+        <button type="button" class="logout-cancel" id="logout-cancel" data-i18n="logoutCancel">Cancelar</button>
+        <button type="button" class="logout-ok" id="logout-ok" data-i18n="logoutOk">Salir</button>
+      </div>
     </div>
   </div>
 
