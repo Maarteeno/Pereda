@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v53';
+  var APP_VERSION = 'v54';
   var WA_NUMBER = '59899774019';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
@@ -18,7 +18,20 @@
     'paseo-costa': { es: 'Costa y hoteles', en: 'Coast and hotels', pt: 'Costa e hotéis' },
     'paseo-montevideo': { es: 'paseo por Montevideo', en: 'Montevideo tour', pt: 'passeio por Montevidéu' },
     'paseo-eventos': { es: 'Eventos', en: 'Events', pt: 'Eventos' },
-    'paseo-bodegas': { es: 'Bodegas', en: 'Wineries', pt: 'Vinícolas' }
+    'paseo-bodegas': { es: 'Bodegas', en: 'Wineries', pt: 'Vinícolas' },
+    'spot-costa-hoteles': { es: 'Punta del Este Hoteles', en: 'Punta del Este hotels', pt: 'Hotéis de Punta del Este' },
+    'spot-costa-barra': { es: 'La Barra', en: 'La Barra', pt: 'La Barra' },
+    'spot-costa-ji': { es: 'José Ignacio', en: 'José Ignacio', pt: 'José Ignacio' },
+    'spot-mvd-centenario': { es: 'Estadio Centenario', en: 'Centenario Stadium', pt: 'Estádio Centenario' },
+    'spot-mvd-rambla': { es: 'Rambla de Montevideo', en: 'Montevideo Rambla', pt: 'Rambla de Montevidéu' },
+    'spot-mvd-rodo': { es: 'Parque Rodó', en: 'Parque Rodó', pt: 'Parque Rodó' },
+    'spot-mvd-mercado': { es: 'Mercado del Puerto', en: 'Mercado del Puerto', pt: 'Mercado del Puerto' },
+    'spot-evt-boda': { es: 'Bodas', en: 'Weddings', pt: 'Casamentos' },
+    'spot-evt-salon': { es: 'Salones', en: 'Event halls', pt: 'Salões' },
+    'spot-evt-congreso': { es: 'Congresos', en: 'Conferences', pt: 'Congressos' },
+    'spot-bod-juanico': { es: 'Bodega Juanicó', en: 'Juanicó Winery', pt: 'Vinícola Juanicó' },
+    'spot-bod-garzon': { es: 'Bodega Garzón', en: 'Garzón Winery', pt: 'Vinícola Garzón' },
+    'spot-bod-carmelo': { es: 'Bodegas en Carmelo', en: 'Carmelo wineries', pt: 'Vinícolas em Carmelo' }
   };
 
   var T = {

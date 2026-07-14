@@ -18,12 +18,6 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="lang-switch lang-switch--fixed" role="group" data-i18n-aria="langGroup" aria-label="Idioma">
-    <button type="button" class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="true"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#c60b1e"/><rect y="6" width="32" height="12" fill="#ffc400"/></svg></button>
-    <button type="button" class="lang-btn" data-lang="en" aria-label="English" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#012169"/><path d="M0 0l32 24M32 0L0 24" stroke="#fff" stroke-width="4"/><path d="M0 0l32 24M32 0L0 24" stroke="#c8102e" stroke-width="2"/><path d="M16 0v24M0 12h32" stroke="#fff" stroke-width="6"/><path d="M16 0v24M0 12h32" stroke="#c8102e" stroke-width="3"/></svg></button>
-    <button type="button" class="lang-btn" data-lang="pt" aria-label="Português" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#009b3a"/><polygon points="16,2 30,12 16,22 2,12" fill="#fedf00"/><circle cx="16" cy="12" r="5" fill="#002776"/></svg></button>
-  </div>
-
 <header class="site-header">
     <div class="shell site-header-inner">
       <div class="brand">
@@ -35,10 +29,17 @@
         <button type="button" data-open-screen="traslados" data-i18n="navTraslados">Traslados</button>
         <button type="button" data-open-screen="contacto" data-i18n="navContacto">Contacto</button>
       </nav>
-      <a class="btn-wa" id="header-wa" href="#" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        <span data-i18n="whatsapp">WhatsApp</span>
-      </a>
+      <div class="header-actions">
+        <div class="lang-switch" role="group" data-i18n-aria="langGroup" aria-label="Idioma">
+          <button type="button" class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="true"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#c60b1e"/><rect y="6" width="32" height="12" fill="#ffc400"/></svg></button>
+          <button type="button" class="lang-btn" data-lang="en" aria-label="English" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#012169"/><path d="M0 0l32 24M32 0L0 24" stroke="#fff" stroke-width="4"/><path d="M0 0l32 24M32 0L0 24" stroke="#c8102e" stroke-width="2"/><path d="M16 0v24M0 12h32" stroke="#fff" stroke-width="6"/><path d="M16 0v24M0 12h32" stroke="#c8102e" stroke-width="3"/></svg></button>
+          <button type="button" class="lang-btn" data-lang="pt" aria-label="Português" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#009b3a"/><polygon points="16,2 30,12 16,22 2,12" fill="#fedf00"/><circle cx="16" cy="12" r="5" fill="#002776"/></svg></button>
+        </div>
+        <a class="btn-wa" id="header-wa" href="#" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span data-i18n="whatsapp">WhatsApp</span>
+        </a>
+      </div>
     </div>
   </header>
 
@@ -150,7 +151,6 @@
                   <span class="gallery-open"><span data-i18n="seePlaces">Ver lugares</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
                 </span>
               </button>
-              <a class="dest-go" data-dest="paseo-costa" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
             </article>
             <article class="gallery-item">
               <button type="button" class="gallery-card" data-open-paseo="montevideo" aria-haspopup="dialog">
@@ -161,7 +161,6 @@
                   <span class="gallery-open"><span data-i18n="seePlaces">Ver lugares</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
                 </span>
               </button>
-              <a class="dest-go" data-dest="paseo-montevideo" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
             </article>
             <article class="gallery-item">
               <button type="button" class="gallery-card" data-open-paseo="eventos" aria-haspopup="dialog">
@@ -172,7 +171,6 @@
                   <span class="gallery-open"><span data-i18n="seePlaces">Ver lugares</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
                 </span>
               </button>
-              <a class="dest-go" data-dest="paseo-eventos" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
             </article>
             <article class="gallery-item">
               <button type="button" class="gallery-card" data-open-paseo="bodegas" aria-haspopup="dialog">
@@ -183,7 +181,6 @@
                   <span class="gallery-open"><span data-i18n="seePlaces">Ver lugares</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
                 </span>
               </button>
-              <a class="dest-go" data-dest="paseo-bodegas" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
             </article>
           </div>
         </div>
@@ -204,7 +201,6 @@
                 <p class="section-kicker" data-i18n="paseoKicker">Paseo</p>
                 <h2 class="section-title" data-i18n="gCostaTitle">Costa y hoteles</h2>
                 <p class="section-intro" data-i18n="dCostaIntro">Llegadas a hoteles y recorridos por la costa Este: playa, puente y faro incluidos en el trayecto.</p>
-                <a class="dest-go" data-dest="paseo-costa" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
               </div>
             </div>
             <div class="spot-grid">
@@ -213,6 +209,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sCostaHotelsTitle">Punta del Este · hoteles</h3>
                   <p data-i18n="sCostaHotelsDesc">Traslados puerta a puerta a hoteles de Playa Brava y Mansa, sin bajar equipaje en la calle.</p>
+                  <a class="dest-go" data-dest="spot-costa-hoteles" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
               <article class="spot-card">
@@ -220,6 +217,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sCostaBarraTitle">La Barra</h3>
                   <p data-i18n="sCostaBarraDesc">El puente emblemático y el pueblo playero: ideal para una mañana o un atardecer sin apuro.</p>
+                  <a class="dest-go" data-dest="spot-costa-barra" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
               <article class="spot-card">
@@ -227,6 +225,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sCostaJiTitle">José Ignacio</h3>
                   <p data-i18n="sCostaJiDesc">Costa más quieta, faro y boutique: el tramo largo de la costa sin cambiar de vehículo.</p>
+                  <a class="dest-go" data-dest="spot-costa-ji" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
             </div>
@@ -249,7 +248,6 @@
                 <p class="section-kicker" data-i18n="paseoKicker">Paseo</p>
                 <h2 class="section-title" data-i18n="gMvdTitle">Montevideo</h2>
                 <p class="section-intro" data-i18n="dMvdIntro">Un circuito por íconos de la ciudad: estadio, rambla, parque y mercado, con paradas cómodas.</p>
-                <a class="dest-go" data-dest="paseo-montevideo" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
               </div>
             </div>
             <div class="spot-grid">
@@ -258,6 +256,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sMvdCentTitle">Estadio Centenario</h3>
                   <p data-i18n="sMvdCentDesc">Parada frente al monumento del fútbol mundial en Parque Batlle.</p>
+                  <a class="dest-go" data-dest="spot-mvd-centenario" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
               <article class="spot-card">
@@ -265,6 +264,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sMvdRamblaTitle">Rambla</h3>
                   <p data-i18n="sMvdRamblaDesc">El paseo costero de Pocitos y Punta Carretas: luz, río y ciudad en un solo tramo.</p>
+                  <a class="dest-go" data-dest="spot-mvd-rambla" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
               <article class="spot-card">
@@ -272,6 +272,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sMvdRodoTitle">Parque Rodó</h3>
                   <p data-i18n="sMvdRodoDesc">Parque, lago y ambiente de fin de semana a minutos del centro.</p>
+                  <a class="dest-go" data-dest="spot-mvd-rodo" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
               <article class="spot-card">
@@ -279,6 +280,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sMvdMercTitle">Mercado del Puerto</h3>
                   <p data-i18n="sMvdMercDesc">Ciudad Vieja: el mercado de hierro y las parrillas del puerto.</p>
+                  <a class="dest-go" data-dest="spot-mvd-mercado" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
             </div>
@@ -301,7 +303,6 @@
                 <p class="section-kicker" data-i18n="paseoKicker">Paseo</p>
                 <h2 class="section-title" data-i18n="gEvtTitle">Eventos</h2>
                 <p class="section-intro" data-i18n="dEvtIntro">Llevamos invitados o equipos a salones, bodas y congresos: puntualidad y espacio para equipaje.</p>
-                <a class="dest-go" data-dest="paseo-eventos" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
               </div>
             </div>
             <div class="spot-grid">
@@ -310,6 +311,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sEvtBodaTitle">Bodas</h3>
                   <p data-i18n="sEvtBodaDesc">Llegada de novios e invitados a quintas y salones, con horario coordinado.</p>
+                  <a class="dest-go" data-dest="spot-evt-boda" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
               <article class="spot-card">
@@ -317,6 +319,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sEvtSalonTitle">Salones</h3>
                   <p data-i18n="sEvtSalonDesc">Eventos sociales y corporativos: puerta a puerta sin buscar estacionamiento.</p>
+                  <a class="dest-go" data-dest="spot-evt-salon" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
               <article class="spot-card">
@@ -324,6 +327,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sEvtCongTitle">Congresos</h3>
                   <p data-i18n="sEvtCongDesc">Traslados a auditorios y centros de convenciones en ciudad o costa.</p>
+                  <a class="dest-go" data-dest="spot-evt-congreso" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
             </div>
@@ -346,7 +350,6 @@
                 <p class="section-kicker" data-i18n="paseoKicker">Paseo</p>
                 <h2 class="section-title" data-i18n="gBodTitle">Bodegas</h2>
                 <p class="section-intro" data-i18n="dBodIntro">Rutas de vino sin conducir: Juanicó, Garzón y Carmelo con tiempo para degustar.</p>
-                <a class="dest-go" data-dest="paseo-bodegas" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
               </div>
             </div>
             <div class="spot-grid">
@@ -355,6 +358,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sBodJuanTitle">Juanicó</h3>
                   <p data-i18n="sBodJuanDesc">Canelones, cerca de Montevideo: viñas y cava histórica en un día completo.</p>
+                  <a class="dest-go" data-dest="spot-bod-juanico" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
               <article class="spot-card">
@@ -362,6 +366,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sBodGarTitle">Garzón</h3>
                   <p data-i18n="sBodGarDesc">Maldonado: bodega moderna entre cerros, ideal combinada con la costa.</p>
+                  <a class="dest-go" data-dest="spot-bod-garzon" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
               <article class="spot-card">
@@ -369,6 +374,7 @@
                 <div class="spot-body">
                   <h3 data-i18n="sBodCarTitle">Carmelo</h3>
                   <p data-i18n="sBodCarDesc">Colonia: viñedos junto al río Uruguay, un trayecto más largo y pausado.</p>
+                  <a class="dest-go" data-dest="spot-bod-carmelo" href="#" target="_blank" rel="noopener noreferrer" data-i18n="wantGo">Quiero ir</a>
                 </div>
               </article>
             </div>
