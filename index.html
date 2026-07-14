@@ -517,32 +517,69 @@
   <div class="pin-gate" id="pin-gate" role="dialog" aria-modal="true" aria-labelledby="pin-gate-title">
     <div class="pin-gate-card">
       <p class="pin-gate-brand" data-i18n="pinBrand">Bienvenido conductor</p>
-      <h2 class="pin-gate-title" id="pin-gate-title" data-i18n="pinTitle">Ingresá tu PIN</h2>
-      <form id="pin-form" class="pin-form" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-bwignore="true">
-        <!-- honeypot fields to divert password managers -->
-        <input type="text" name="username" autocomplete="username" tabindex="-1" aria-hidden="true" class="pin-honeypot" value="" />
-        <input type="password" name="password" autocomplete="current-password" tabindex="-1" aria-hidden="true" class="pin-honeypot" value="" />
-        <input
-          type="text"
-          inputmode="numeric"
-          pattern="[0-9]*"
-          maxlength="8"
-          id="pin-input"
-          class="pin-input"
-          name="unlock-code"
-          autocomplete="one-time-code"
-          autocapitalize="off"
-          autocorrect="off"
-          spellcheck="false"
-          data-lpignore="true"
-          data-1p-ignore="true"
-          data-bwignore="true"
-          aria-label="PIN"
-          placeholder="••••"
-          required
-        />
-        <button type="submit" class="pin-submit" data-i18n="pinSubmit">Entrar</button>
-      </form>
+
+      <div class="auth-view" data-auth-view="google">
+        <h2 class="pin-gate-title" id="pin-gate-title" data-i18n="authGoogleTitle">Ingresá con Google</h2>
+        <p class="auth-view-text" data-i18n="authGoogleText">Usá tu cuenta Google. Después configuramos tu PIN de conductor.</p>
+        <button type="button" class="pin-submit" id="google-sign-in" data-i18n="authGoogleBtn">Continuar con Google</button>
+      </div>
+
+      <div class="auth-view" data-auth-view="register" hidden>
+        <h2 class="pin-gate-title" data-i18n="authRegisterTitle">Completá tus datos</h2>
+        <p class="auth-view-text" data-i18n="authRegisterText">Nombre y celular. El admin te asigna un PIN y te activa.</p>
+        <form id="register-form" class="pin-form auth-register-form" autocomplete="off">
+          <label class="auth-label"><span data-i18n="adminNameLabel">Nombre</span>
+            <input id="register-name" name="name" required maxlength="80" autocomplete="name" />
+          </label>
+          <label class="auth-label"><span data-i18n="adminPhoneLabel">Teléfono (con código país)</span>
+            <input id="register-phone" name="phone" required maxlength="20" placeholder="59899123456" inputmode="tel" autocomplete="tel" />
+          </label>
+          <button type="submit" class="pin-submit" data-i18n="authRegisterSubmit">Enviar solicitud</button>
+        </form>
+      </div>
+
+      <div class="auth-view" data-auth-view="pending" hidden>
+        <h2 class="pin-gate-title" data-i18n="authPendingTitle">Solicitud enviada</h2>
+        <p class="auth-view-text" data-i18n="authPendingText">Cuando el admin active tu cuenta, vas a ver tu PIN acá. Podés cerrar y volver más tarde.</p>
+        <button type="button" class="pin-submit pin-submit--ghost" id="auth-sign-out" data-i18n="authSignOut">Cerrar sesión Google</button>
+      </div>
+
+      <div class="auth-view" data-auth-view="reveal" hidden>
+        <h2 class="pin-gate-title" data-i18n="authRevealTitle">Tu PIN de conductor</h2>
+        <p class="auth-view-text" data-i18n="authRevealText">Guardalo. Solo se muestra esta vez.</p>
+        <p class="auth-pin-reveal" id="auth-pin-reveal">••••</p>
+        <button type="button" class="pin-submit" id="auth-reveal-continue" data-i18n="authRevealContinue">Entendido, continuar</button>
+      </div>
+
+      <div class="auth-view" data-auth-view="pin" hidden>
+        <h2 class="pin-gate-title" data-i18n="pinTitle">Ingresá tu PIN</h2>
+        <form id="pin-form" class="pin-form" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-bwignore="true">
+          <input type="text" name="username" autocomplete="username" tabindex="-1" aria-hidden="true" class="pin-honeypot" value="" />
+          <input type="password" name="password" autocomplete="current-password" tabindex="-1" aria-hidden="true" class="pin-honeypot" value="" />
+          <input
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="8"
+            id="pin-input"
+            class="pin-input"
+            name="unlock-code"
+            autocomplete="one-time-code"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            data-lpignore="true"
+            data-1p-ignore="true"
+            data-bwignore="true"
+            aria-label="PIN"
+            placeholder="••••"
+            required
+          />
+          <button type="submit" class="pin-submit" data-i18n="pinSubmit">Entrar</button>
+        </form>
+        <button type="button" class="auth-switch-account" id="auth-switch-account" data-i18n="authSwitchAccount">Cambiar cuenta Google</button>
+      </div>
+
       <p class="pin-error" id="pin-error" hidden data-i18n="pinError">PIN incorrecto</p>
     </div>
   </div>
@@ -550,7 +587,7 @@
   <div class="logout-confirm" id="logout-confirm" hidden>
     <div class="logout-confirm-card" role="dialog" aria-modal="true" aria-labelledby="logout-confirm-title">
       <h2 class="logout-confirm-title" id="logout-confirm-title" data-i18n="logoutTitle">¿Cerrar sesión?</h2>
-      <p class="logout-confirm-text" data-i18n="logoutText">Volvés a la pantalla de PIN. El conductor actual se desconecta.</p>
+      <p class="logout-confirm-text" data-i18n="logoutText">Cerrás la sesión del conductor. Vas a tener que entrar de nuevo con Google y tu PIN.</p>
       <div class="logout-confirm-actions">
         <button type="button" class="logout-cancel" id="logout-cancel" data-i18n="logoutCancel">Cancelar</button>
         <button type="button" class="logout-ok" id="logout-ok" data-i18n="logoutOk">Salir</button>
@@ -566,7 +603,8 @@
           <p class="admin-auth-note">Google · malerovi2014@gmail.com</p>
         </div>
         <nav class="admin-nav" aria-label="Admin">
-          <button type="button" class="admin-nav-btn is-active" data-admin-nav="drivers" data-i18n="adminNavDrivers">Generar conductor</button>
+          <button type="button" class="admin-nav-btn is-active" data-admin-nav="drivers" data-i18n="adminNavDrivers">Conductores</button>
+          <button type="button" class="admin-nav-btn" data-admin-nav="requests" data-i18n="adminNavRequests">Solicitudes</button>
           <button type="button" class="admin-nav-btn" data-admin-nav="logs" data-i18n="adminNavLogs">Ver logs</button>
         </nav>
         <button type="button" class="admin-exit" id="admin-exit" data-i18n="adminExit">Salir</button>
@@ -576,20 +614,18 @@
         <section class="admin-view" data-admin-view="drivers">
           <header class="admin-view-head">
             <h3 data-i18n="adminDriversTitle">Conductores</h3>
-            <p data-i18n="adminIntro">Creá y editá PINs, nombres y teléfonos de conductores.</p>
+            <p data-i18n="adminIntro">Conductores activos. El PIN no se muestra acá; regenerarlo se revela al conductor al próximo ingreso.</p>
           </header>
-          <form id="admin-form" class="admin-form" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-bwignore="true">
-            <label><span data-i18n="adminPinLabel">PIN</span><input name="pin" required maxlength="8" inputmode="numeric" pattern="[0-9]+" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" /></label>
-            <label><span data-i18n="adminNameLabel">Nombre</span><input name="name" required maxlength="80" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" /></label>
-            <label><span data-i18n="adminPhoneLabel">Teléfono (con código país)</span><input name="phone" required maxlength="20" placeholder="59899123456" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" /></label>
-            <div class="admin-form-actions">
-              <button type="button" class="admin-generate" id="admin-generate-pin" data-i18n="adminGeneratePin">Generar PIN</button>
-              <button type="submit" class="admin-save" data-i18n="adminSave">Guardar</button>
-              <button type="button" class="admin-clear" id="admin-clear" data-i18n="adminClear">Limpiar</button>
-            </div>
-          </form>
           <p class="admin-msg" id="admin-msg" hidden></p>
           <div class="admin-list" id="admin-list"></div>
+        </section>
+
+        <section class="admin-view" data-admin-view="requests" hidden>
+          <header class="admin-view-head">
+            <h3 data-i18n="adminRequestsTitle">Solicitudes</h3>
+            <p data-i18n="adminRequestsHint">Cuentas Google pendientes. Asigná un PIN y activá.</p>
+          </header>
+          <div class="admin-list" id="admin-requests"></div>
         </section>
 
         <section class="admin-view" data-admin-view="logs" hidden>

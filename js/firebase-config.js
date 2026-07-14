@@ -8,8 +8,7 @@ window.PEREDA_FIREBASE = {
   appId: '1:323588975408:web:589e7de119e3e7fb4576f5'
 };
 
-/* Fixed admin unlock PIN (then Google Sign-In). */
-window.PEREDA_DEFAULT_ADMIN_PIN = '2991';
+/* Admin Google allowlist (no PIN gate for admin). */
 window.PEREDA_ADMIN_EMAIL = 'malerovi2014@gmail.com';
 
 window.PEREDA_DEFAULT_DRIVER = {

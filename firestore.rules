@@ -6,16 +6,50 @@ service cloud.firestore {
         && request.auth.token.email == 'malerovi2014@gmail.com';
     }
 
+    function isSelf(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function pendingCreateKeys() {
+      return request.resource.data.keys().hasOnly(['email', 'name', 'phone', 'status', 'createdAt'])
+        && request.resource.data.email is string
+        && request.resource.data.name is string
+        && request.resource.data.phone is string
+        && request.resource.data.status == 'pending'
+        && request.resource.data.createdAt is timestamp;
+    }
+
+    function onlyClearingReveal() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['pinRevealOnce'])
+        && !('pinRevealOnce' in request.resource.data);
+    }
+
+    match /driverAccounts/{uid} {
+      allow get: if isAdmin() || isSelf(uid);
+      allow list: if isAdmin();
+      allow create: if isSelf(uid) && pendingCreateKeys();
+      allow update: if isAdmin()
+        || (isSelf(uid) && onlyClearingReveal());
+      allow delete: if isAdmin();
+    }
+
     match /drivers/{pin} {
-      allow get: if true;
+      allow get: if isAdmin()
+        || (request.auth != null
+          && resource.data.uid is string
+          && resource.data.uid == request.auth.uid);
       allow list: if false;
       allow create, update: if isAdmin()
-        && request.resource.data.keys().hasAll(['name', 'phone', 'active']);
+        && request.resource.data.keys().hasAll(['name', 'phone', 'active', 'uid'])
+        && request.resource.data.name is string
+        && request.resource.data.phone is string
+        && request.resource.data.active is bool
+        && request.resource.data.uid is string;
       allow delete: if isAdmin();
     }
 
     match /config/{docId} {
-      allow get: if true;
+      allow get: if isAdmin();
       allow list: if false;
       allow create, update: if isAdmin()
         && request.resource.data.keys().hasAll(['adminPinHash', 'driverPins']);
@@ -23,10 +57,13 @@ service cloud.firestore {
     }
 
     match /accessLogs/{logId} {
-      allow create: if request.resource.data.keys().hasOnly(['pin', 'name', 'phone', 'at', 'ua'])
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['pin', 'name', 'phone', 'at', 'ua', 'uid'])
         && request.resource.data.pin is string
         && request.resource.data.name is string
         && request.resource.data.phone is string
+        && request.resource.data.uid is string
+        && request.resource.data.uid == request.auth.uid
         && request.resource.data.at is timestamp
         && request.resource.data.ua is string;
       allow read, list: if isAdmin();
