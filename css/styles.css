@@ -149,7 +149,7 @@
     }
     .btn-wa-fab {
       position: fixed;
-      z-index: 60;
+      z-index: 70;
       right: max(1rem, env(safe-area-inset-right, 0px));
       bottom: max(1rem, env(safe-area-inset-bottom, 0px));
       width: 56px;
