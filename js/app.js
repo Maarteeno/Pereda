@@ -3,8 +3,10 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v58';
+  var APP_VERSION = 'v59';
   var WA_NUMBER = '59899774019';
+  var QR_PIXELS = 200;
+  var QR_DISPLAY = 72;
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
   var activeLang = 'es';
@@ -29,6 +31,7 @@
     'spot-evt-boda': { es: 'Bodas', en: 'Weddings', pt: 'Casamentos' },
     'spot-evt-salon': { es: 'Salones', en: 'Event halls', pt: 'Salões' },
     'spot-evt-congreso': { es: 'Congresos', en: 'Conferences', pt: 'Congressos' },
+    'spot-bod-bouza': { es: 'Bodega Bouza', en: 'Bouza Winery', pt: 'Vinícola Bouza' },
     'spot-bod-juanico': { es: 'Bodega Juanicó', en: 'Juanicó Winery', pt: 'Vinícola Juanicó' },
     'spot-bod-garzon': { es: 'Bodega Garzón', en: 'Garzón Winery', pt: 'Vinícola Garzón' },
     'spot-bod-carmelo': { es: 'Bodegas en Carmelo', en: 'Carmelo wineries', pt: 'Vinícolas em Carmelo' }
@@ -76,7 +79,7 @@
       gEvtTitle: 'Eventos',
       gEvtSub: 'Bodas · Salones · Congresos',
       gBodTitle: 'Bodegas',
-      gBodSub: 'Juanicó · Garzón · Carmelo',
+      gBodSub: 'Bouza · Juanicó · Garzón · Carmelo',
       dCostaIntro: 'Llegadas a hoteles y recorridos por la costa Este: playa, puente y faro incluidos en el trayecto.',
       sCostaHotelsTitle: 'Punta del Este · hoteles',
       sCostaHotelsDesc: 'Traslados puerta a puerta a hoteles de Playa Brava y Mansa, sin bajar equipaje en la calle.',
@@ -100,7 +103,9 @@
       sEvtSalonDesc: 'Eventos sociales y corporativos: puerta a puerta sin buscar estacionamiento.',
       sEvtCongTitle: 'Congresos',
       sEvtCongDesc: 'Traslados a auditorios y centros de convenciones en ciudad o costa.',
-      dBodIntro: 'Rutas de vino sin conducir: Juanicó, Garzón y Carmelo con tiempo para degustar.',
+      dBodIntro: 'Rutas de vino sin conducir: Bouza, Juanicó, Garzón y Carmelo con tiempo para degustar.',
+      sBodBouzaTitle: 'Bouza',
+      sBodBouzaDesc: 'Melilla, a minutos de Montevideo: bodega boutique con degustación y paisaje de viñas.',
       sBodJuanTitle: 'Juanicó',
       sBodJuanDesc: 'Canelones, cerca de Montevideo: viñas y cava histórica en un día completo.',
       sBodGarTitle: 'Garzón',
@@ -133,6 +138,7 @@
       wantGo: 'Quiero ir',
       scanQuote: 'Escaneá para cotizar',
       waWantGo: 'Hola {name}, quiero ir a {place}. ¿Me cotizás un traslado?',
+      waWantGoQr: 'Hola {name}, quiero ir a {place}',
       switchDriver: 'Cambiar PIN',
       pinBrand: 'Bienvenido Conductor',
       pinTitle: 'Ingresá tu PIN',
@@ -233,7 +239,7 @@
       gEvtTitle: 'Events',
       gEvtSub: 'Weddings · Venues · Conferences',
       gBodTitle: 'Wineries',
-      gBodSub: 'Juanicó · Garzón · Carmelo',
+      gBodSub: 'Bouza · Juanicó · Garzón · Carmelo',
       dCostaIntro: 'Hotel arrivals and East Coast routes: beach, bridge and lighthouse along the way.',
       sCostaHotelsTitle: 'Punta del Este · hotels',
       sCostaHotelsDesc: 'Door-to-door transfers to Playa Brava and Mansa hotels — no street-side luggage drop.',
@@ -257,7 +263,9 @@
       sEvtSalonDesc: 'Social and corporate events: door to door without hunting for parking.',
       sEvtCongTitle: 'Conferences',
       sEvtCongDesc: 'Transfers to auditoriums and convention centers in the city or on the coast.',
-      dBodIntro: 'Wine routes without driving: Juanicó, Garzón and Carmelo with time to taste.',
+      dBodIntro: 'Wine routes without driving: Bouza, Juanicó, Garzón and Carmelo with time to taste.',
+      sBodBouzaTitle: 'Bouza',
+      sBodBouzaDesc: 'Melilla, minutes from Montevideo: boutique winery with tasting and vineyard views.',
       sBodJuanTitle: 'Juanicó',
       sBodJuanDesc: 'Canelones, near Montevideo: vineyards and historic cellar — a full day.',
       sBodGarTitle: 'Garzón',
@@ -290,6 +298,7 @@
       wantGo: 'I want to go',
       scanQuote: 'Scan to get a quote',
       waWantGo: 'Hi {name}, I want to go to {place}. Could you quote a transfer?',
+      waWantGoQr: 'Hi {name}, I want to go to {place}',
       switchDriver: 'Change PIN',
       pinBrand: 'Welcome, Driver',
       pinTitle: 'Enter your PIN',
@@ -390,7 +399,7 @@
       gEvtTitle: 'Eventos',
       gEvtSub: 'Casamentos · Salões · Congressos',
       gBodTitle: 'Vinícolas',
-      gBodSub: 'Juanicó · Garzón · Carmelo',
+      gBodSub: 'Bouza · Juanicó · Garzón · Carmelo',
       dCostaIntro: 'Chegadas a hotéis e percursos pela costa Leste: praia, ponte e farol no trajeto.',
       sCostaHotelsTitle: 'Punta del Este · hotéis',
       sCostaHotelsDesc: 'Transfers porta a porta a hotéis de Playa Brava e Mansa, sem descarregar na rua.',
@@ -414,7 +423,9 @@
       sEvtSalonDesc: 'Eventos sociais e corporativos: porta a porta sem procurar estacionamento.',
       sEvtCongTitle: 'Congressos',
       sEvtCongDesc: 'Transfers a auditórios e centros de convenções na cidade ou na costa.',
-      dBodIntro: 'Rotas de vinho sem dirigir: Juanicó, Garzón e Carmelo com tempo para degustar.',
+      dBodIntro: 'Rotas de vinho sem dirigir: Bouza, Juanicó, Garzón e Carmelo com tempo para degustar.',
+      sBodBouzaTitle: 'Bouza',
+      sBodBouzaDesc: 'Melilla, a minutos de Montevidéu: vinícola boutique com degustação e vinhas.',
       sBodJuanTitle: 'Juanicó',
       sBodJuanDesc: 'Canelones, perto de Montevidéu: vinhas e cave histórica num dia completo.',
       sBodGarTitle: 'Garzón',
@@ -447,6 +458,7 @@
       wantGo: 'Quero ir',
       scanQuote: 'Escaneie para cotar',
       waWantGo: 'Olá {name}, quero ir a {place}. Pode cotar um transfer?',
+      waWantGoQr: 'Olá {name}, quero ir a {place}',
       switchDriver: 'Trocar PIN',
       pinBrand: 'Bem-vindo, Motorista',
       pinTitle: 'Digite seu PIN',
@@ -532,7 +544,10 @@
   }
 
   function waUrl(text) {
-    return 'https://wa.me/' + activePhone() + '?text=' + encodeURIComponent(text || '');
+    var phone = activePhone();
+    var msg = String(text || '');
+    /* api.whatsapp.com is more reliable in phone QR cameras than wa.me + long query. */
+    return 'https://api.whatsapp.com/send?phone=' + phone + '&text=' + encodeURIComponent(msg);
   }
 
   function updateDestQrs(lang) {
@@ -541,9 +556,8 @@
     document.querySelectorAll('.dest-qr[data-dest]').forEach(function (wrap) {
       var key = wrap.getAttribute('data-dest');
       var place = (DEST_NAMES[key] && DEST_NAMES[key][lang]) || key;
-      var msg = (t.waWantGo || '')
-        .replace('{place}', place)
-        .replace('{name}', name);
+      var tpl = t.waWantGoQr || t.waWantGo || '';
+      var msg = tpl.replace('{place}', place).replace('{name}', name);
       var url = waUrl(msg);
       var canvasHost = wrap.querySelector('.dest-qr-canvas');
       if (!canvasHost) return;
@@ -555,12 +569,21 @@
       try {
         new QRCode(canvasHost, {
           text: url,
-          width: 112,
-          height: 112,
-          colorDark: '#0b140f',
+          width: QR_PIXELS,
+          height: QR_PIXELS,
+          colorDark: '#000000',
           colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.M
+          correctLevel: QRCode.CorrectLevel.L
         });
+        var drawn = canvasHost.querySelector('img') || canvasHost.querySelector('canvas');
+        if (drawn) {
+          drawn.style.width = QR_DISPLAY + 'px';
+          drawn.style.height = QR_DISPLAY + 'px';
+          drawn.style.imageRendering = 'pixelated';
+        }
+        var spareCanvas = canvasHost.querySelector('canvas');
+        var spareImg = canvasHost.querySelector('img');
+        if (spareCanvas && spareImg) spareCanvas.style.display = 'none';
       } catch (e) {
         console.warn('QR', e);
         canvasHost.textContent = 'QR';

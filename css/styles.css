@@ -1103,33 +1103,37 @@ body.update-blocked { overflow: hidden; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.4rem;
-  margin-top: 0.45rem;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
 }
 .dest-qr-canvas {
-  width: 112px;
-  height: 112px;
+  width: 72px;
+  height: 72px;
   padding: 6px;
-  border-radius: 12px;
+  border-radius: 10px;
   background: #fff;
   border: 1px solid var(--border);
   box-sizing: content-box;
+  line-height: 0;
+  overflow: hidden;
 }
 .dest-qr-canvas img,
 .dest-qr-canvas canvas {
   display: block;
-  width: 112px !important;
-  height: 112px !important;
+  width: 72px !important;
+  height: 72px !important;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 .dest-qr-label {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: var(--accent);
   letter-spacing: 0.01em;
 }
 .dest-card .dest-qr {
-  margin-top: 0.65rem;
+  margin-top: 0.5rem;
 }
 
 .btn-switch-driver { display: none !important; }
