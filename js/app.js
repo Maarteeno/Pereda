@@ -3,16 +3,22 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v45';
+  var APP_VERSION = 'v46';
   var WA_NUMBER = '59899774019';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
   var activeLang = 'es';
 
   var DEST_NAMES = {
+    aeropuerto: { es: 'Aeropuerto de Carrasco', en: 'Carrasco Airport', pt: 'Aeroporto de Carrasco' },
+    buquebus: { es: 'Buquebus', en: 'Buquebus', pt: 'Buquebus' },
     punta: { es: 'Punta del Este', en: 'Punta del Este', pt: 'Punta del Este' },
     colonia: { es: 'Colonia del Sacramento', en: 'Colonia del Sacramento', pt: 'Colonia del Sacramento' },
-    montevideo: { es: 'Montevideo', en: 'Montevideo', pt: 'Montevidéu' }
+    montevideo: { es: 'Montevideo', en: 'Montevideo', pt: 'Montevidéu' },
+    'paseo-costa': { es: 'Costa y hoteles', en: 'Coast and hotels', pt: 'Costa e hotéis' },
+    'paseo-montevideo': { es: 'paseo por Montevideo', en: 'Montevideo tour', pt: 'passeio por Montevidéu' },
+    'paseo-eventos': { es: 'Eventos', en: 'Events', pt: 'Eventos' },
+    'paseo-bodegas': { es: 'Bodegas', en: 'Wineries', pt: 'Vinícolas' }
   };
 
   var T = {
@@ -90,6 +96,14 @@
       sBodCarDesc: 'Colonia: viñedos junto al río Uruguay, un trayecto más largo y pausado.',
       trasladosKicker: 'Destinos frecuentes',
       trasladosIntro: 'Ideal para llegadas al aeropuerto, mudanzas temporales o traslados puerta a puerta. Sin precios públicos: consultá tu recorrido.',
+      destAirportTitle: 'Aeropuerto',
+      destAirportS0: 'Carrasco (MVD)',
+      destAirportS1: 'Llegadas / Salidas',
+      destAirportS2: 'Puerta a puerta',
+      destBuqueTitle: 'Buquebus',
+      destBuqueS0: 'Terminal Montevideo',
+      destBuqueS1: 'Buenos Aires',
+      destBuqueS2: 'Conexión ferries',
       destPuntaTitle: 'Punta del Este',
       destPuntaS0: 'La Mano',
       destPuntaS1: 'Playa Brava',
@@ -104,16 +118,29 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'Quiero ir',
-      waWantGo: 'Hola Adrián, quiero ir a {place}. ¿Me cotizás un traslado?',
+      waWantGo: 'Hola {name}, quiero ir a {place}. ¿Me cotizás un traslado?',
+      switchDriver: 'Cambiar PIN',
+      pinTitle: 'Ingresá tu PIN',
+      pinText: 'Cada conductor tiene su PIN para ver su nombre y WhatsApp.',
+      pinSubmit: 'Entrar',
+      pinError: 'PIN incorrecto',
+      adminTitle: 'Administración',
+      adminIntro: 'Creá y editá PINs, nombres y teléfonos de conductores.',
+      adminExit: 'Salir',
+      adminPinLabel: 'PIN',
+      adminNameLabel: 'Nombre',
+      adminPhoneLabel: 'Teléfono (con código país)',
+      adminSave: 'Guardar',
+      adminClear: 'Limpiar',
       contactKicker: 'Hablemos',
-      contactIntro: 'Contale a Adrián destino, horario y cantidad de pasajeros. Respuesta por WhatsApp.',
+      contactIntro: 'Contale destino, horario y cantidad de pasajeros. Respuesta por WhatsApp.',
       driverRole: 'Conductor profesional. Montevideo y La Costa',
       contactCoverage: 'Montevideo, Costa de Oro y trayectos a PDE / Colonia',
       contactVehicle: 'Bestune NAT · 100% eléctrico',
       qrLabel: 'Escribile por WhatsApp',
       qrAction: 'Abrir WhatsApp',
       contactNote: 'Los precios se cotizan según trayecto. Sin tarifas fijas publicadas.',
-      footer: 'Adrián Pereda — Traslados · Bestune NAT eléctrico · Montevideo, Uruguay',
+      footer: 'Traslados · Bestune NAT eléctrico · Montevideo, Uruguay',
       updateTitle: 'Nueva versión disponible',
       updateText: 'Hay una actualización de la app. Actualizá para ver el diseño más reciente.',
       updateAction: 'Actualizar ahora'
@@ -192,6 +219,14 @@
       sBodCarDesc: 'Colonia: vineyards by the Uruguay River — a longer, slower trip.',
       trasladosKicker: 'Popular destinations',
       trasladosIntro: 'Ideal for airport arrivals, short stays or door-to-door transfers. No public fixed rates: ask about your route.',
+      destAirportTitle: 'Airport',
+      destAirportS0: 'Carrasco (MVD)',
+      destAirportS1: 'Arrivals / Departures',
+      destAirportS2: 'Door to door',
+      destBuqueTitle: 'Buquebus',
+      destBuqueS0: 'Montevideo terminal',
+      destBuqueS1: 'Buenos Aires',
+      destBuqueS2: 'Ferry connection',
       destPuntaTitle: 'Punta del Este',
       destPuntaS0: 'La Mano',
       destPuntaS1: 'Playa Brava',
@@ -206,16 +241,29 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'I want to go',
-      waWantGo: 'Hi Adrián, I want to go to {place}. Could you quote a transfer?',
+      waWantGo: 'Hi {name}, I want to go to {place}. Could you quote a transfer?',
+      switchDriver: 'Change PIN',
+      pinTitle: 'Enter your PIN',
+      pinText: 'Each driver has a PIN to show their name and WhatsApp.',
+      pinSubmit: 'Enter',
+      pinError: 'Incorrect PIN',
+      adminTitle: 'Administration',
+      adminIntro: 'Create and edit driver PINs, names and phone numbers.',
+      adminExit: 'Exit',
+      adminPinLabel: 'PIN',
+      adminNameLabel: 'Name',
+      adminPhoneLabel: 'Phone (with country code)',
+      adminSave: 'Save',
+      adminClear: 'Clear',
       contactKicker: "Let's talk",
-      contactIntro: 'Tell Adrián the destination, time and number of passengers. Reply on WhatsApp.',
+      contactIntro: 'Tell the destination, time and number of passengers. Reply on WhatsApp.',
       driverRole: 'Professional driver. Montevideo and the Coast',
       contactCoverage: 'Montevideo, Gold Coast and routes to PDE / Colonia',
       contactVehicle: 'Bestune NAT · 100% electric',
       qrLabel: 'Message on WhatsApp',
       qrAction: 'Open WhatsApp',
       contactNote: 'Prices are quoted per trip. No fixed published rates.',
-      footer: 'Adrián Pereda — Transfers · Electric Bestune NAT · Montevideo, Uruguay',
+      footer: 'Transfers · Electric Bestune NAT · Montevideo, Uruguay',
       updateTitle: 'New version available',
       updateText: 'An app update is ready. Update to see the latest design.',
       updateAction: 'Update now'
@@ -294,6 +342,14 @@
       sBodCarDesc: 'Colonia: vinhedos junto ao rio Uruguai — um trajeto mais longo e pausado.',
       trasladosKicker: 'Destinos frequentes',
       trasladosIntro: 'Ideal para chegadas ao aeroporto, estadias curtas ou transfers porta a porta. Sem tarifas públicas fixas: consulte o seu percurso.',
+      destAirportTitle: 'Aeroporto',
+      destAirportS0: 'Carrasco (MVD)',
+      destAirportS1: 'Chegadas / Partidas',
+      destAirportS2: 'Porta a porta',
+      destBuqueTitle: 'Buquebus',
+      destBuqueS0: 'Terminal Montevidéu',
+      destBuqueS1: 'Buenos Aires',
+      destBuqueS2: 'Conexão ferries',
       destPuntaTitle: 'Punta del Este',
       destPuntaS0: 'La Mano',
       destPuntaS1: 'Playa Brava',
@@ -308,16 +364,29 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'Quero ir',
-      waWantGo: 'Olá Adrián, quero ir a {place}. Pode cotar um transfer?',
+      waWantGo: 'Olá {name}, quero ir a {place}. Pode cotar um transfer?',
+      switchDriver: 'Trocar PIN',
+      pinTitle: 'Digite seu PIN',
+      pinText: 'Cada motorista tem um PIN para ver nome e WhatsApp.',
+      pinSubmit: 'Entrar',
+      pinError: 'PIN incorreto',
+      adminTitle: 'Administração',
+      adminIntro: 'Crie e edite PINs, nomes e telefones dos motoristas.',
+      adminExit: 'Sair',
+      adminPinLabel: 'PIN',
+      adminNameLabel: 'Nome',
+      adminPhoneLabel: 'Telefone (com código do país)',
+      adminSave: 'Salvar',
+      adminClear: 'Limpar',
       contactKicker: 'Vamos conversar',
-      contactIntro: 'Conte a Adrián destino, horário e número de passageiros. Resposta no WhatsApp.',
+      contactIntro: 'Informe destino, horário e número de passageiros. Resposta no WhatsApp.',
       driverRole: 'Motorista profissional. Montevidéu e a Costa',
       contactCoverage: 'Montevidéu, Costa de Oro e trajetos a PDE / Colonia',
       contactVehicle: 'Bestune NAT · 100% elétrico',
       qrLabel: 'Fale pelo WhatsApp',
       qrAction: 'Abrir WhatsApp',
       contactNote: 'Os preços são cotados conforme o trajeto. Sem tarifas fixas publicadas.',
-      footer: 'Adrián Pereda — Transfers · Bestune NAT elétrico · Montevidéu, Uruguai',
+      footer: 'Transfers · Bestune NAT elétrico · Montevidéu, Uruguai',
       updateTitle: 'Nova versão disponível',
       updateText: 'Há uma atualização do app. Atualize para ver o design mais recente.',
       updateAction: 'Atualizar agora'
@@ -333,19 +402,55 @@
     return 'es';
   }
 
+  function activePhone() {
+    var driver = window.PeredaSession && PeredaSession.getDriver();
+    if (driver && driver.phone) return String(driver.phone).replace(/\D/g, '');
+    return WA_NUMBER;
+  }
+
+  function activeDriverName() {
+    var driver = window.PeredaSession && PeredaSession.getDriver();
+    if (driver && driver.name) {
+      return (PeredaSession.firstName ? PeredaSession.firstName(driver.name) : driver.name.split(/\s+/)[0]) || driver.name;
+    }
+    return 'Adrián';
+  }
+
   function waUrl(text) {
-    return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(text || '');
+    return 'https://wa.me/' + activePhone() + '?text=' + encodeURIComponent(text || '');
   }
 
   function updateDestLinks(lang) {
-    var t = T[lang];
+    var t = T[lang] || T.es;
+    var name = activeDriverName();
     document.querySelectorAll('.dest-go[data-dest]').forEach(function (link) {
       var key = link.getAttribute('data-dest');
       var place = (DEST_NAMES[key] && DEST_NAMES[key][lang]) || key;
-      var msg = (t.waWantGo || '').replace('{place}', place);
+      var msg = (t.waWantGo || '')
+        .replace('{place}', place)
+        .replace('{name}', name);
       link.href = waUrl(msg);
     });
   }
+
+  function applyDriverLinks(driver) {
+    var phone = driver && driver.phone ? String(driver.phone).replace(/\D/g, '') : WA_NUMBER;
+    var base = 'https://wa.me/' + phone;
+    var headerWa = document.getElementById('header-wa');
+    var contactQr = document.getElementById('contact-wa-qr');
+    var contactBtn = document.getElementById('contact-wa-btn');
+    if (headerWa) headerWa.href = base;
+    if (contactQr) contactQr.href = base;
+    if (contactBtn) contactBtn.href = base;
+    updateDestLinks(activeLang);
+    var t = T[activeLang] || T.es;
+    if (t.waAria) {
+      document.querySelectorAll('[data-i18n-aria="waAria"]').forEach(function (el) {
+        el.setAttribute('aria-label', t.waAria.replace('Adrián Pereda', (driver && driver.name) || 'Adrián Pereda'));
+      });
+    }
+  }
+  window.PeredaApplyDriverLinks = applyDriverLinks;
 
   function applyLang(lang) {
     if (!T[lang]) return;
@@ -368,7 +473,7 @@
       btn.setAttribute('aria-pressed', String(btn.getAttribute('data-lang') === lang));
     });
 
-    updateDestLinks(lang);
+    applyDriverLinks(window.PeredaSession && PeredaSession.getDriver());
   }
 
   function clearCachesAndReload() {
@@ -668,6 +773,11 @@
   });
 
   applyLang(detectLanguage());
+  if (window.PeredaSession) {
+    PeredaSession.start(function () {
+      applyDriverLinks(PeredaSession.getDriver());
+    });
+  }
   initUi();
   setupPwa();
 })();

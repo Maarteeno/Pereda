@@ -1,10 +1,12 @@
-var APP_VERSION = 'v45';
+var APP_VERSION = 'v46';
 var CACHE_NAME = 'pereda-tablet-' + APP_VERSION;
 var ASSETS = [
   './',
   './index.html',
   './css/styles.css',
   './js/app.js',
+  './js/session.js',
+  './js/firebase-config.js',
   './manifest.json',
   './assets/adrian-pereda.png',
   './assets/bestune-front.png',
@@ -16,6 +18,8 @@ var ASSETS = [
   './assets/destinations/punta-del-este-ai.png',
   './assets/destinations/colonia-ai.png',
   './assets/destinations/montevideo-ai.png',
+  './assets/destinations/aeropuerto-carrasco.png',
+  './assets/destinations/buquebus.png',
   './assets/paseos/montevideo-ai.png',
   './assets/paseos/eventos-ai.png',
   './assets/paseos/costa-ai.png',
