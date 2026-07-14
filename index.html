@@ -637,7 +637,10 @@
         </div>
         <nav class="admin-nav" aria-label="Admin">
           <button type="button" class="admin-nav-btn is-active" data-admin-nav="drivers" data-i18n="adminNavDrivers">Conductores</button>
-          <button type="button" class="admin-nav-btn" data-admin-nav="requests" data-i18n="adminNavRequests">Solicitudes</button>
+          <button type="button" class="admin-nav-btn" data-admin-nav="requests">
+            <span data-i18n="adminNavRequests">Solicitudes</span>
+            <span class="admin-nav-badge" id="admin-requests-badge" hidden></span>
+          </button>
           <button type="button" class="admin-nav-btn" data-admin-nav="logs" data-i18n="adminNavLogs">Ver logs</button>
         </nav>
         <button type="button" class="admin-exit" id="admin-exit" data-i18n="adminExit">Salir</button>

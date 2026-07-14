@@ -21,6 +21,25 @@
     return Array.from(new Set((pins || []).map(String).filter(Boolean)));
   }
 
+  function sanitizeText(value, maxLen) {
+    var text = String(value || '')
+      .replace(/[\u0000-\u001F\u007F<>]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (maxLen && text.length > maxLen) text = text.slice(0, maxLen);
+    return text;
+  }
+
+  function sanitizePhone(value) {
+    return phoneDigits(value).slice(0, 20);
+  }
+
+  function pinHintFrom(pin) {
+    var p = String(pin || '');
+    if (p.length <= 2) return p;
+    return p.slice(-2);
+  }
+
   function sha256(text) {
     var enc = new TextEncoder().encode(String(text));
     return crypto.subtle.digest('SHA-256', enc).then(function (buf) {
@@ -143,9 +162,9 @@
     if (!db || !driver || !auth || !auth.currentUser) return Promise.resolve();
     var ua = String(navigator.userAgent || '').slice(0, 160);
     return db.collection('accessLogs').add({
-      pin: String(driver.pin || ''),
-      name: String(driver.name || ''),
-      phone: String(driver.phone || ''),
+      pinHint: pinHintFrom(driver.pin),
+      name: sanitizeText(driver.name, 80),
+      phone: sanitizePhone(driver.phone),
       uid: auth.currentUser.uid,
       at: firebase.firestore.FieldValue.serverTimestamp(),
       ua: ua
@@ -280,10 +299,10 @@
   function submitRegistration(name, phone, vehicleMake, vehicleModel) {
     var user = auth.currentUser;
     if (!user) return Promise.reject(new Error('Sin sesión'));
-    name = String(name || '').trim();
-    phone = phoneDigits(phone);
-    vehicleMake = String(vehicleMake || '').trim();
-    vehicleModel = String(vehicleModel || '').trim();
+    name = sanitizeText(name, 80);
+    phone = sanitizePhone(phone);
+    vehicleMake = sanitizeText(vehicleMake, 80);
+    vehicleModel = sanitizeText(vehicleModel, 80);
     if (!name || phone.length < 8 || !vehicleMake || !vehicleModel) {
       setGateError('Completá nombre, teléfono y vehículo');
       return Promise.resolve(false);
@@ -401,7 +420,7 @@
         return db.collection('drivers').doc(pin).get().then(function (d) {
           if (!d.exists) return null;
           var data = d.data() || {};
-          if (data.uid === uid && data.active !== false) {
+          if (data.uid === uid) {
             return { pin: pin, data: data };
           }
           return null;
@@ -478,6 +497,30 @@
     if (adminView === 'drivers') refreshAdminList();
   }
 
+  function updateRequestsBadge(count) {
+    var badge = $('admin-requests-badge');
+    if (!badge) return;
+    var n = Number(count) || 0;
+    if (n > 0) {
+      badge.hidden = false;
+      badge.textContent = n > 99 ? '99+' : String(n);
+    } else {
+      badge.hidden = true;
+      badge.textContent = '';
+    }
+  }
+
+  function refreshPendingBadge() {
+    if (!db || !isAdmin) return;
+    db.collection('driverAccounts').where('status', '==', 'pending').get()
+      .then(function (snap) {
+        updateRequestsBadge(snap.size);
+      })
+      .catch(function () {
+        updateRequestsBadge(0);
+      });
+  }
+
   function showAdmin(on) {
     var panel = $('admin-panel');
     if (!panel) return;
@@ -489,11 +532,14 @@
       ensureSeedAsAdmin()
         .then(function () {
           refreshAdminList();
+          refreshPendingBadge();
         })
         .catch(function (e) {
           console.error(e);
           setAdminMsg('Error al inicializar datos', true);
         });
+    } else {
+      updateRequestsBadge(0);
     }
   }
 
@@ -535,7 +581,11 @@
           return { adminPinHash: data.adminPinHash || 'legacy', driverPins: pins };
         });
       }
-      var def = global.PEREDA_DEFAULT_DRIVER || { pin: '1001', name: 'Adrián Pereda', phone: '59899774019' };
+      var def = {
+        pin: '1001',
+        name: (global.PEREDA_DEFAULT_DRIVER && global.PEREDA_DEFAULT_DRIVER.name) || 'Adrián Pereda',
+        phone: (global.PEREDA_DEFAULT_DRIVER && global.PEREDA_DEFAULT_DRIVER.phone) || '59899774019'
+      };
       var payload = {
         adminPinHash: 'legacy',
         driverPins: [def.pin]
@@ -618,6 +668,7 @@
       setAdminMsg('Activado. El conductor verá el PIN al ingresar.');
       refreshRequests();
       refreshAdminList();
+      refreshPendingBadge();
       return true;
     }).catch(function (e) {
       console.error(e);
@@ -707,6 +758,23 @@
     return (make + ' ' + model).trim();
   }
 
+  function statusLabel(status) {
+    if (status === 'disabled') return 'Desactivado';
+    if (status === 'pending') return 'Pendiente';
+    return 'Activo';
+  }
+
+  function fillAdminMeta(container, account, extraBits) {
+    var bits = [];
+    var phone = formatPhoneDisplay(account.phone);
+    var vehicle = vehicleLabel(account);
+    if (phone) bits.push(phone);
+    if (vehicle) bits.push(vehicle);
+    if (account.email) bits.push(account.email);
+    if (extraBits && extraBits.length) bits = bits.concat(extraBits);
+    container.textContent = bits.join(' · ');
+  }
+
   function refreshAdminList() {
     var list = $('admin-list');
     if (!list || !db) return;
@@ -725,6 +793,9 @@
           rows.push(Object.assign({ id: doc.id }, doc.data()));
         });
         rows.sort(function (a, b) {
+          var aOff = a.status === 'disabled' ? 1 : 0;
+          var bOff = b.status === 'disabled' ? 1 : 0;
+          if (aOff !== bOff) return aOff - bOff;
           return String(a.name || '').localeCompare(String(b.name || ''));
         });
         return Promise.all(rows.map(function (row) {
@@ -736,26 +807,42 @@
           list.innerHTML = '';
           enriched.forEach(function (item) {
             var account = item.account;
-            var vehicle = vehicleLabel(account);
-            var el = document.createElement('div');
-            el.className = 'admin-driver';
+            var isDisabled = account.status === 'disabled';
+            var el = document.createElement('article');
+            el.className = 'admin-card' + (isDisabled ? ' is-disabled' : '');
             el.innerHTML =
-              '<div><strong></strong><span></span></div>' +
-              '<div class="admin-driver-actions">' +
-              '<button type="button" data-regen></button>' +
-              '<button type="button" data-toggle></button></div>';
-            el.querySelector('strong').textContent = account.name || 'Conductor';
-            el.querySelector('span').textContent =
-              (account.status === 'disabled' ? 'Desactivado · ' : '') +
-              (item.pin ? ('PIN ' + item.pin + ' · ') : 'Sin PIN · ') +
-              formatPhoneDisplay(account.phone) +
-              (vehicle ? ' · ' + vehicle : '') +
-              (account.email ? ' · ' + account.email : '');
+              '<div class="admin-card-main">' +
+              '<div class="admin-card-top">' +
+              '<strong class="admin-card-name"></strong>' +
+              '<span class="admin-status"></span>' +
+              '</div>' +
+              '<div class="admin-card-pin-row">' +
+              '<span class="admin-pin-chip"></span>' +
+              '</div>' +
+              '<p class="admin-card-meta"></p>' +
+              '</div>' +
+              '<div class="admin-card-actions">' +
+              '<button type="button" class="admin-btn" data-regen></button>' +
+              '<button type="button" class="admin-btn" data-toggle></button></div>';
+            el.querySelector('.admin-card-name').textContent = account.name || 'Conductor';
+            var statusEl = el.querySelector('.admin-status');
+            statusEl.textContent = statusLabel(account.status);
+            statusEl.className = 'admin-status is-' + (isDisabled ? 'disabled' : 'active');
+            var pinChip = el.querySelector('.admin-pin-chip');
+            if (item.pin) {
+              pinChip.textContent = 'PIN ' + item.pin;
+              pinChip.classList.add('has-pin');
+            } else {
+              pinChip.textContent = 'Sin PIN';
+              pinChip.classList.add('no-pin');
+            }
+            fillAdminMeta(el.querySelector('.admin-card-meta'), account);
             var regen = el.querySelector('[data-regen]');
             var toggle = el.querySelector('[data-toggle]');
             regen.textContent = 'Regenerar PIN';
-            var isDisabled = account.status === 'disabled';
             toggle.textContent = isDisabled ? 'Activar' : 'Desactivar';
+            toggle.classList.toggle('admin-btn-warn', !isDisabled);
+            toggle.classList.toggle('admin-btn-ok', isDisabled);
             regen.addEventListener('click', function () {
               if (!confirm('¿Regenerar PIN? El valor anterior deja de servir.')) return;
               regeneratePin(account.id, item.pin);
@@ -790,6 +877,7 @@
     })
       .then(function (snap) {
         if (seq !== adminReqSeq) return;
+        updateRequestsBadge(snap.size);
         list.innerHTML = '';
         if (snap.empty) {
           list.innerHTML = '<p class="admin-logs-empty">No hay solicitudes pendientes.</p>';
@@ -797,28 +885,33 @@
         }
         snap.forEach(function (doc) {
           var account = Object.assign({ id: doc.id }, doc.data());
-          var el = document.createElement('div');
-          el.className = 'admin-driver admin-request';
+          var el = document.createElement('article');
+          el.className = 'admin-card admin-card-request';
           el.innerHTML =
-            '<div><strong></strong><span></span></div>' +
+            '<div class="admin-card-main">' +
+            '<div class="admin-card-top">' +
+            '<strong class="admin-card-name"></strong>' +
+            '<span class="admin-status is-pending">Pendiente</span>' +
+            '</div>' +
+            '<p class="admin-card-meta"></p>' +
             '<div class="admin-request-actions">' +
-            '<input type="text" inputmode="numeric" maxlength="8" class="admin-request-pin" placeholder="PIN" />' +
-            '<button type="button" data-gen-pin>Generar</button>' +
-            '<button type="button" data-activate>Activar</button></div>';
-          el.querySelector('strong').textContent = account.name || 'Sin nombre';
-          var vehicle = vehicleLabel(account);
-          el.querySelector('span').textContent =
-            formatPhoneDisplay(account.phone) +
-            (vehicle ? ' · ' + vehicle : '') +
-            (account.email ? ' · ' + account.email : '');
+            '<label class="admin-request-pin-label">PIN' +
+            '<input type="text" inputmode="numeric" maxlength="8" class="admin-request-pin" placeholder="4 dígitos" />' +
+            '</label>' +
+            '<button type="button" class="admin-btn" data-gen-pin>Generar</button>' +
+            '<button type="button" class="admin-btn admin-btn-primary" data-activate>Activar</button></div>' +
+            '</div>';
+          el.querySelector('.admin-card-name').textContent = account.name || 'Sin nombre';
+          fillAdminMeta(el.querySelector('.admin-card-meta'), account);
           var pinInput = el.querySelector('.admin-request-pin');
+          pinInput.value = generateUnusedPin();
           el.querySelector('[data-gen-pin]').addEventListener('click', function () {
             pinInput.value = generateUnusedPin();
           });
           el.querySelector('[data-activate]').addEventListener('click', function () {
             var pin = pinInput.value.trim() || generateUnusedPin();
             pinInput.value = pin;
-            if (!confirm('¿Activar con ese PIN? El conductor lo verá una vez al ingresar.')) return;
+            if (!confirm('¿Activar a ' + (account.name || 'este conductor') + ' con PIN ' + pin + '?\nLo verá una vez al ingresar.')) return;
             activateAccount(account.id, pin);
           });
           list.appendChild(el);
@@ -858,14 +951,22 @@
         }
         snap.forEach(function (doc) {
           var row = doc.data() || {};
-          var item = document.createElement('div');
+          var item = document.createElement('article');
           item.className = 'admin-log';
-          item.innerHTML = '<strong></strong><span></span><em></em>';
+          item.innerHTML =
+            '<div class="admin-log-top"><strong></strong><em></em></div>' +
+            '<span class="admin-log-meta"></span>';
           item.querySelector('strong').textContent = row.name || 'Conductor';
-          item.querySelector('span').textContent =
-            formatPhoneDisplay(row.phone || '') +
-            (row.uid ? ' · uid…' + String(row.uid).slice(-6) : '');
           item.querySelector('em').textContent = formatLogTime(row.at);
+          var hint = row.pinHint != null && row.pinHint !== ''
+            ? String(row.pinHint)
+            : (row.pin ? String(row.pin).slice(-2) : '');
+          var meta = [];
+          if (hint) meta.push('PIN …' + hint);
+          var phone = formatPhoneDisplay(row.phone || '');
+          if (phone) meta.push(phone);
+          if (row.uid) meta.push('uid…' + String(row.uid).slice(-6));
+          item.querySelector('.admin-log-meta').textContent = meta.join(' · ') || '—';
           list.appendChild(item);
         });
       })

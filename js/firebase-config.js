@@ -11,8 +11,8 @@ window.PEREDA_FIREBASE = {
 /* Admin Google allowlist (no PIN gate for admin). */
 window.PEREDA_ADMIN_EMAIL = 'malerovi2014@gmail.com';
 
+/* Seed defaults without exposing PIN on window. */
 window.PEREDA_DEFAULT_DRIVER = {
-  pin: '1001',
   name: 'Adrián Pereda',
   phone: '59899774019'
 };

@@ -13,10 +13,18 @@ service cloud.firestore {
     function pendingCreateKeys() {
       return request.resource.data.keys().hasOnly(['email', 'name', 'phone', 'status', 'createdAt', 'vehicleMake', 'vehicleModel'])
         && request.resource.data.email is string
+        && request.resource.data.email == request.auth.token.email.lower()
         && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 80
         && request.resource.data.phone is string
+        && request.resource.data.phone.matches('[0-9]{8,20}')
         && request.resource.data.vehicleMake is string
+        && request.resource.data.vehicleMake.size() > 0
+        && request.resource.data.vehicleMake.size() <= 80
         && request.resource.data.vehicleModel is string
+        && request.resource.data.vehicleModel.size() > 0
+        && request.resource.data.vehicleModel.size() <= 80
         && request.resource.data.status == 'pending'
         && request.resource.data.createdAt is timestamp;
     }
@@ -60,14 +68,18 @@ service cloud.firestore {
 
     match /accessLogs/{logId} {
       allow create: if request.auth != null
-        && request.resource.data.keys().hasOnly(['pin', 'name', 'phone', 'at', 'ua', 'uid'])
-        && request.resource.data.pin is string
+        && request.resource.data.keys().hasOnly(['pinHint', 'name', 'phone', 'at', 'ua', 'uid'])
+        && request.resource.data.pinHint is string
+        && request.resource.data.pinHint.size() <= 2
         && request.resource.data.name is string
+        && request.resource.data.name.size() <= 80
         && request.resource.data.phone is string
+        && request.resource.data.phone.size() <= 20
         && request.resource.data.uid is string
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.at is timestamp
-        && request.resource.data.ua is string;
+        && request.resource.data.ua is string
+        && request.resource.data.ua.size() <= 160;
       allow read, list: if isAdmin();
       allow update, delete: if isAdmin();
     }
