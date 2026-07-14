@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Pereda Traslados">
-  <meta name="description" content="Adrián Pereda - Traslados en Bestune NAT eléctrico">
+  <meta name="description" content="Adrián Pereda - Conductor profesional. Traslados y paseos en Bestune NAT 100% eléctrico. Montevideo y La Costa.">
   <title>Adrián Pereda - Traslados</title>
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -18,120 +18,467 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <div class="app">
-    <div class="sticky-top" id="sticky-top">
-      <header class="app-header">
-        <div class="header-center-cluster">
-          <div class="brand">
-            <span class="brand-name" id="brand-name">Adrián Pereda</span>
-            <span class="brand-sub" id="header-subtitle">Conductor Profesional</span>
-          </div>
-          <div class="language-selector header-lang" role="group" aria-label="Idioma">
-            <button type="button" class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="true"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#c60b1e"/><rect y="6" width="32" height="12" fill="#ffc400"/></svg></button>
-            <button type="button" class="lang-btn" data-lang="en" aria-label="English" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#012169"/><path d="M0 0l32 24M32 0L0 24" stroke="#fff" stroke-width="4"/><path d="M0 0l32 24M32 0L0 24" stroke="#c8102e" stroke-width="2"/><path d="M16 0v24M0 12h32" stroke="#fff" stroke-width="6"/><path d="M16 0v24M0 12h32" stroke="#c8102e" stroke-width="3"/></svg></button>
-            <button type="button" class="lang-btn" data-lang="pt" aria-label="Português" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#009b3a"/><polygon points="16,2 30,12 16,22 2,12" fill="#fedf00"/><circle cx="16" cy="12" r="5" fill="#002776"/></svg></button>
-          </div>
-        </div>
-      </header>
+<header class="site-header">
+    <div class="shell site-header-inner">
+      <div class="brand">
+        <span class="brand-name" id="brand-name">Adrián Pereda</span>
+        <span class="brand-sub" id="header-subtitle">Conductor profesional</span>
+      </div>
+      <nav class="header-nav" aria-label="Secciones">
+        <button type="button" data-open-screen="paseos">Paseos</button>
+        <button type="button" data-open-screen="traslados">Traslados</button>
+        <button type="button" data-open-screen="contacto">Contacto</button>
+      </nav>
+      
+      <div class="lang-switch" role="group" aria-label="Idioma">
+        <button type="button" class="lang-btn" data-lang="es" aria-label="Español" aria-pressed="true"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#c60b1e"/><rect y="6" width="32" height="12" fill="#ffc400"/></svg></button>
+        <button type="button" class="lang-btn" data-lang="en" aria-label="English" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#012169"/><path d="M0 0l32 24M32 0L0 24" stroke="#fff" stroke-width="4"/><path d="M0 0l32 24M32 0L0 24" stroke="#c8102e" stroke-width="2"/><path d="M16 0v24M0 12h32" stroke="#fff" stroke-width="6"/><path d="M16 0v24M0 12h32" stroke="#c8102e" stroke-width="3"/></svg></button>
+        <button type="button" class="lang-btn" data-lang="pt" aria-label="Português" aria-pressed="false"><svg class="lang-flag" viewBox="0 0 32 24" aria-hidden="true"><rect width="32" height="24" fill="#009b3a"/><polygon points="16,2 30,12 16,22 2,12" fill="#fedf00"/><circle cx="16" cy="12" r="5" fill="#002776"/></svg></button>
+      </div>
+      <a class="btn-wa" href="https://wa.me/59899774019" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
     </div>
+  </header>
 
-    <main class="app-views" id="app-views">
-      <section id="view-home" class="app-view app-view-active" aria-label="Inicio">
-        <div class="home-vehicle-wrap">
-          <div class="vehicle-hero-scene" id="vehicle-hero-scene">
-            <div class="vehicle-ambient-glow" aria-hidden="true"></div>
-            <div class="vehicle-ground-arc" aria-hidden="true"></div>
-            <section class="vehicle-showcase vehicle-showcase-hero" id="vehicle-showcase">
-              <div class="vehicle-stage">
-                <div class="vehicle-rotator vehicle-rotator-animated" id="vehicle-rotator">
-                  <img src="assets/bestune-front.png" class="vehicle-view vehicle-view-photo active" data-angle="0" alt="Bestune NAT blanco vista 3/4 con puerta abierta">
-                  <img src="assets/bestune-side.png" class="vehicle-view vehicle-view-photo" data-angle="1" alt="Bestune NAT blanco vista lateral">
-                  <img src="assets/bestune-rear.png" class="vehicle-view vehicle-view-photo" data-angle="2" alt="Bestune NAT blanco vista frontal">
-                </div>
-              </div>
-              <div class="vehicle-badges" id="vehicle-badges" aria-label="Comodidades del vehículo"></div>
-            </section>
-          </div>
-        </div>
-        <nav class="hub-nav-grid" id="hub-nav" aria-label="Menú principal">
-          <button type="button" class="hub-nav-btn" data-view="traslados">
-            <img src="assets/bestune-side.png" alt="" class="hub-nav-vehicle-icon" aria-hidden="true">
-            <span class="hub-nav-label" id="hub-traslados-label">Traslados</span>
-          </button>
-          <button type="button" class="hub-nav-btn" data-view="paseos">
-            <span class="hub-nav-icon" aria-hidden="true">🗺️</span>
-            <span class="hub-nav-label" id="hub-paseos-label">Paseos</span>
-          </button>
-          <button type="button" class="hub-nav-btn" data-view="contacto">
-            <span class="hub-nav-icon" aria-hidden="true">📱</span>
-            <span class="hub-nav-label" id="hub-contacto-label">Contacto</span>
-          </button>
-        </nav>
-      </section>
+  <main class="home">
+    <section class="hero shell">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Bestune NAT · 100% eléctrico</p>
+      <h1 class="hero-title" id="hero-title">Traslados con conductor profesional</h1>
+      <p class="hero-lead" id="hero-lead">Montevideo, Costa de Oro y trayectos a Punta del Este o Colonia. Viaje silencioso, cómodo y puntual — pedí presupuesto por WhatsApp.</p>
 
-      <section id="view-traslados" class="app-view" hidden aria-label="Traslados">
-        <div class="subview-header">
-          <button type="button" class="back-btn" data-view="home" id="back-traslados">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span id="back-traslados-label">Volver</span>
-          </button>
-          <h1 class="subview-title" id="traslados-title">Traslados</h1>
+      <div class="vehicle-stage" aria-label="Galería del vehículo">
+        <div class="vehicle-ground" aria-hidden="true"></div>
+        <div class="vehicle-rotator" id="vehicle-rotator">
+          <img class="is-active" src="assets/bestune-front.png" alt="Bestune NAT blanco, vista tres cuartos con puerta abierta" />
+          <img src="assets/bestune-side.png" alt="Bestune NAT blanco, vista lateral" />
+          <img src="assets/bestune-rear.png" alt="Bestune NAT blanco, vista frontal" />
         </div>
-        <div class="subview-body">
-          <img src="assets/destinations/traslados-hero-ai.png" alt="" class="subview-hero-image" id="traslados-hero-image" loading="lazy">
-          <div class="dest-cards-grid" id="traslados-cards"></div>
+        <div class="vehicle-controls" role="tablist" aria-label="Ángulo del vehículo">
+          <button type="button" class="vehicle-dot is-active" role="tab" aria-selected="true" aria-label="Vista tres cuartos" data-index="0"></button>
+          <button type="button" class="vehicle-dot" role="tab" aria-selected="false" aria-label="Vista lateral" data-index="1"></button>
+          <button type="button" class="vehicle-dot" role="tab" aria-selected="false" aria-label="Vista frontal" data-index="2"></button>
         </div>
-      </section>
+      </div>
 
-      <section id="view-paseos" class="app-view" hidden aria-label="Paseos">
-        <div class="subview-header">
-          <button type="button" class="back-btn" data-view="home" id="back-paseos">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span id="back-paseos-label">Volver</span>
-          </button>
-          <h1 class="subview-title" id="paseos-title">Paseos</h1>
-        </div>
-        <div class="subview-body">
-          <img src="assets/paseos/paseos-hero-ai.png" alt="" class="subview-hero-image" id="paseos-hero-image" loading="lazy">
-          <p class="subview-intro" id="paseos-intro"></p>
-          <div class="dest-cards-grid" id="paseos-cards"></div>
-        </div>
-      </section>
+      <div class="chip-row" aria-label="Comodidades del vehículo">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3c-2.8 3.2-6 6.4-6 10a6 6 0 0012 0c0-3.6-3.2-6.8-6-10z"/><path d="M9.5 14.5c.6 1.4 1.8 2 2.5 2s1.9-.6 2.5-2"/></svg>100% eléctrico</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 12h3l2-5 3 10 2-5h6"/></svg>Viaje silencioso</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8 14a4 4 0 118 0"/><path d="M4 14h16"/><path d="M12 4v3"/></svg>Climatización</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="8" width="14" height="10" rx="1.5"/><path d="M17 11h3l1 3v4h-4"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg>Maletero amplio</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 7h8v12H5z"/><path d="M13 9h5a1 1 0 011 1v9h-6"/></svg>Puerta corrediza</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 19V9l7-4 7 4v10"/><path d="M9 19v-6h6v6"/></svg>Asientos amplios</span>
+      </div>
 
-      <section id="view-contacto" class="app-view" hidden aria-label="Contacto">
-        <div class="subview-header">
-          <button type="button" class="back-btn" data-view="home" id="back-contacto">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span id="back-contacto-label">Volver</span>
-          </button>
-          <h1 class="subview-title" id="contacto-title">Contacto</h1>
-        </div>
-        <div class="subview-body contact-panel">
-          <div class="profile-identity contact-identity">
-            <img src="assets/adrian-pereda.png" alt="Adrián" class="driver-avatar profile-avatar" width="96" height="96" loading="lazy">
-            <div class="profile-identity-meta">
-              <h2 class="driver-name" id="driver-name">Adrián</h2>
-              <p class="driver-role" id="driver-role">Conductor Profesional. Montevideo y La Costa</p>
+      <nav class="hub" aria-label="Menú principal">
+        <button type="button" class="hub-btn hub-btn--paseos" data-open-screen="paseos">
+          <span class="hub-media" aria-hidden="true">
+            <img src="assets/paseos/paseos-hero-ai.png" alt="" />
+          </span>
+          <span class="hub-body">
+            <span class="hub-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+            </span>
+            <span class="hub-copy">
+              <strong>Paseos</strong>
+              <span>Experiencias por Uruguay a tu ritmo.</span>
+            </span>
+          </span>
+          <span class="hub-arrow-wrap" aria-hidden="true">
+            <svg class="hub-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </button>
+        <button type="button" class="hub-btn hub-btn--traslados" data-open-screen="traslados">
+          <span class="hub-media" aria-hidden="true">
+            <img src="assets/destinations/traslados-hero-ai.png" alt="" />
+          </span>
+          <span class="hub-body">
+            <span class="hub-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 13h13l3 3v3H3z"/><path d="M5 13V9h8l2 4"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="15.5" cy="18.5" r="1.5"/></svg>
+            </span>
+            <span class="hub-copy">
+              <strong>Traslados</strong>
+              <span>Aeropuerto, ciudad y costa con puntualidad.</span>
+            </span>
+          </span>
+          <span class="hub-arrow-wrap" aria-hidden="true">
+            <svg class="hub-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </button>
+        <button type="button" class="hub-btn hub-btn--contacto" data-open-screen="contacto">
+          <span class="hub-media" aria-hidden="true">
+            <img src="assets/bestune-side.png" alt="" />
+          </span>
+          <span class="hub-body">
+            <span class="hub-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </span>
+            <span class="hub-copy">
+              <strong>Contacto</strong>
+              <span>Escribile a Adrián por WhatsApp.</span>
+            </span>
+          </span>
+          <span class="hub-arrow-wrap" aria-hidden="true">
+            <svg class="hub-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </button>
+      </nav>
+    </section>
+  </main>
+
+  <div class="screens" aria-live="polite">
+    <section class="screen" id="screen-paseos" data-screen="paseos" role="dialog" aria-label="Paseos" aria-hidden="true" hidden inert>
+      <div class="screen-bar">
+        <button type="button" class="screen-back" data-close-screen>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          Inicio
+        </button>
+        <span class="screen-bar-title">Paseos</span>
+      </div>
+      <div class="screen-body screen-paseos-main">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Galería</p>
+              <h2 class="section-title">Paseos y experiencias</h2>
+              <p class="section-intro">Tocá un paseo para ver los lugares incluidos. Cada vista muestra solo ese recorrido.</p>
             </div>
           </div>
-          <ul class="contact-info-list" id="contact-info-list">
-            <li class="contact-info-item" id="contact-coverage"></li>
-            <li class="contact-info-item contact-info-vehicle" id="contact-vehicle"></li>
-          </ul>
-          <div class="qr-card contact-qr">
-            <p class="vehicle-qr-label" id="qr-label">Escribile por WhatsApp</p>
-            <a href="https://wa.me/59899774019" class="vehicle-qr-link" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Adrián Pereda">
-              <img src="assets/whatsapp-qr.png" alt="QR WhatsApp Adrián Pereda" class="vehicle-qr-image" width="140" height="140" loading="lazy">
-            </a>
-            <p class="vehicle-qr-phone" id="vehicle-qr-phone">+598 99 774 019</p>
-            <a href="https://wa.me/59899774019" class="qr-action-btn" id="qr-action-btn" target="_blank" rel="noopener noreferrer">Abrir WhatsApp</a>
+          <div class="gallery">
+            <button type="button" class="gallery-card" data-open-paseo="costa" aria-haspopup="dialog">
+              <img src="assets/paseos/costa-ai.png" alt="" loading="lazy" />
+              <span class="gallery-caption">
+                <h3>Costa y hoteles</h3>
+                <p>Punta del Este · La Barra · José Ignacio</p>
+                <span class="gallery-open">Ver lugares <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </span>
+            </button>
+            <button type="button" class="gallery-card" data-open-paseo="montevideo" aria-haspopup="dialog">
+              <img src="assets/paseos/montevideo-ai.png" alt="" loading="lazy" />
+              <span class="gallery-caption">
+                <h3>Montevideo</h3>
+                <p>Centenario · Rambla · Parque Rodó · Mercado del Puerto</p>
+                <span class="gallery-open">Ver lugares <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </span>
+            </button>
+            <button type="button" class="gallery-card" data-open-paseo="eventos" aria-haspopup="dialog">
+              <img src="assets/paseos/eventos-ai.png" alt="" loading="lazy" />
+              <span class="gallery-caption">
+                <h3>Eventos</h3>
+                <p>Bodas · Salones · Congresos</p>
+                <span class="gallery-open">Ver lugares <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </span>
+            </button>
+            <button type="button" class="gallery-card" data-open-paseo="bodegas" aria-haspopup="dialog">
+              <img src="assets/paseos/bodegas-ai.png" alt="" loading="lazy" />
+              <span class="gallery-caption">
+                <h3>Bodegas</h3>
+                <p>Juanicó · Garzón · Carmelo</p>
+                <span class="gallery-open">Ver lugares <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              </span>
+            </button>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+
+      <div class="paseo-detail" id="paseo-costa" data-paseo="costa" role="dialog" aria-label="Costa y hoteles" aria-hidden="true" hidden inert>
+        <div class="screen-bar">
+          <button type="button" class="screen-back" data-close-paseo>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+            Galería
+          </button>
+          <span class="screen-bar-title">Costa y hoteles</span>
+        </div>
+        <div class="screen-body">
+          <div class="shell">
+            <div class="section-head">
+              <div>
+                <p class="section-kicker">Paseo</p>
+                <h2 class="section-title">Costa y hoteles</h2>
+                <p class="section-intro">Llegadas a hoteles y recorridos por la costa Este: playa, puente y faro incluidos en el trayecto.</p>
+              </div>
+            </div>
+            <div class="spot-grid">
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/costa-pde-hoteles.png" alt="Hoteles frente al mar en Punta del Este" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Punta del Este · hoteles</h3>
+                  <p>Traslados puerta a puerta a hoteles de Playa Brava y Mansa, sin bajar equipaje en la calle.</p>
+                </div>
+              </article>
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/costa-barra.png" alt="Puente de madera de La Barra" loading="lazy" />
+                <div class="spot-body">
+                  <h3>La Barra</h3>
+                  <p>El puente emblemático y el pueblo playero: ideal para una mañana o un atardecer sin apuro.</p>
+                </div>
+              </article>
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/costa-jose-ignacio.png" alt="Faro y playa de José Ignacio" loading="lazy" />
+                <div class="spot-body">
+                  <h3>José Ignacio</h3>
+                  <p>Costa más quieta, faro y boutique: el tramo largo de la costa sin cambiar de vehículo.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paseo-detail" id="paseo-montevideo" data-paseo="montevideo" role="dialog" aria-label="Montevideo" aria-hidden="true" hidden inert>
+        <div class="screen-bar">
+          <button type="button" class="screen-back" data-close-paseo>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+            Galería
+          </button>
+          <span class="screen-bar-title">Montevideo</span>
+        </div>
+        <div class="screen-body">
+          <div class="shell">
+            <div class="section-head">
+              <div>
+                <p class="section-kicker">Paseo</p>
+                <h2 class="section-title">Montevideo</h2>
+                <p class="section-intro">Un circuito por íconos de la ciudad: estadio, rambla, parque y mercado, con paradas cómodas.</p>
+              </div>
+            </div>
+            <div class="spot-grid">
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/mvd-centenario.png" alt="Estadio Centenario visto desde afuera" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Estadio Centenario</h3>
+                  <p>Parada frente al monumento del fútbol mundial en Parque Batlle.</p>
+                </div>
+              </article>
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/mvd-rambla.png" alt="Rambla de Montevideo junto al río" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Rambla</h3>
+                  <p>El paseo costero de Pocitos y Punta Carretas: luz, río y ciudad en un solo tramo.</p>
+                </div>
+              </article>
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/mvd-rodo.png" alt="Parque Rodó junto al lago" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Parque Rodó</h3>
+                  <p>Parque, lago y ambiente de fin de semana a minutos del centro.</p>
+                </div>
+              </article>
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/mvd-mercado.png" alt="Fachada del Mercado del Puerto" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Mercado del Puerto</h3>
+                  <p>Ciudad Vieja: el mercado de hierro y las parrillas del puerto.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paseo-detail" id="paseo-eventos" data-paseo="eventos" role="dialog" aria-label="Eventos" aria-hidden="true" hidden inert>
+        <div class="screen-bar">
+          <button type="button" class="screen-back" data-close-paseo>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+            Galería
+          </button>
+          <span class="screen-bar-title">Eventos</span>
+        </div>
+        <div class="screen-body">
+          <div class="shell">
+            <div class="section-head">
+              <div>
+                <p class="section-kicker">Paseo</p>
+                <h2 class="section-title">Eventos</h2>
+                <p class="section-intro">Llevamos invitados o equipos a salones, bodas y congresos: puntualidad y espacio para equipaje.</p>
+              </div>
+            </div>
+            <div class="spot-grid">
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/evt-boda.png" alt="Salón de boda al aire libre" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Bodas</h3>
+                  <p>Llegada de novios e invitados a quintas y salones, con horario coordinado.</p>
+                </div>
+              </article>
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/evt-salon.png" alt="Salón de eventos con mesas preparadas" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Salones</h3>
+                  <p>Eventos sociales y corporativos: puerta a puerta sin buscar estacionamiento.</p>
+                </div>
+              </article>
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/evt-congreso.png" alt="Auditorio de congresos vacío" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Congresos</h3>
+                  <p>Traslados a auditorios y centros de convenciones en ciudad o costa.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paseo-detail" id="paseo-bodegas" data-paseo="bodegas" role="dialog" aria-label="Bodegas" aria-hidden="true" hidden inert>
+        <div class="screen-bar">
+          <button type="button" class="screen-back" data-close-paseo>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+            Galería
+          </button>
+          <span class="screen-bar-title">Bodegas</span>
+        </div>
+        <div class="screen-body">
+          <div class="shell">
+            <div class="section-head">
+              <div>
+                <p class="section-kicker">Paseo</p>
+                <h2 class="section-title">Bodegas</h2>
+                <p class="section-intro">Rutas de vino sin conducir: Juanicó, Garzón y Carmelo con tiempo para degustar.</p>
+              </div>
+            </div>
+            <div class="spot-grid">
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/bodega-juanico.png" alt="Viñedos y bodega en Juanicó" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Juanicó</h3>
+                  <p>Canelones, cerca de Montevideo: viñas y cava histórica en un día completo.</p>
+                </div>
+              </article>
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/bodega-garzon.png" alt="Arquitectura moderna de Bodega Garzón" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Garzón</h3>
+                  <p>Maldonado: bodega moderna entre cerros, ideal combinada con la costa.</p>
+                </div>
+              </article>
+              <article class="spot-card">
+                <img src="assets/paseos/detalle/bodega-carmelo.png" alt="Viñedos junto al río en Carmelo" loading="lazy" />
+                <div class="spot-body">
+                  <h3>Carmelo</h3>
+                  <p>Colonia: viñedos junto al río Uruguay, un trayecto más largo y pausado.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-traslados" data-screen="traslados" role="dialog" aria-label="Traslados" aria-hidden="true" hidden inert>
+      <div class="screen-bar">
+        <button type="button" class="screen-back" data-close-screen>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          Inicio
+        </button>
+        <span class="screen-bar-title">Traslados</span>
+      </div>
+      <div class="screen-body">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Destinos frecuentes</p>
+              <h2 class="section-title">Traslados</h2>
+              <p class="section-intro">Ideal para llegadas al aeropuerto, mudanzas temporales o traslados puerta a puerta. Sin precios públicos: consultá tu recorrido.</p>
+            </div>
+          </div>
+          <div class="dest-grid">
+            <article class="dest-card">
+              <img src="assets/destinations/punta-del-este-ai.png" alt="Punta del Este" loading="lazy" />
+              <div class="dest-body">
+                <h3>Punta del Este</h3>
+                <ul class="dest-spots">
+                  <li>La Mano</li>
+                  <li>Playa Brava</li>
+                  <li>Puerto de Punta</li>
+                </ul>
+              </div>
+            </article>
+            <article class="dest-card">
+              <img src="assets/destinations/colonia-ai.png" alt="Colonia del Sacramento" loading="lazy" />
+              <div class="dest-body">
+                <h3>Colonia del Sacramento</h3>
+                <ul class="dest-spots">
+                  <li>Barrio Histórico</li>
+                  <li>Faro de Colonia</li>
+                  <li>Calle de los Suspiros</li>
+                </ul>
+              </div>
+            </article>
+            <article class="dest-card">
+              <img src="assets/destinations/montevideo-ai.png" alt="Montevideo" loading="lazy" />
+              <div class="dest-body">
+                <h3>Montevideo</h3>
+                <ul class="dest-spots">
+                  <li>Aeropuerto Carrasco</li>
+                  <li>Centro</li>
+                  <li>Rambla</li>
+                  <li>Mercado del Puerto</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-contacto" data-screen="contacto" role="dialog" aria-label="Contacto" aria-hidden="true" hidden inert>
+      <div class="screen-bar">
+        <button type="button" class="screen-back" data-close-screen>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          Inicio
+        </button>
+        <span class="screen-bar-title">Contacto</span>
+      </div>
+      <div class="screen-body">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Hablemos</p>
+              <h2 class="section-title">Contacto</h2>
+              <p class="section-intro">Contale a Adrián destino, horario y cantidad de pasajeros. Respuesta por WhatsApp.</p>
+            </div>
+          </div>
+          <div class="contact-panel">
+            <div class="profile">
+              <div class="profile-photo"><img src="assets/adrian-pereda.png" alt="Adrián Pereda" width="88" height="88" /></div>
+              <div>
+                <h2>Adrián</h2>
+                <p>Conductor profesional. Montevideo y La Costa</p>
+              </div>
+            </div>
+            <ul class="info-list">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 21s7-4.5 7-11a7 7 0 10-14 0c0 6.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                Montevideo, Costa de Oro y trayectos a PDE / Colonia
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 16l2-8h10l2 8"/><path d="M3 16h18"/><circle cx="8" cy="18.5" r="1.5"/><circle cx="16" cy="18.5" r="1.5"/></svg>
+                Bestune NAT · 100% eléctrico
+              </li>
+            </ul>
+            <div class="qr-block">
+              <p>Escribile por WhatsApp</p>
+              <a href="https://wa.me/59899774019" target="_blank" rel="noopener noreferrer" aria-label="Abrir chat de WhatsApp con Adrián Pereda">
+                <img src="assets/whatsapp-qr.png" alt="Código QR de WhatsApp de Adrián Pereda" width="148" height="148" />
+              </a>
+              <p class="phone">+598 99 774 019</p>
+              <a class="btn-wa-lg" href="https://wa.me/59899774019" target="_blank" rel="noopener noreferrer">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Abrir WhatsApp
+              </a>
+            </div>
+          </div>
+          <p class="note">Los precios se cotizan según trayecto. Sin tarifas fijas publicadas.</p>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <footer>
+    <div class="shell">Adrián Pereda — Traslados · Bestune NAT eléctrico · Montevideo, Uruguay</div>
+  </footer>
 
   <div class="update-gate" id="update-gate" hidden>
     <div class="update-gate-card" role="dialog" aria-modal="true" aria-labelledby="update-gate-title">

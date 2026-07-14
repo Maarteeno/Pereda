@@ -3,145 +3,107 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v42';
+  var APP_VERSION = 'v43';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
-  var VEHICLE_ROTATE_MS = 8000;
-
-  var activeLang = 'es';
-  var currentView = 'home';
-  var vehicleRotateTimer = null;
-  var currentVehicleView = 0;
   var swRegistration = null;
 
-  var translations = {
+  var T = {
     es: {
-      brandName: 'Adrián Pereda',
-      headerRole: 'Conductor Profesional',
-      vehicleBadges: [
-        { icon: '🌿', label: '100% eléctrico' },
-        { icon: '🔇', label: 'Viaje silencioso' },
-        { icon: '❄️', label: 'Climatización' },
-        { icon: '🧳', label: 'Maletero amplio' },
-        { icon: '🚪', label: 'Puerta corrediza' },
-        { icon: '💺', label: 'Asientos amplios' }
-      ],
-      hubTraslados: 'Traslados',
-      hubPaseos: 'Paseos',
-      hubContacto: 'Contacto',
-      backLabel: 'Volver',
-      trasladosTitle: 'Traslados',
-      paseosTitle: 'Paseos',
-      paseosIntro: 'Paseos y experiencias en Uruguay',
-      contactoTitle: 'Contacto',
-      driverName: 'Adrián',
-      driverRole: 'Conductor Profesional. Montevideo y La Costa',
+      role: 'Conductor profesional',
+      navPaseos: 'Paseos',
+      navTraslados: 'Traslados',
+      navContacto: 'Contacto',
+      heroTitle: 'Traslados con conductor profesional',
+      heroLead: 'Montevideo, Costa de Oro y trayectos a Punta del Este o Colonia. Viaje silencioso, cómodo y puntual — pedí presupuesto por WhatsApp.',
+      chips: ['100% eléctrico', 'Viaje silencioso', 'Climatización', 'Maletero amplio', 'Puerta corrediza', 'Asientos amplios'],
+      hubPaseosTitle: 'Paseos',
+      hubPaseosDesc: 'Experiencias por Uruguay a tu ritmo.',
+      hubTrasladosTitle: 'Traslados',
+      hubTrasladosDesc: 'Aeropuerto, ciudad y costa con puntualidad.',
+      hubContactoTitle: 'Contacto',
+      hubContactoDesc: 'Escribile a Adrián por WhatsApp.',
+      backHome: 'Inicio',
+      titlePaseos: 'Paseos',
+      titleTraslados: 'Traslados',
+      titleContacto: 'Contacto',
+      contactKicker: 'Hablemos',
+      contactIntro: 'Contale a Adrián destino, horario y cantidad de pasajeros. Respuesta por WhatsApp.',
+      driverRole: 'Conductor profesional. Montevideo y La Costa',
       contactCoverage: 'Montevideo, Costa de Oro y trayectos a PDE / Colonia',
       contactVehicle: 'Bestune NAT · 100% eléctrico',
       qrLabel: 'Escribile por WhatsApp',
       qrAction: 'Abrir WhatsApp',
-      phoneNumber: '+598 99 774 019',
-      trasladosItems: [
-        { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Playa Brava', 'Puerto de Punta'] },
-        { image: 'assets/destinations/colonia-ai.png', name: 'Colonia del Sacramento', spots: ['Barrio Histórico', 'Faro de Colonia', 'Calle de los Suspiros'] },
-        { image: 'assets/destinations/montevideo-ai.png', name: 'Montevideo', spots: ['Aeropuerto Carrasco', 'Centro', 'Rambla', 'Mercado del Puerto'] }
-      ],
-      paseosItems: [
-        { image: 'assets/paseos/montevideo-ai.png', name: 'Montevideo', spots: ['Estadio Centenario', 'Rambla', 'Parque Rodó', 'Mercado del Puerto'] },
-        { image: 'assets/paseos/eventos-ai.png', name: 'Eventos', spots: ['Bodas', 'Salones', 'Congresos'] },
-        { image: 'assets/paseos/costa-ai.png', name: 'Costa y hoteles', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] },
-        { image: 'assets/paseos/bodegas-ai.png', name: 'Bodegas', spots: ['Juanicó', 'Garzón', 'Carmelo'] }
-      ],
-      updateGateTitle: 'Nueva versión disponible',
-      updateGateText: 'Hay una actualización de la app. Actualizá para ver el diseño más reciente.',
-      updateGateAction: 'Actualizar ahora'
+      contactNote: 'Los precios se cotizan según trayecto. Sin tarifas fijas publicadas.',
+      footer: 'Adrián Pereda — Traslados · Bestune NAT eléctrico · Montevideo, Uruguay',
+      updateTitle: 'Nueva versión disponible',
+      updateText: 'Hay una actualización de la app. Actualizá para ver el diseño más reciente.',
+      updateAction: 'Actualizar ahora'
     },
     en: {
-      brandName: 'Adrián Pereda',
-      headerRole: 'Professional Driver',
-      vehicleBadges: [
-        { icon: '🌿', label: '100% electric' },
-        { icon: '🔇', label: 'Quiet ride' },
-        { icon: '❄️', label: 'Climate control' },
-        { icon: '🧳', label: 'Room for luggage' },
-        { icon: '🚪', label: 'Sliding door' },
-        { icon: '💺', label: 'Spacious seats' }
-      ],
-      hubTraslados: 'Transfers',
-      hubPaseos: 'Tours',
-      hubContacto: 'Contact',
-      backLabel: 'Back',
-      trasladosTitle: 'Transfers',
-      paseosTitle: 'Tours',
-      paseosIntro: 'Tours and experiences in Uruguay',
-      contactoTitle: 'Contact',
-      driverName: 'Adrián',
-      driverRole: 'Professional Driver. Montevideo and the Coast',
+      role: 'Professional driver',
+      navPaseos: 'Tours',
+      navTraslados: 'Transfers',
+      navContacto: 'Contact',
+      heroTitle: 'Transfers with a professional driver',
+      heroLead: 'Montevideo, Costa de Oro and trips to Punta del Este or Colonia. Quiet, comfortable and on time — request a quote on WhatsApp.',
+      chips: ['100% electric', 'Quiet ride', 'Climate control', 'Room for luggage', 'Sliding door', 'Spacious seats'],
+      hubPaseosTitle: 'Tours',
+      hubPaseosDesc: 'Experiences across Uruguay at your pace.',
+      hubTrasladosTitle: 'Transfers',
+      hubTrasladosDesc: 'Airport, city and coast — on time.',
+      hubContactoTitle: 'Contact',
+      hubContactoDesc: 'Message Adrián on WhatsApp.',
+      backHome: 'Home',
+      titlePaseos: 'Tours',
+      titleTraslados: 'Transfers',
+      titleContacto: 'Contact',
+      contactKicker: "Let's talk",
+      contactIntro: 'Tell Adrián the destination, time and number of passengers. Reply on WhatsApp.',
+      driverRole: 'Professional driver. Montevideo and the Coast',
       contactCoverage: 'Montevideo, Gold Coast and routes to PDE / Colonia',
       contactVehicle: 'Bestune NAT · 100% electric',
       qrLabel: 'Message on WhatsApp',
       qrAction: 'Open WhatsApp',
-      phoneNumber: '+598 99 774 019',
-      trasladosItems: [
-        { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Brava Beach', 'Punta del Este Port'] },
-        { image: 'assets/destinations/colonia-ai.png', name: 'Colonia del Sacramento', spots: ['Historic Quarter', 'Colonia Lighthouse', 'Street of Sighs'] },
-        { image: 'assets/destinations/montevideo-ai.png', name: 'Montevideo', spots: ['Carrasco Airport', 'Downtown', 'Waterfront', 'Mercado del Puerto'] }
-      ],
-      paseosItems: [
-        { image: 'assets/paseos/montevideo-ai.png', name: 'Montevideo', spots: ['Estadio Centenario', 'Waterfront', 'Parque Rodó', 'Mercado del Puerto'] },
-        { image: 'assets/paseos/eventos-ai.png', name: 'Events', spots: ['Weddings', 'Venues', 'Conferences'] },
-        { image: 'assets/paseos/costa-ai.png', name: 'Coast and hotels', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] },
-        { image: 'assets/paseos/bodegas-ai.png', name: 'Wineries', spots: ['Juanicó', 'Garzón', 'Carmelo'] }
-      ],
-      updateGateTitle: 'New version available',
-      updateGateText: 'An app update is ready. Refresh to see the latest layout.',
-      updateGateAction: 'Update now'
+      contactNote: 'Prices are quoted per trip. No fixed published rates.',
+      footer: 'Adrián Pereda — Transfers · Electric Bestune NAT · Montevideo, Uruguay',
+      updateTitle: 'New version available',
+      updateText: 'An app update is ready. Update to see the latest design.',
+      updateAction: 'Update now'
     },
     pt: {
-      brandName: 'Adrián Pereda',
-      headerRole: 'Motorista Profissional',
-      vehicleBadges: [
-        { icon: '🌿', label: '100% elétrico' },
-        { icon: '🔇', label: 'Viagem silenciosa' },
-        { icon: '❄️', label: 'Climatização' },
-        { icon: '🧳', label: 'Espaço amplo' },
-        { icon: '🚪', label: 'Porta corrediça' },
-        { icon: '💺', label: 'Assentos amplos' }
-      ],
-      hubTraslados: 'Transfers',
-      hubPaseos: 'Passeios',
-      hubContacto: 'Contato',
-      backLabel: 'Voltar',
-      trasladosTitle: 'Transfers',
-      paseosTitle: 'Passeios',
-      paseosIntro: 'Passeios e experiências no Uruguai',
-      contactoTitle: 'Contato',
-      driverName: 'Adrián',
-      driverRole: 'Motorista Profissional. Montevidéu e o Litoral',
-      contactCoverage: 'Montevidéu, Costa de Oro e trajetos para PDE / Colonia',
+      role: 'Motorista profissional',
+      navPaseos: 'Passeios',
+      navTraslados: 'Transfers',
+      navContacto: 'Contato',
+      heroTitle: 'Transfers com motorista profissional',
+      heroLead: 'Montevidéu, Costa de Oro e trajetos a Punta del Este ou Colonia. Viagem silenciosa, confortável e pontual — peça orçamento no WhatsApp.',
+      chips: ['100% elétrico', 'Viagem silenciosa', 'Climatização', 'Porta-malas amplo', 'Porta deslizante', 'Assentos espaçosos'],
+      hubPaseosTitle: 'Passeios',
+      hubPaseosDesc: 'Experiências pelo Uruguai no seu ritmo.',
+      hubTrasladosTitle: 'Transfers',
+      hubTrasladosDesc: 'Aeroporto, cidade e costa com pontualidade.',
+      hubContactoTitle: 'Contato',
+      hubContactoDesc: 'Fale com Adrián pelo WhatsApp.',
+      backHome: 'Início',
+      titlePaseos: 'Passeios',
+      titleTraslados: 'Transfers',
+      titleContacto: 'Contato',
+      contactKicker: 'Vamos conversar',
+      contactIntro: 'Conte a Adrián destino, horário e número de passageiros. Resposta no WhatsApp.',
+      driverRole: 'Motorista profissional. Montevidéu e a Costa',
+      contactCoverage: 'Montevidéu, Costa de Oro e trajetos a PDE / Colonia',
       contactVehicle: 'Bestune NAT · 100% elétrico',
-      qrLabel: 'Escreva no WhatsApp',
+      qrLabel: 'Fale pelo WhatsApp',
       qrAction: 'Abrir WhatsApp',
-      phoneNumber: '+598 99 774 019',
-      trasladosItems: [
-        { image: 'assets/destinations/punta-del-este-ai.png', name: 'Punta del Este', spots: ['La Mano', 'Playa Brava', 'Porto de Punta del Este'] },
-        { image: 'assets/destinations/colonia-ai.png', name: 'Colonia del Sacramento', spots: ['Bairro Histórico', 'Farol de Colonia', 'Calle de los Suspiros'] },
-        { image: 'assets/destinations/montevideo-ai.png', name: 'Montevidéu', spots: ['Aeroporto Carrasco', 'Centro', 'Rambla', 'Mercado del Puerto'] }
-      ],
-      paseosItems: [
-        { image: 'assets/paseos/montevideo-ai.png', name: 'Montevidéu', spots: ['Estádio Centenário', 'Rambla', 'Parque Rodó', 'Mercado del Puerto'] },
-        { image: 'assets/paseos/eventos-ai.png', name: 'Eventos', spots: ['Casamentos', 'Salões', 'Congressos'] },
-        { image: 'assets/paseos/costa-ai.png', name: 'Costa e hotéis', spots: ['Punta del Este', 'La Barra', 'José Ignacio'] },
-        { image: 'assets/paseos/bodegas-ai.png', name: 'Vinícolas', spots: ['Juanicó', 'Garzón', 'Carmelo'] }
-      ],
-      updateGateTitle: 'Nova versão disponível',
-      updateGateText: 'Há uma atualização do app. Atualize para ver o layout mais recente.',
-      updateGateAction: 'Atualizar agora'
+      contactNote: 'Os preços são cotados conforme o trajeto. Sem tarifas fixas publicadas.',
+      footer: 'Adrián Pereda — Transfers · Bestune NAT elétrico · Montevidéu, Uruguai',
+      updateTitle: 'Nova versão disponível',
+      updateText: 'Há uma atualização do app. Atualize para ver o design mais recente.',
+      updateAction: 'Atualizar agora'
     }
   };
 
-  function $(id) {
-    return document.getElementById(id);
-  }
+  function $(id) { return document.getElementById(id); }
 
   function setText(id, value) {
     var el = $(id);
@@ -149,135 +111,134 @@
   }
 
   function detectLanguage() {
-    var saved = localStorage.getItem(LANG_STORAGE_KEY);
-    if (saved && translations[saved]) return saved;
-    var browserLang = (navigator.language || 'es').toLowerCase();
-    if (browserLang.indexOf('pt') === 0) return 'pt';
-    if (browserLang.indexOf('en') === 0) return 'en';
+    var stored = localStorage.getItem(LANG_STORAGE_KEY);
+    if (stored && T[stored]) return stored;
+    var nav = (navigator.language || 'es').toLowerCase();
+    if (nav.indexOf('pt') === 0) return 'pt';
+    if (nav.indexOf('en') === 0) return 'en';
     return 'es';
   }
 
-  function renderDestCards(containerId, items) {
-    var container = $(containerId);
-    if (!container || !items) return;
-
-    container.innerHTML = items.map(function (item) {
-      var spotsHtml = item.spots.map(function (spot) {
-        return '<li class="dest-card-spot">' + spot + '</li>';
-      }).join('');
-      return (
-        '<article class="dest-card">' +
-          '<img src="' + item.image + '" alt="" class="dest-card-image" loading="lazy">' +
-          '<div class="dest-card-body">' +
-            '<h3 class="dest-card-title">' + item.name + '</h3>' +
-            '<ul class="dest-card-spots">' + spotsHtml + '</ul>' +
-          '</div>' +
-        '</article>'
-      );
-    }).join('');
+  function setChipText(chip, label) {
+    var svg = chip.querySelector('svg');
+    chip.textContent = '';
+    if (svg) chip.appendChild(svg);
+    chip.appendChild(document.createTextNode(label));
   }
 
-  function renderVehicleBadges(items) {
-    var container = $('vehicle-badges');
-    if (!container || !items) return;
+  function applyLang(lang) {
+    if (!T[lang]) return;
+    var t = T[lang];
+    document.documentElement.lang = lang;
+    localStorage.setItem(LANG_STORAGE_KEY, lang);
 
-    container.innerHTML = items.map(function (item) {
-      return (
-        '<span class="vehicle-chip">' +
-          '<span class="vehicle-chip-icon" aria-hidden="true">' + item.icon + '</span>' +
-          '<span class="vehicle-chip-label">' + item.label + '</span>' +
-        '</span>'
-      );
-    }).join('');
-  }
+    setText('header-subtitle', t.role);
+    setText('hero-title', t.heroTitle);
+    setText('hero-lead', t.heroLead);
+    setText('update-gate-title', t.updateTitle);
+    setText('update-gate-text', t.updateText);
+    setText('update-gate-btn', t.updateAction);
 
-  function renderTranslations(lang) {
-    var t = translations[lang];
+    document.querySelectorAll('.header-nav [data-open-screen]').forEach(function (btn) {
+      var id = btn.getAttribute('data-open-screen');
+      if (id === 'paseos') btn.textContent = t.navPaseos;
+      if (id === 'traslados') btn.textContent = t.navTraslados;
+      if (id === 'contacto') btn.textContent = t.navContacto;
+    });
 
-    setText('brand-name', t.brandName);
-    setText('header-subtitle', t.headerRole);
-    renderVehicleBadges(t.vehicleBadges);
-    setText('hub-traslados-label', t.hubTraslados);
-    setText('hub-paseos-label', t.hubPaseos);
-    setText('hub-contacto-label', t.hubContacto);
-    setText('back-traslados-label', t.backLabel);
-    setText('back-paseos-label', t.backLabel);
-    setText('back-contacto-label', t.backLabel);
-    setText('traslados-title', t.trasladosTitle);
-    setText('paseos-title', t.paseosTitle);
-    setText('paseos-intro', t.paseosIntro);
-    setText('contacto-title', t.contactoTitle);
-    setText('driver-name', t.driverName);
-    setText('driver-role', t.driverRole);
-    setText('contact-coverage', t.contactCoverage);
-    setText('contact-vehicle', t.contactVehicle);
-    setText('qr-label', t.qrLabel);
-    setText('qr-action-btn', t.qrAction);
-    setText('vehicle-qr-phone', t.phoneNumber);
-    setText('update-gate-title', t.updateGateTitle);
-    setText('update-gate-text', t.updateGateText);
-    setText('update-gate-btn', t.updateGateAction);
+    document.querySelectorAll('.chip-row .chip').forEach(function (chip, i) {
+      if (t.chips[i]) setChipText(chip, t.chips[i]);
+    });
 
-    renderDestCards('traslados-cards', t.trasladosItems);
-    renderDestCards('paseos-cards', t.paseosItems);
+    var hubs = {
+      paseos: [t.hubPaseosTitle, t.hubPaseosDesc],
+      traslados: [t.hubTrasladosTitle, t.hubTrasladosDesc],
+      contacto: [t.hubContactoTitle, t.hubContactoDesc]
+    };
+    Object.keys(hubs).forEach(function (key) {
+      var copy = document.querySelector('.hub-btn[data-open-screen="' + key + '"] .hub-copy');
+      if (!copy) return;
+      var strong = copy.querySelector('strong');
+      var span = copy.querySelector('span');
+      if (strong) strong.textContent = hubs[key][0];
+      if (span) span.textContent = hubs[key][1];
+    });
+
+    var titles = { paseos: t.titlePaseos, traslados: t.titleTraslados, contacto: t.titleContacto };
+    Object.keys(titles).forEach(function (key) {
+      var screen = document.querySelector('[data-screen="' + key + '"]');
+      if (!screen) return;
+      screen.setAttribute('aria-label', titles[key]);
+      var bar = screen.querySelector(':scope > .screen-bar .screen-bar-title');
+      if (bar) bar.textContent = titles[key];
+      /* Keep exported section headlines (e.g. "Paseos y experiencias"); only sync Contacto h2. */
+      if (key === 'contacto') {
+        var headTitle = screen.querySelector('.section-title');
+        if (headTitle) headTitle.textContent = titles[key];
+      }
+    });
+
+    document.querySelectorAll('.screen-back[data-close-screen]').forEach(function (btn) {
+      var svg = btn.querySelector('svg');
+      btn.textContent = '';
+      if (svg) btn.appendChild(svg);
+      btn.appendChild(document.createTextNode(t.backHome));
+    });
+
+    var contact = document.querySelector('[data-screen="contacto"]');
+    if (contact) {
+      var kicker = contact.querySelector('.section-kicker');
+      var intro = contact.querySelector('.section-intro');
+      var role = contact.querySelector('.profile p');
+      var lis = contact.querySelectorAll('.info-list li');
+      var qrP = contact.querySelector('.qr-block > p:not(.phone)');
+      var waBtn = contact.querySelector('.btn-wa-lg');
+      var note = contact.querySelector('.note');
+      if (kicker) kicker.textContent = t.contactKicker;
+      if (intro) intro.textContent = t.contactIntro;
+      if (role) role.textContent = t.driverRole;
+      if (lis[0]) {
+        var s0 = lis[0].querySelector('svg');
+        lis[0].textContent = '';
+        if (s0) lis[0].appendChild(s0);
+        lis[0].appendChild(document.createTextNode(t.contactCoverage));
+      }
+      if (lis[1]) {
+        var s1 = lis[1].querySelector('svg');
+        lis[1].textContent = '';
+        if (s1) lis[1].appendChild(s1);
+        lis[1].appendChild(document.createTextNode(t.contactVehicle));
+      }
+      if (qrP) qrP.textContent = t.qrLabel;
+      if (waBtn) {
+        var wsvg = waBtn.querySelector('svg');
+        waBtn.textContent = '';
+        if (wsvg) waBtn.appendChild(wsvg);
+        waBtn.appendChild(document.createTextNode(t.qrAction));
+      }
+      if (note) note.textContent = t.contactNote;
+    }
+
+    var footer = document.querySelector('footer .shell');
+    if (footer) footer.textContent = t.footer;
 
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
-      btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));
+      btn.setAttribute('aria-pressed', String(btn.getAttribute('data-lang') === lang));
     });
-  }
-
-  function setLanguage(lang) {
-    if (!translations[lang]) return;
-    activeLang = lang;
-    localStorage.setItem(LANG_STORAGE_KEY, lang);
-    document.documentElement.lang = lang;
-    renderTranslations(lang);
-  }
-
-  function showView(name) {
-    if (!name) name = 'home';
-    currentView = name;
-
-    document.querySelectorAll('.app-view').forEach(function (view) {
-      var isActive = view.id === 'view-' + name;
-      view.classList.toggle('app-view-active', isActive);
-      view.hidden = !isActive;
-    });
-
-    if (name === 'home') {
-      startVehicleRotation();
-    } else {
-      stopVehicleRotation();
-    }
-  }
-
-  function startVehicleRotation() {
-    stopVehicleRotation();
-    vehicleRotateTimer = setInterval(function () {
-      currentVehicleView = (currentVehicleView + 1) % 3;
-      document.querySelectorAll('.vehicle-view').forEach(function (view, i) {
-        view.classList.toggle('active', i === currentVehicleView);
-      });
-    }, VEHICLE_ROTATE_MS);
-  }
-
-  function stopVehicleRotation() {
-    clearInterval(vehicleRotateTimer);
-    vehicleRotateTimer = null;
   }
 
   function clearCachesAndReload() {
+    var done = function () {
+      localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
+      window.location.reload();
+    };
     if ('caches' in window) {
       caches.keys().then(function (keys) {
         return Promise.all(keys.map(function (key) { return caches.delete(key); }));
-      }).then(function () {
-        localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
-        window.location.reload();
-      });
+      }).then(done);
       return;
     }
-    localStorage.setItem(VERSION_STORAGE_KEY, APP_VERSION);
-    window.location.reload();
+    done();
   }
 
   function checkAppVersion() {
@@ -349,26 +310,238 @@
     }
   }
 
-  function bindEvents() {
-    document.querySelectorAll('[data-view]').forEach(function (el) {
-      el.addEventListener('click', function () {
-        showView(el.dataset.view);
-      });
-    });
+  function initUi() {
 
-    document.querySelectorAll('.lang-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        setLanguage(btn.dataset.lang);
-      });
-    });
+          var imgs = Array.prototype.slice.call(document.querySelectorAll("#vehicle-rotator img"));
+          var dots = Array.prototype.slice.call(document.querySelectorAll(".vehicle-dot"));
+          var idx = 0;
+          var timer = null;
+          var ROTATE_MS = 7000;
+
+          function show(i) {
+            idx = (i + imgs.length) % imgs.length;
+            imgs.forEach(function (img, n) {
+              img.classList.toggle("is-active", n === idx);
+            });
+            dots.forEach(function (dot, n) {
+              var on = n === idx;
+              dot.classList.toggle("is-active", on);
+              dot.setAttribute("aria-selected", on ? "true" : "false");
+            });
+          }
+
+          function start() {
+            stop();
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+            timer = window.setInterval(function () { show(idx + 1); }, ROTATE_MS);
+          }
+
+          function stop() {
+            if (timer) window.clearInterval(timer);
+            timer = null;
+          }
+
+          dots.forEach(function (dot) {
+            dot.addEventListener("click", function () {
+              show(Number(dot.getAttribute("data-index")) || 0);
+              start();
+            });
+          });
+
+          var stage = document.querySelector(".vehicle-stage");
+          if (stage) {
+            stage.addEventListener("mouseenter", stop);
+            stage.addEventListener("mouseleave", start);
+            stage.addEventListener("focusin", stop);
+            stage.addEventListener("focusout", start);
+          }
+
+          show(0);
+          start();
+
+          /* Full-screen panels: only one visible at a time */
+          var screens = Array.prototype.slice.call(document.querySelectorAll("[data-screen]"));
+          var openers = Array.prototype.slice.call(document.querySelectorAll("[data-open-screen]"));
+          var closers = Array.prototype.slice.call(document.querySelectorAll("[data-close-screen]"));
+          var activeScreen = null;
+
+          var homeRoot = document.querySelector("main.home");
+          var siteHeader = document.querySelector(".site-header");
+          var siteFooter = document.querySelector("footer");
+
+          function setHomeInert(on) {
+            [homeRoot, siteHeader, siteFooter].forEach(function (el) {
+              if (!el) return;
+              if (on) el.setAttribute("inert", "");
+              else el.removeAttribute("inert");
+              el.setAttribute("aria-hidden", on ? "true" : "false");
+            });
+          }
+
+          function closeScreen() {
+            screens.forEach(function (el) {
+              el.classList.remove("is-open");
+              el.setAttribute("aria-hidden", "true");
+              el.setAttribute("inert", "");
+              el.hidden = true;
+              el.removeAttribute("aria-modal");
+            });
+            document.body.classList.remove("screen-open");
+            setHomeInert(false);
+            activeScreen = null;
+            if (location.hash && /^#(paseos|traslados|contacto)$/.test(location.hash)) {
+              history.replaceState(null, "", location.pathname + location.search);
+            }
+            start();
+          }
+
+          function openScreen(id) {
+            var target = document.querySelector('[data-screen="' + id + '"]');
+            if (!target) return;
+            /* Close every screen first — no mixed content, no double-open */
+            screens.forEach(function (el) {
+              el.classList.remove("is-open");
+              el.setAttribute("aria-hidden", "true");
+              el.setAttribute("inert", "");
+              el.hidden = true;
+              el.removeAttribute("aria-modal");
+            });
+            target.hidden = false;
+            target.removeAttribute("inert");
+            target.classList.add("is-open");
+            target.setAttribute("aria-hidden", "false");
+            target.setAttribute("aria-modal", "true");
+            document.body.classList.add("screen-open");
+            setHomeInert(true);
+            activeScreen = id;
+            stop();
+            var body = target.querySelector(".screen-body");
+            if (body) body.scrollTop = 0;
+            var back = target.querySelector("[data-close-screen]");
+            if (back) back.focus();
+            if (location.hash !== "#" + id) {
+              history.replaceState(null, "", "#" + id);
+            }
+          }
+
+          openers.forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              openScreen(btn.getAttribute("data-open-screen"));
+            });
+          });
+
+          closers.forEach(function (btn) {
+            btn.addEventListener("click", closeScreen);
+          });
+
+          /* Nested paseo details inside Paseos screen */
+          var paseoDetails = Array.prototype.slice.call(document.querySelectorAll("[data-paseo]"));
+          var paseoOpeners = Array.prototype.slice.call(document.querySelectorAll("[data-open-paseo]"));
+          var paseoClosers = Array.prototype.slice.call(document.querySelectorAll("[data-close-paseo]"));
+          var paseosMain = document.querySelector(".screen-paseos-main");
+          var paseosOuterBar = document.querySelector("#screen-paseos > .screen-bar");
+          var activePaseo = null;
+
+          function closePaseoDetail() {
+            paseoDetails.forEach(function (el) {
+              el.classList.remove("is-open");
+              el.setAttribute("aria-hidden", "true");
+              el.setAttribute("inert", "");
+              el.hidden = true;
+            });
+            if (paseosMain) {
+              paseosMain.removeAttribute("aria-hidden");
+              paseosMain.removeAttribute("inert");
+            }
+            if (paseosOuterBar) {
+              paseosOuterBar.removeAttribute("aria-hidden");
+              paseosOuterBar.removeAttribute("inert");
+              paseosOuterBar.hidden = false;
+            }
+            activePaseo = null;
+          }
+
+          function openPaseoDetail(id) {
+            var target = document.querySelector('[data-paseo="' + id + '"]');
+            if (!target) return;
+            if (activeScreen !== "paseos") openScreen("paseos");
+            paseoDetails.forEach(function (el) {
+              el.classList.remove("is-open");
+              el.setAttribute("aria-hidden", "true");
+              el.setAttribute("inert", "");
+              el.hidden = true;
+            });
+            if (paseosMain) {
+              paseosMain.setAttribute("aria-hidden", "true");
+              paseosMain.setAttribute("inert", "");
+            }
+            if (paseosOuterBar) {
+              paseosOuterBar.setAttribute("aria-hidden", "true");
+              paseosOuterBar.setAttribute("inert", "");
+              paseosOuterBar.hidden = true;
+            }
+            target.hidden = false;
+            target.removeAttribute("inert");
+            target.classList.add("is-open");
+            target.setAttribute("aria-hidden", "false");
+            activePaseo = id;
+            var body = target.querySelector(".screen-body");
+            if (body) body.scrollTop = 0;
+            var back = target.querySelector("[data-close-paseo]");
+            if (back) back.focus();
+          }
+
+          paseoOpeners.forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              openPaseoDetail(btn.getAttribute("data-open-paseo"));
+            });
+          });
+
+          paseoClosers.forEach(function (btn) {
+            btn.addEventListener("click", closePaseoDetail);
+          });
+
+          var _openScreen = openScreen;
+          openScreen = function (id) {
+            closePaseoDetail();
+            _openScreen(id);
+          };
+
+          var _closeScreen = closeScreen;
+          closeScreen = function () {
+            closePaseoDetail();
+            _closeScreen();
+          };
+
+          document.addEventListener("keydown", function (e) {
+            if (e.key !== "Escape") return;
+            if (activePaseo) {
+              closePaseoDetail();
+              var backHome = document.querySelector("#screen-paseos > .screen-bar [data-close-screen]");
+              if (backHome) backHome.focus();
+              return;
+            }
+            if (activeScreen) closeScreen();
+          });
+
+          function syncFromHash() {
+            var id = (location.hash || "").replace(/^#/, "");
+            if (id === "paseos" || id === "traslados" || id === "contacto") openScreen(id);
+            else if (activeScreen) closeScreen();
+          }
+
+          window.addEventListener("hashchange", syncFromHash);
+          syncFromHash();
+    
   }
 
-  function init() {
-    setLanguage(detectLanguage());
-    showView('home');
-    bindEvents();
-    setupPwa();
-  }
+  document.querySelectorAll('.lang-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      applyLang(btn.getAttribute('data-lang'));
+    });
+  });
 
-  init();
+  applyLang(detectLanguage());
+  initUi();
+  setupPwa();
 })();

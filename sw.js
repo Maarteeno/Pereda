@@ -1,4 +1,4 @@
-var APP_VERSION = 'v42';
+var APP_VERSION = 'v43';
 var CACHE_NAME = 'pereda-tablet-' + APP_VERSION;
 var ASSETS = [
   './',
@@ -20,6 +20,19 @@ var ASSETS = [
   './assets/paseos/eventos-ai.png',
   './assets/paseos/costa-ai.png',
   './assets/paseos/bodegas-ai.png',
+  './assets/paseos/detalle/costa-pde-hoteles.png',
+  './assets/paseos/detalle/costa-barra.png',
+  './assets/paseos/detalle/costa-jose-ignacio.png',
+  './assets/paseos/detalle/mvd-centenario.png',
+  './assets/paseos/detalle/mvd-rambla.png',
+  './assets/paseos/detalle/mvd-rodo.png',
+  './assets/paseos/detalle/mvd-mercado.png',
+  './assets/paseos/detalle/evt-boda.png',
+  './assets/paseos/detalle/evt-salon.png',
+  './assets/paseos/detalle/evt-congreso.png',
+  './assets/paseos/detalle/bodega-juanico.png',
+  './assets/paseos/detalle/bodega-garzon.png',
+  './assets/paseos/detalle/bodega-carmelo.png',
   './icons/icon-192.png',
   './icons/icon-512.png',
   'https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap'
