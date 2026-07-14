@@ -3,9 +3,9 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v63';
+  var APP_VERSION = 'v64';
   var WA_NUMBER = '59899774019';
-  var QR_DEST = 72;
+  var QR_DEST = 36;
   var QR_CONTACT = 148;
   var QR_DARK = '#25d366';
   var QR_LIGHT = '#0a0a0a';
@@ -138,9 +138,8 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'Quiero ir',
-      scanQuote: 'Escaneá y escribinos',
+      scanQuote: 'Escaneá para cotizar',
       waWantGo: 'Hola {name}, quiero ir a {place}. ¿Me cotizás un traslado?',
-      waWantGoQr: 'Hola {name}, quiero ir a {place}',
       authBoot: 'Cargando…',
       switchDriver: 'Cambiar PIN',
       pinBrand: 'Bienvenido Conductor',
@@ -299,9 +298,8 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'I want to go',
-      scanQuote: 'Scan and message us',
+      scanQuote: 'Scan to get a quote',
       waWantGo: 'Hi {name}, I want to go to {place}. Could you quote a transfer?',
-      waWantGoQr: 'Hi {name}, I want to go to {place}',
       authBoot: 'Loading…',
       switchDriver: 'Change PIN',
       pinBrand: 'Welcome, Driver',
@@ -460,9 +458,8 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'Quero ir',
-      scanQuote: 'Escaneie e escreva',
+      scanQuote: 'Escaneie para cotar',
       waWantGo: 'Olá {name}, quero ir a {place}. Pode cotar um transfer?',
-      waWantGoQr: 'Olá {name}, quero ir a {place}',
       authBoot: 'Carregando…',
       switchDriver: 'Trocar PIN',
       pinBrand: 'Bem-vindo, Motorista',
@@ -560,9 +557,12 @@
     return 'Adrián';
   }
 
-  function driverWaUrl() {
+  function driverWaUrl(text) {
     /* wa.me requires country code digits without '+' (e.g. 59899…). */
-    return 'https://wa.me/' + activePhone();
+    var base = 'https://wa.me/' + activePhone();
+    var msg = String(text || '').trim();
+    if (!msg) return base;
+    return base + '?text=' + encodeURIComponent(msg);
   }
 
   function drawCleanQr(container, text, size) {
@@ -617,10 +617,19 @@
     if (holder.parentNode) holder.parentNode.removeChild(holder);
   }
 
-  function updateDestQrs() {
-    var url = driverWaUrl();
-    document.querySelectorAll('.dest-qr .dest-qr-canvas').forEach(function (canvasHost) {
+  function updateDestQrs(lang) {
+    var t = T[lang || activeLang] || T.es;
+    var name = activeDriverName();
+    document.querySelectorAll('.dest-qr[data-dest]').forEach(function (wrap) {
+      var key = wrap.getAttribute('data-dest');
+      var place = (DEST_NAMES[key] && DEST_NAMES[key][lang || activeLang]) || key;
+      var msg = (t.waWantGo || '')
+        .replace('{place}', place)
+        .replace('{name}', name);
+      var url = driverWaUrl(msg);
+      var canvasHost = wrap.querySelector('.dest-qr-canvas');
       drawCleanQr(canvasHost, url, QR_DEST);
+      wrap.setAttribute('title', place);
     });
   }
 
