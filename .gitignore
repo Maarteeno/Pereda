@@ -12,6 +12,9 @@ desktop.ini
 .cursor/
 *.plan.md
 
+# Firebase
+.firebase/
+
 # Optional legacy JPG duplicates (PNG used in app)
 assets/bestune-front.jpg
 assets/bestune-side.jpg
