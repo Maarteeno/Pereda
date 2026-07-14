@@ -1070,36 +1070,37 @@ body.update-blocked { overflow: hidden; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.35rem;
+  gap: 0.3rem;
   margin-top: 0.45rem;
 }
 .dest-qr-canvas {
-  width: 128px;
-  height: 128px;
-  padding: 10px;
+  width: 72px;
+  height: 72px;
+  padding: 8px;
   border-radius: 12px;
   background: #fff;
-  border: 1px solid var(--border);
+  border: 2px solid var(--whatsapp);
   box-sizing: content-box;
   line-height: 0;
   overflow: hidden;
+  box-shadow: 0 0 0 3px oklch(0.72 0.14 145 / 0.18);
 }
 .dest-qr-canvas canvas {
   display: block;
-  width: 128px;
-  height: 128px;
+  width: 72px;
+  height: 72px;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
 .dest-qr-label {
   margin: 0;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--whatsapp);
   letter-spacing: 0.01em;
 }
 .dest-card .dest-qr {
-  margin-top: 0.55rem;
+  margin-top: 0.5rem;
 }
 .contact-qr-canvas {
   display: block;
@@ -1108,10 +1109,11 @@ body.update-blocked { overflow: hidden; }
   padding: 12px;
   border-radius: 14px;
   background: #fff;
-  border: 1px solid var(--border);
+  border: 3px solid var(--whatsapp);
   box-sizing: content-box;
   line-height: 0;
   overflow: hidden;
+  box-shadow: 0 0 0 4px oklch(0.72 0.14 145 / 0.2);
 }
 .contact-qr-canvas canvas {
   display: block;
@@ -1133,6 +1135,19 @@ body.update-blocked { overflow: hidden; }
     var(--bg);
 }
 .pin-gate[hidden] { display: none !important; }
+body.auth-resolving .pin-gate-card .auth-view:not([data-auth-view="boot"]) {
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.auth-boot-text {
+  margin: 0.85rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
 .pin-gate-card {
   position: relative;
   width: min(420px, 100%);

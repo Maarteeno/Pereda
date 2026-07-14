@@ -3,10 +3,12 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v61';
+  var APP_VERSION = 'v62';
   var WA_NUMBER = '59899774019';
-  var QR_DEST = 128;
+  var QR_DEST = 72;
   var QR_CONTACT = 148;
+  var QR_DARK = '#25d366';
+  var QR_LIGHT = '#ffffff';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
   var activeLang = 'es';
@@ -136,9 +138,10 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'Quiero ir',
-      scanQuote: 'Escaneá para cotizar',
+      scanQuote: 'Escaneá y escribinos',
       waWantGo: 'Hola {name}, quiero ir a {place}. ¿Me cotizás un traslado?',
       waWantGoQr: 'Hola {name}, quiero ir a {place}',
+      authBoot: 'Cargando…',
       switchDriver: 'Cambiar PIN',
       pinBrand: 'Bienvenido Conductor',
       pinTitle: 'Ingresá tu PIN',
@@ -296,9 +299,10 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'I want to go',
-      scanQuote: 'Scan to get a quote',
+      scanQuote: 'Scan and message us',
       waWantGo: 'Hi {name}, I want to go to {place}. Could you quote a transfer?',
       waWantGoQr: 'Hi {name}, I want to go to {place}',
+      authBoot: 'Loading…',
       switchDriver: 'Change PIN',
       pinBrand: 'Welcome, Driver',
       pinTitle: 'Enter your PIN',
@@ -456,9 +460,10 @@
       destMvdS2: 'Rambla',
       destMvdS3: 'Mercado del Puerto',
       wantGo: 'Quero ir',
-      scanQuote: 'Escaneie para cotar',
+      scanQuote: 'Escaneie e escreva',
       waWantGo: 'Olá {name}, quero ir a {place}. Pode cotar um transfer?',
       waWantGoQr: 'Olá {name}, quero ir a {place}',
+      authBoot: 'Carregando…',
       switchDriver: 'Trocar PIN',
       pinBrand: 'Bem-vindo, Motorista',
       pinTitle: 'Digite seu PIN',
@@ -556,11 +561,8 @@
     }
   }
 
-  function waUrl(text) {
-    var phone = activePhone();
-    var msg = asciiFold(text || '');
-    if (!msg) return 'https://wa.me/' + phone;
-    return 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg);
+  function driverWaUrl() {
+    return 'https://wa.me/' + activePhone();
   }
 
   function drawCleanQr(container, text, size) {
@@ -589,10 +591,10 @@
       canvas.height = size;
       canvas.setAttribute('aria-hidden', 'true');
       var ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = QR_LIGHT;
       ctx.fillRect(0, 0, size, size);
       var cell = size / n;
-      ctx.fillStyle = '#000000';
+      ctx.fillStyle = QR_DARK;
       var r;
       var c;
       for (r = 0; r < n; r += 1) {
@@ -615,37 +617,26 @@
     if (holder.parentNode) holder.parentNode.removeChild(holder);
   }
 
-  function updateDestQrs(lang) {
-    var t = T[lang] || T.es;
-    var name = asciiFold(activeDriverName());
-    document.querySelectorAll('.dest-qr[data-dest]').forEach(function (wrap) {
-      var key = wrap.getAttribute('data-dest');
-      var place = asciiFold((DEST_NAMES[key] && DEST_NAMES[key][lang]) || key);
-      var tpl = t.waWantGoQr || t.waWantGo || '';
-      var msg = asciiFold(
-        tpl.replace('{place}', place).replace('{name}', name)
-      );
-      var url = waUrl(msg);
-      var canvasHost = wrap.querySelector('.dest-qr-canvas');
+  function updateDestQrs() {
+    var url = driverWaUrl();
+    document.querySelectorAll('.dest-qr .dest-qr-canvas').forEach(function (canvasHost) {
       drawCleanQr(canvasHost, url, QR_DEST);
-      wrap.setAttribute('title', place);
     });
   }
 
   function updateContactQr() {
     var host = document.getElementById('contact-wa-qr-canvas');
-    drawCleanQr(host, 'https://wa.me/' + activePhone(), QR_CONTACT);
+    drawCleanQr(host, driverWaUrl(), QR_CONTACT);
   }
 
   function applyDriverLinks(driver) {
-    var phone = driver && driver.phone ? String(driver.phone).replace(/\D/g, '') : WA_NUMBER;
-    var base = 'https://wa.me/' + phone;
+    var base = driverWaUrl();
     var contactQr = document.getElementById('contact-wa-qr');
     var contactBtn = document.getElementById('contact-wa-btn');
     if (contactQr) contactQr.href = base;
     if (contactBtn) contactBtn.href = base;
     updateContactQr();
-    updateDestQrs(activeLang);
+    updateDestQrs();
     var t = T[activeLang] || T.es;
     if (t.waAria) {
       document.querySelectorAll('[data-i18n-aria="waAria"]').forEach(function (el) {

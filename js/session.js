@@ -15,7 +15,7 @@
   var adminListSeq = 0;
   var adminReqSeq = 0;
   var adminView = 'drivers';
-  var authView = 'google';
+  var authView = 'boot';
   var routeReady = null;
 
   function $(id) { return document.getElementById(id); }
@@ -181,7 +181,7 @@
   }
 
   function setAuthView(view) {
-    authView = view || 'google';
+    authView = view || 'boot';
     document.querySelectorAll('[data-auth-view]').forEach(function (el) {
       el.hidden = el.getAttribute('data-auth-view') !== authView;
     });
@@ -406,6 +406,8 @@
   }
 
   function routeSignedInUser(user) {
+    document.body.classList.remove('auth-resolving');
+
     if (isAdminUser(user)) {
       setSession(null);
       showPinGate(false);
@@ -416,6 +418,18 @@
 
     return loadAccount(user.uid).then(function (account) {
       showAdmin(false);
+
+      if (account && account.status === 'active' && subscriptionAllowsAccess(account) && !account.pinRevealOnce) {
+        var existing = getSession();
+        if (existing && existing.uid === user.uid && existing.phone) {
+          currentDriver = existing;
+          showPinGate(false);
+          applyDriverToUi(existing);
+          routeReady();
+          return;
+        }
+      }
+
       showPinGate(true);
 
       if (!account) {
@@ -459,15 +473,6 @@
           return;
         }
 
-        var existing = getSession();
-        if (existing && existing.uid === user.uid && existing.phone) {
-          currentDriver = existing;
-          showPinGate(false);
-          applyDriverToUi(existing);
-          routeReady();
-          return;
-        }
-
         setAuthView('pin');
         routeReady();
         return;
@@ -477,6 +482,7 @@
       routeReady();
     }).catch(function (e) {
       console.error(e);
+      document.body.classList.remove('auth-resolving');
       showPinGate(true);
       setAuthView('google');
       setGateError('Error al cargar tu cuenta');
@@ -1283,10 +1289,13 @@
       if (onReady) onReady(getDriver());
     };
 
+    document.body.classList.add('auth-resolving');
+
     try {
       initFirebase();
     } catch (e) {
       console.error(e);
+      document.body.classList.remove('auth-resolving');
       showPinGate(true);
       setAuthView('google');
       setGateError('Firebase no cargó');
@@ -1295,7 +1304,7 @@
     }
     bindUi();
     showPinGate(true);
-    setAuthView('google');
+    setAuthView('boot');
 
     auth.getRedirectResult().catch(function (e) {
       console.error(e);
@@ -1303,10 +1312,10 @@
 
     auth.onAuthStateChanged(function (user) {
       if (!user) {
+        document.body.classList.remove('auth-resolving');
         showAdmin(false);
         var existing = getSession();
         if (existing && existing.phone) {
-          /* Session requires Google on next open */
           setSession(null);
         }
         showPinGate(true);
