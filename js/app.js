@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v49';
+  var APP_VERSION = 'v50';
   var WA_NUMBER = '59899774019';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
@@ -127,6 +127,8 @@
       adminTitle: 'Administración',
       adminIntro: 'Creá y editá PINs, nombres y teléfonos de conductores.',
       adminExit: 'Salir',
+      adminNavDrivers: 'Generar conductor',
+      adminNavLogs: 'Ver logs',
       adminPinLabel: 'PIN',
       adminNameLabel: 'Nombre',
       adminPhoneLabel: 'Teléfono (con código país)',
@@ -259,6 +261,8 @@
       adminTitle: 'Administration',
       adminIntro: 'Create and edit driver PINs, names and phone numbers.',
       adminExit: 'Exit',
+      adminNavDrivers: 'Create driver',
+      adminNavLogs: 'View logs',
       adminPinLabel: 'PIN',
       adminNameLabel: 'Name',
       adminPhoneLabel: 'Phone (with country code)',
@@ -391,6 +395,8 @@
       adminTitle: 'Administração',
       adminIntro: 'Crie e edite PINs, nomes e telefones dos motoristas.',
       adminExit: 'Sair',
+      adminNavDrivers: 'Gerar motorista',
+      adminNavLogs: 'Ver logs',
       adminPinLabel: 'PIN',
       adminNameLabel: 'Nome',
       adminPhoneLabel: 'Telefone (com código do país)',
