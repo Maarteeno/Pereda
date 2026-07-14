@@ -1046,17 +1046,7 @@ body.update-blocked { overflow: hidden; }
 .dest-go:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .gallery-item .dest-go { align-self: flex-start; margin-top: 0; }
 
-.btn-switch-driver {
-  min-height: 40px;
-  padding: 0.45rem 0.85rem;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: oklch(1 0 0 / 0.04);
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-.btn-switch-driver:hover { color: var(--fg); border-color: oklch(0.72 0.06 150 / 0.35); }
+.btn-switch-driver { display: none !important; }
 
 .pin-gate {
   position: fixed; inset: 0; z-index: 200;
@@ -1068,6 +1058,7 @@ body.update-blocked { overflow: hidden; }
 }
 .pin-gate[hidden] { display: none !important; }
 .pin-gate-card {
+  position: relative;
   width: min(420px, 100%);
   padding: 1.75rem 1.4rem 1.5rem;
   border-radius: var(--radius);
@@ -1075,12 +1066,13 @@ body.update-blocked { overflow: hidden; }
   background: var(--panel);
   box-shadow: var(--shadow-soft);
   text-align: center;
+  overflow: hidden;
 }
 .pin-gate-brand {
   margin: 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
   color: var(--muted);
 }
 .pin-gate-title {
@@ -1089,8 +1081,17 @@ body.update-blocked { overflow: hidden; }
   font-size: 1.45rem;
   font-weight: 800;
 }
-.pin-gate-text { margin: 0.55rem 0 0; color: var(--muted); font-size: 0.92rem; line-height: 1.45; }
+.pin-gate-text { display: none; }
 .pin-form { display: grid; gap: 0.75rem; margin-top: 1.25rem; }
+.pin-honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  top: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 .pin-input {
   width: 100%;
   min-height: 52px;
@@ -1102,6 +1103,8 @@ body.update-blocked { overflow: hidden; }
   letter-spacing: 0.35em;
   text-align: center;
   font-weight: 700;
+  -webkit-text-security: disc;
+}
 }
 .pin-input:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
 .pin-submit {

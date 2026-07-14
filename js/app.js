@@ -3,7 +3,7 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v46';
+  var APP_VERSION = 'v47';
   var WA_NUMBER = '59899774019';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
@@ -120,8 +120,8 @@
       wantGo: 'Quiero ir',
       waWantGo: 'Hola {name}, quiero ir a {place}. ¿Me cotizás un traslado?',
       switchDriver: 'Cambiar PIN',
+      pinBrand: 'Bienvenido conductor',
       pinTitle: 'Ingresá tu PIN',
-      pinText: 'Cada conductor tiene su PIN para ver su nombre y WhatsApp.',
       pinSubmit: 'Entrar',
       pinError: 'PIN incorrecto',
       adminTitle: 'Administración',
@@ -243,8 +243,8 @@
       wantGo: 'I want to go',
       waWantGo: 'Hi {name}, I want to go to {place}. Could you quote a transfer?',
       switchDriver: 'Change PIN',
+      pinBrand: 'Welcome, driver',
       pinTitle: 'Enter your PIN',
-      pinText: 'Each driver has a PIN to show their name and WhatsApp.',
       pinSubmit: 'Enter',
       pinError: 'Incorrect PIN',
       adminTitle: 'Administration',
@@ -366,8 +366,8 @@
       wantGo: 'Quero ir',
       waWantGo: 'Olá {name}, quero ir a {place}. Pode cotar um transfer?',
       switchDriver: 'Trocar PIN',
+      pinBrand: 'Bem-vindo, motorista',
       pinTitle: 'Digite seu PIN',
-      pinText: 'Cada motorista tem um PIN para ver nome e WhatsApp.',
       pinSubmit: 'Entrar',
       pinError: 'PIN incorreto',
       adminTitle: 'Administração',

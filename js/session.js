@@ -97,8 +97,6 @@
     document.querySelectorAll('[data-driver-phone]').forEach(function (el) {
       el.textContent = formatPhoneDisplay(driver.phone);
     });
-    var switchBtn = $('btn-switch-driver');
-    if (switchBtn) switchBtn.hidden = false;
     if (typeof global.PeredaApplyDriverLinks === 'function') {
       global.PeredaApplyDriverLinks(driver);
     }
@@ -116,8 +114,6 @@
     editingPin = null;
     showAdmin(false);
     showPinGate(true);
-    var switchBtn = $('btn-switch-driver');
-    if (switchBtn) switchBtn.hidden = true;
   }
 
   function configRef() {
@@ -319,8 +315,6 @@
     }
     var exit = $('admin-exit');
     if (exit) exit.addEventListener('click', clearSessionAndLock);
-    var switchBtn = $('btn-switch-driver');
-    if (switchBtn) switchBtn.addEventListener('click', clearSessionAndLock);
     var clear = $('admin-clear');
     if (clear) {
       clear.addEventListener('click', function () {
