@@ -7,9 +7,9 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Pereda Traslados">
+  <meta name="apple-mobile-web-app-title" content="App Traslados">
   <meta name="description" content="Adrián Pereda - Conductor profesional. Traslados y paseos en Bestune NAT 100% eléctrico. Montevideo y La Costa.">
-  <title>Adrián Pereda - Traslados</title>
+  <title>App Traslados</title>
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -514,25 +514,40 @@
     <div class="shell" data-i18n="footer">Adrián Pereda — Traslados · Bestune NAT eléctrico · Montevideo, Uruguay</div>
   </footer>
 
-  <div class="pin-gate" id="pin-gate" role="dialog" aria-modal="true" aria-labelledby="pin-gate-title">
+  <div class="pin-gate" id="pin-gate" role="dialog" aria-modal="true" aria-labelledby="pin-gate-brand">
     <div class="pin-gate-card">
-      <p class="pin-gate-brand" data-i18n="pinBrand">Bienvenido conductor</p>
+      <p class="pin-gate-brand" id="pin-gate-brand" data-i18n="pinBrand">Bienvenido Conductor</p>
 
       <div class="auth-view" data-auth-view="google">
-        <h2 class="pin-gate-title" id="pin-gate-title" data-i18n="authGoogleTitle">Ingresá con Google</h2>
-        <p class="auth-view-text" data-i18n="authGoogleText">Usá tu cuenta Google. Después configuramos tu PIN de conductor.</p>
-        <button type="button" class="pin-submit" id="google-sign-in" data-i18n="authGoogleBtn">Continuar con Google</button>
+        <button type="button" class="google-signin-btn" id="google-sign-in">
+          <span class="google-signin-btn__icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+              <path fill="none" d="M0 0h48v48H0z"/>
+            </svg>
+          </span>
+          <span class="google-signin-btn__label" data-i18n="authGoogleBtn">Ingresá con Google</span>
+        </button>
       </div>
 
       <div class="auth-view" data-auth-view="register" hidden>
         <h2 class="pin-gate-title" data-i18n="authRegisterTitle">Completá tus datos</h2>
-        <p class="auth-view-text" data-i18n="authRegisterText">Nombre y celular. El admin te asigna un PIN y te activa.</p>
+        <p class="auth-view-text" data-i18n="authRegisterText">Nombre, celular y vehículo. El admin te asigna un PIN y te activa.</p>
         <form id="register-form" class="pin-form auth-register-form" autocomplete="off">
           <label class="auth-label"><span data-i18n="adminNameLabel">Nombre</span>
             <input id="register-name" name="name" required maxlength="80" autocomplete="name" />
           </label>
           <label class="auth-label"><span data-i18n="adminPhoneLabel">Teléfono (con código país)</span>
             <input id="register-phone" name="phone" required maxlength="20" placeholder="59899123456" inputmode="tel" autocomplete="tel" />
+          </label>
+          <label class="auth-label"><span data-i18n="authVehicleMake">Marca del vehículo</span>
+            <input id="register-vehicle-make" name="vehicleMake" required maxlength="60" autocomplete="off" placeholder="Bestune" />
+          </label>
+          <label class="auth-label"><span data-i18n="authVehicleModel">Modelo</span>
+            <input id="register-vehicle-model" name="vehicleModel" required maxlength="60" autocomplete="off" placeholder="NAT" />
           </label>
           <button type="submit" class="pin-submit" data-i18n="authRegisterSubmit">Enviar solicitud</button>
         </form>
@@ -614,7 +629,7 @@
         <section class="admin-view" data-admin-view="drivers">
           <header class="admin-view-head">
             <h3 data-i18n="adminDriversTitle">Conductores</h3>
-            <p data-i18n="adminIntro">Conductores activos. El PIN no se muestra acá; regenerarlo se revela al conductor al próximo ingreso.</p>
+            <p data-i18n="adminIntro">Conductores activos y desactivados. Ves el PIN, podés regenerarlo y activar/desactivar.</p>
           </header>
           <p class="admin-msg" id="admin-msg" hidden></p>
           <div class="admin-list" id="admin-list"></div>

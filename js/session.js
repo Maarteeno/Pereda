@@ -277,19 +277,23 @@
     });
   }
 
-  function submitRegistration(name, phone) {
+  function submitRegistration(name, phone, vehicleMake, vehicleModel) {
     var user = auth.currentUser;
     if (!user) return Promise.reject(new Error('Sin sesión'));
     name = String(name || '').trim();
     phone = phoneDigits(phone);
-    if (!name || phone.length < 8) {
-      setGateError('Completá nombre y teléfono válidos');
+    vehicleMake = String(vehicleMake || '').trim();
+    vehicleModel = String(vehicleModel || '').trim();
+    if (!name || phone.length < 8 || !vehicleMake || !vehicleModel) {
+      setGateError('Completá nombre, teléfono y vehículo');
       return Promise.resolve(false);
     }
     return accountRef(user.uid).set({
       email: String(user.email || '').toLowerCase(),
       name: name,
       phone: phone,
+      vehicleMake: vehicleMake,
+      vehicleModel: vehicleModel,
       status: 'pending',
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     }).then(function () {
@@ -298,6 +302,8 @@
         email: String(user.email || '').toLowerCase(),
         name: name,
         phone: phone,
+        vehicleMake: vehicleMake,
+        vehicleModel: vehicleModel,
         status: 'pending'
       };
       setAuthView('pending');
@@ -589,6 +595,8 @@
               email: account.email || '',
               name: account.name || '',
               phone: phoneDigits(account.phone),
+              vehicleMake: account.vehicleMake || '',
+              vehicleModel: account.vehicleModel || '',
               status: 'active',
               pinHash: hash,
               pinRevealOnce: pin,
@@ -633,6 +641,8 @@
               email: account.email || '',
               name: account.name || '',
               phone: phoneDigits(account.phone),
+              vehicleMake: account.vehicleMake || '',
+              vehicleModel: account.vehicleModel || '',
               status: 'active',
               pinHash: hash,
               pinRevealOnce: newPin,
@@ -677,6 +687,26 @@
     });
   }
 
+  function enableAccount(uid, pin) {
+    return accountRef(uid).set({ status: 'active' }, { merge: true }).then(function () {
+      if (!pin) return null;
+      return db.collection('drivers').doc(pin).set({ active: true }, { merge: true });
+    }).then(function () {
+      setAdminMsg('Activado');
+      refreshAdminList();
+    }).catch(function (e) {
+      console.error(e);
+      setAdminMsg('Error al activar', true);
+    });
+  }
+
+  function vehicleLabel(account) {
+    var make = String((account && account.vehicleMake) || '').trim();
+    var model = String((account && account.vehicleModel) || '').trim();
+    if (!make && !model) return '';
+    return (make + ' ' + model).trim();
+  }
+
   function refreshAdminList() {
     var list = $('admin-list');
     if (!list || !db) return;
@@ -687,7 +717,7 @@
         if (seq !== adminListSeq) return;
         list.innerHTML = '';
         if (snap.empty) {
-          list.innerHTML = '<p class="admin-logs-empty">Sin conductores activos. Revisá Solicitudes.</p>';
+          list.innerHTML = '<p class="admin-logs-empty">Sin conductores. Revisá Solicitudes.</p>';
           return;
         }
         var rows = [];
@@ -706,30 +736,38 @@
           list.innerHTML = '';
           enriched.forEach(function (item) {
             var account = item.account;
+            var vehicle = vehicleLabel(account);
             var el = document.createElement('div');
             el.className = 'admin-driver';
             el.innerHTML =
               '<div><strong></strong><span></span></div>' +
               '<div class="admin-driver-actions">' +
               '<button type="button" data-regen></button>' +
-              '<button type="button" data-disable></button></div>';
+              '<button type="button" data-toggle></button></div>';
             el.querySelector('strong').textContent = account.name || 'Conductor';
             el.querySelector('span').textContent =
-              (account.status === 'disabled' ? 'Desactivado · ' : 'PIN asignado · ') +
+              (account.status === 'disabled' ? 'Desactivado · ' : '') +
+              (item.pin ? ('PIN ' + item.pin + ' · ') : 'Sin PIN · ') +
               formatPhoneDisplay(account.phone) +
+              (vehicle ? ' · ' + vehicle : '') +
               (account.email ? ' · ' + account.email : '');
             var regen = el.querySelector('[data-regen]');
-            var dis = el.querySelector('[data-disable]');
+            var toggle = el.querySelector('[data-toggle]');
             regen.textContent = 'Regenerar PIN';
-            dis.textContent = account.status === 'disabled' ? 'Ya desactivado' : 'Desactivar';
-            dis.disabled = account.status === 'disabled';
+            var isDisabled = account.status === 'disabled';
+            toggle.textContent = isDisabled ? 'Activar' : 'Desactivar';
             regen.addEventListener('click', function () {
               if (!confirm('¿Regenerar PIN? El valor anterior deja de servir.')) return;
               regeneratePin(account.id, item.pin);
             });
-            dis.addEventListener('click', function () {
-              if (!confirm('¿Desactivar a ' + (account.name || '') + '?')) return;
-              disableAccount(account.id, item.pin);
+            toggle.addEventListener('click', function () {
+              if (isDisabled) {
+                if (!confirm('¿Activar a ' + (account.name || '') + '?')) return;
+                enableAccount(account.id, item.pin);
+              } else {
+                if (!confirm('¿Desactivar a ' + (account.name || '') + '?')) return;
+                disableAccount(account.id, item.pin);
+              }
             });
             list.appendChild(el);
           });
@@ -768,8 +806,10 @@
             '<button type="button" data-gen-pin>Generar</button>' +
             '<button type="button" data-activate>Activar</button></div>';
           el.querySelector('strong').textContent = account.name || 'Sin nombre';
+          var vehicle = vehicleLabel(account);
           el.querySelector('span').textContent =
             formatPhoneDisplay(account.phone) +
+            (vehicle ? ' · ' + vehicle : '') +
             (account.email ? ' · ' + account.email : '');
           var pinInput = el.querySelector('.admin-request-pin');
           el.querySelector('[data-gen-pin]').addEventListener('click', function () {
@@ -849,7 +889,12 @@
     if (registerForm) {
       registerForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        submitRegistration(($('register-name') || {}).value, ($('register-phone') || {}).value);
+        submitRegistration(
+          ($('register-name') || {}).value,
+          ($('register-phone') || {}).value,
+          ($('register-vehicle-make') || {}).value,
+          ($('register-vehicle-model') || {}).value
+        );
       });
     }
 

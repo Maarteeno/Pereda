@@ -1,7 +1,7 @@
 {
-  "name": "Adrian Pereda - Traslados",
-  "short_name": "Pereda",
-  "description": "Presentación interactiva de traslados en Bestune NAT",
+  "name": "App Traslados",
+  "short_name": "App Traslados",
+  "description": "App de traslados para conductores",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
