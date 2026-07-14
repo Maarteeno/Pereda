@@ -3,12 +3,12 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v62';
+  var APP_VERSION = 'v63';
   var WA_NUMBER = '59899774019';
   var QR_DEST = 72;
   var QR_CONTACT = 148;
   var QR_DARK = '#25d366';
-  var QR_LIGHT = '#ffffff';
+  var QR_LIGHT = '#0a0a0a';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
   var activeLang = 'es';
@@ -534,9 +534,21 @@
     return 'es';
   }
 
+  function toWaPhone(phone) {
+    var d = String(phone || '').replace(/\D/g, '');
+    if (!d) return WA_NUMBER;
+    if (d.indexOf('598') === 0 && d.length >= 11) return d;
+    d = d.replace(/^0+/, '');
+    if (!d) return WA_NUMBER;
+    if (d.indexOf('598') === 0) return d;
+    /* Uruguay mobile local: 9XXXXXXX (8) or similar → +598… */
+    if (d.length <= 9) return '598' + d;
+    return d;
+  }
+
   function activePhone() {
     var driver = window.PeredaSession && PeredaSession.getDriver();
-    if (driver && driver.phone) return String(driver.phone).replace(/\D/g, '');
+    if (driver && driver.phone) return toWaPhone(driver.phone);
     return WA_NUMBER;
   }
 
@@ -548,20 +560,8 @@
     return 'Adrián';
   }
 
-  function asciiFold(text) {
-    try {
-      return String(text || '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^\x20-\x7E]/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-    } catch (e) {
-      return String(text || '').replace(/[^\x20-\x7E]/g, ' ').replace(/\s+/g, ' ').trim();
-    }
-  }
-
   function driverWaUrl() {
+    /* wa.me requires country code digits without '+' (e.g. 59899…). */
     return 'https://wa.me/' + activePhone();
   }
 
@@ -632,9 +632,7 @@
   function applyDriverLinks(driver) {
     var base = driverWaUrl();
     var contactQr = document.getElementById('contact-wa-qr');
-    var contactBtn = document.getElementById('contact-wa-btn');
     if (contactQr) contactQr.href = base;
-    if (contactBtn) contactBtn.href = base;
     updateContactQr();
     updateDestQrs();
     var t = T[activeLang] || T.es;

@@ -33,8 +33,23 @@
     return text;
   }
 
+  function phoneDigits(phone) {
+    return String(phone || '').replace(/\D/g, '');
+  }
+
+  function normalizeUyPhone(phone) {
+    var d = phoneDigits(phone);
+    if (!d) return '';
+    if (d.indexOf('598') === 0 && d.length >= 11) return d.slice(0, 20);
+    d = d.replace(/^0+/, '');
+    if (!d) return '';
+    if (d.indexOf('598') === 0) return d.slice(0, 20);
+    if (d.length <= 9) return ('598' + d).slice(0, 20);
+    return d.slice(0, 20);
+  }
+
   function sanitizePhone(value) {
-    return phoneDigits(value).slice(0, 20);
+    return normalizeUyPhone(value).slice(0, 20);
   }
 
   function pinHintFrom(pin) {
@@ -139,16 +154,12 @@
     return currentDriver || getSession();
   }
 
-  function phoneDigits(phone) {
-    return String(phone || '').replace(/\D/g, '');
-  }
-
   function formatPhoneDisplay(phone) {
-    var d = phoneDigits(phone);
+    var d = normalizeUyPhone(phone) || phoneDigits(phone);
     if (d.indexOf('598') === 0 && d.length >= 11) {
       return '+' + d.slice(0, 3) + ' ' + d.slice(3, 5) + ' ' + d.slice(5, 8) + ' ' + d.slice(8);
     }
-    return phone ? ('+' + d) : '';
+    return d ? ('+' + d) : '';
   }
 
   function firstName(full) {
@@ -553,7 +564,7 @@
           unlockDriver({
             pin: pin,
             name: account.name || data.name || 'Conductor',
-            phone: phoneDigits(account.phone || data.phone || ''),
+            phone: normalizeUyPhone(account.phone || data.phone || ''),
             uid: user.uid
           });
           return true;
@@ -655,7 +666,7 @@
               if (typeof row.uid === 'string') return null;
               return d.ref.set({
                 name: row.name || '',
-                phone: phoneDigits(row.phone),
+                phone: normalizeUyPhone(row.phone),
                 active: row.active !== false,
                 uid: ''
               });
@@ -676,7 +687,7 @@
       };
       var driverPayload = {
         name: def.name,
-        phone: phoneDigits(def.phone),
+        phone: normalizeUyPhone(def.phone),
         active: true,
         uid: ''
       };
@@ -728,7 +739,7 @@
           var billingPayload = {
             email: account.email || '',
             name: account.name || '',
-            phone: phoneDigits(account.phone),
+            phone: normalizeUyPhone(account.phone),
             vehicleMake: account.vehicleMake || '',
             vehicleModel: account.vehicleModel || '',
             status: 'active',
@@ -749,7 +760,7 @@
             accountRef(uid).set(billingPayload, { merge: true }),
             db.collection('drivers').doc(pin).set({
               name: account.name || '',
-              phone: phoneDigits(account.phone),
+              phone: normalizeUyPhone(account.phone),
               active: true,
               uid: uid
             }),
@@ -785,7 +796,7 @@
             accountRef(uid).set({
               email: account.email || '',
               name: account.name || '',
-              phone: phoneDigits(account.phone),
+              phone: normalizeUyPhone(account.phone),
               vehicleMake: account.vehicleMake || '',
               vehicleModel: account.vehicleModel || '',
               status: 'active',
@@ -795,7 +806,7 @@
             }, { merge: true }),
             db.collection('drivers').doc(newPin).set({
               name: account.name || '',
-              phone: phoneDigits(account.phone),
+              phone: normalizeUyPhone(account.phone),
               active: true,
               uid: uid
             }),

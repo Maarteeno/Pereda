@@ -1078,7 +1078,7 @@ body.update-blocked { overflow: hidden; }
   height: 72px;
   padding: 8px;
   border-radius: 12px;
-  background: #fff;
+  background: #0a0a0a;
   border: 2px solid var(--whatsapp);
   box-sizing: content-box;
   line-height: 0;
@@ -1102,13 +1102,20 @@ body.update-blocked { overflow: hidden; }
 .dest-card .dest-qr {
   margin-top: 0.5rem;
 }
+.contact-wa-link {
+  display: inline-grid;
+  justify-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: inherit;
+}
 .contact-qr-canvas {
   display: block;
   width: 148px;
   height: 148px;
   padding: 12px;
   border-radius: 14px;
-  background: #fff;
+  background: #0a0a0a;
   border: 3px solid var(--whatsapp);
   box-sizing: content-box;
   line-height: 0;
@@ -1122,6 +1129,18 @@ body.update-blocked { overflow: hidden; }
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
+.contact-wa-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--whatsapp);
+  color: #06140a;
+  box-shadow: 0 8px 20px oklch(0.55 0.16 145 / 0.35);
+}
+.btn-wa-lg { display: none !important; }
 
 .btn-switch-driver { display: none !important; }
 
