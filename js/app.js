@@ -3,19 +3,40 @@
 
   var LANG_STORAGE_KEY = 'pereda-lang';
   var VERSION_STORAGE_KEY = 'pereda-app-version';
-  var APP_VERSION = 'v44';
+  var APP_VERSION = 'v45';
+  var WA_NUMBER = '59899774019';
   window.__PEREDA_APP_VERSION__ = APP_VERSION;
   var swRegistration = null;
+  var activeLang = 'es';
+
+  var DEST_NAMES = {
+    punta: { es: 'Punta del Este', en: 'Punta del Este', pt: 'Punta del Este' },
+    colonia: { es: 'Colonia del Sacramento', en: 'Colonia del Sacramento', pt: 'Colonia del Sacramento' },
+    montevideo: { es: 'Montevideo', en: 'Montevideo', pt: 'Montevidéu' }
+  };
 
   var T = {
     es: {
+      langGroup: 'Idioma',
+      navSections: 'Secciones',
+      hubAria: 'Menú principal',
+      chipRowAria: 'Comodidades del vehículo',
+      vehicleAria: 'Bestune NAT eléctrico',
+      waAria: 'Abrir chat de WhatsApp con Adrián Pereda',
       role: 'Conductor profesional',
       navPaseos: 'Paseos',
       navTraslados: 'Traslados',
       navContacto: 'Contacto',
+      whatsapp: 'WhatsApp',
+      eyebrow: 'Bestune NAT · 100% eléctrico',
       heroTitle: 'Traslados con conductor profesional',
       heroLead: 'Montevideo, Costa de Oro y trayectos a Punta del Este o Colonia. Viaje silencioso, cómodo y puntual — pedí presupuesto por WhatsApp.',
-      chips: ['100% eléctrico', 'Viaje silencioso', 'Climatización', 'Maletero amplio', 'Puerta corrediza', 'Asientos amplios'],
+      chip0: '100% eléctrico',
+      chip1: 'Viaje silencioso',
+      chip2: 'Climatización',
+      chip3: 'Maletero amplio',
+      chip4: 'Puerta corrediza',
+      chip5: 'Asientos amplios',
       hubPaseosTitle: 'Paseos',
       hubPaseosDesc: 'Experiencias por Uruguay a tu ritmo.',
       hubTrasladosTitle: 'Traslados',
@@ -23,9 +44,67 @@
       hubContactoTitle: 'Contacto',
       hubContactoDesc: 'Escribile a Adrián por WhatsApp.',
       backHome: 'Inicio',
-      titlePaseos: 'Paseos',
-      titleTraslados: 'Traslados',
-      titleContacto: 'Contacto',
+      backGallery: 'Galería',
+      paseosKicker: 'Galería',
+      paseosTitle: 'Paseos y experiencias',
+      paseosIntro: 'Tocá un paseo para ver los lugares incluidos. Cada vista muestra solo ese recorrido.',
+      seePlaces: 'Ver lugares',
+      paseoKicker: 'Paseo',
+      gCostaTitle: 'Costa y hoteles',
+      gCostaSub: 'Punta del Este · La Barra · José Ignacio',
+      gMvdTitle: 'Montevideo',
+      gMvdSub: 'Centenario · Rambla · Parque Rodó · Mercado del Puerto',
+      gEvtTitle: 'Eventos',
+      gEvtSub: 'Bodas · Salones · Congresos',
+      gBodTitle: 'Bodegas',
+      gBodSub: 'Juanicó · Garzón · Carmelo',
+      dCostaIntro: 'Llegadas a hoteles y recorridos por la costa Este: playa, puente y faro incluidos en el trayecto.',
+      sCostaHotelsTitle: 'Punta del Este · hoteles',
+      sCostaHotelsDesc: 'Traslados puerta a puerta a hoteles de Playa Brava y Mansa, sin bajar equipaje en la calle.',
+      sCostaBarraTitle: 'La Barra',
+      sCostaBarraDesc: 'El puente emblemático y el pueblo playero: ideal para una mañana o un atardecer sin apuro.',
+      sCostaJiTitle: 'José Ignacio',
+      sCostaJiDesc: 'Costa más quieta, faro y boutique: el tramo largo de la costa sin cambiar de vehículo.',
+      dMvdIntro: 'Un circuito por íconos de la ciudad: estadio, rambla, parque y mercado, con paradas cómodas.',
+      sMvdCentTitle: 'Estadio Centenario',
+      sMvdCentDesc: 'Parada frente al monumento del fútbol mundial en Parque Batlle.',
+      sMvdRamblaTitle: 'Rambla',
+      sMvdRamblaDesc: 'El paseo costero de Pocitos y Punta Carretas: luz, río y ciudad en un solo tramo.',
+      sMvdRodoTitle: 'Parque Rodó',
+      sMvdRodoDesc: 'Parque, lago y ambiente de fin de semana a minutos del centro.',
+      sMvdMercTitle: 'Mercado del Puerto',
+      sMvdMercDesc: 'Ciudad Vieja: el mercado de hierro y las parrillas del puerto.',
+      dEvtIntro: 'Llevamos invitados o equipos a salones, bodas y congresos: puntualidad y espacio para equipaje.',
+      sEvtBodaTitle: 'Bodas',
+      sEvtBodaDesc: 'Llegada de novios e invitados a quintas y salones, con horario coordinado.',
+      sEvtSalonTitle: 'Salones',
+      sEvtSalonDesc: 'Eventos sociales y corporativos: puerta a puerta sin buscar estacionamiento.',
+      sEvtCongTitle: 'Congresos',
+      sEvtCongDesc: 'Traslados a auditorios y centros de convenciones en ciudad o costa.',
+      dBodIntro: 'Rutas de vino sin conducir: Juanicó, Garzón y Carmelo con tiempo para degustar.',
+      sBodJuanTitle: 'Juanicó',
+      sBodJuanDesc: 'Canelones, cerca de Montevideo: viñas y cava histórica en un día completo.',
+      sBodGarTitle: 'Garzón',
+      sBodGarDesc: 'Maldonado: bodega moderna entre cerros, ideal combinada con la costa.',
+      sBodCarTitle: 'Carmelo',
+      sBodCarDesc: 'Colonia: viñedos junto al río Uruguay, un trayecto más largo y pausado.',
+      trasladosKicker: 'Destinos frecuentes',
+      trasladosIntro: 'Ideal para llegadas al aeropuerto, mudanzas temporales o traslados puerta a puerta. Sin precios públicos: consultá tu recorrido.',
+      destPuntaTitle: 'Punta del Este',
+      destPuntaS0: 'La Mano',
+      destPuntaS1: 'Playa Brava',
+      destPuntaS2: 'Puerto de Punta',
+      destColoniaTitle: 'Colonia del Sacramento',
+      destColoniaS0: 'Barrio Histórico',
+      destColoniaS1: 'Faro de Colonia',
+      destColoniaS2: 'Calle de los Suspiros',
+      destMvdTitle: 'Montevideo',
+      destMvdS0: 'Aeropuerto Carrasco',
+      destMvdS1: 'Centro',
+      destMvdS2: 'Rambla',
+      destMvdS3: 'Mercado del Puerto',
+      wantGo: 'Quiero ir',
+      waWantGo: 'Hola Adrián, quiero ir a {place}. ¿Me cotizás un traslado?',
       contactKicker: 'Hablemos',
       contactIntro: 'Contale a Adrián destino, horario y cantidad de pasajeros. Respuesta por WhatsApp.',
       driverRole: 'Conductor profesional. Montevideo y La Costa',
@@ -40,13 +119,26 @@
       updateAction: 'Actualizar ahora'
     },
     en: {
+      langGroup: 'Language',
+      navSections: 'Sections',
+      hubAria: 'Main menu',
+      chipRowAria: 'Vehicle amenities',
+      vehicleAria: 'Electric Bestune NAT',
+      waAria: 'Open WhatsApp chat with Adrián Pereda',
       role: 'Professional driver',
       navPaseos: 'Tours',
       navTraslados: 'Transfers',
       navContacto: 'Contact',
+      whatsapp: 'WhatsApp',
+      eyebrow: 'Bestune NAT · 100% electric',
       heroTitle: 'Transfers with a professional driver',
       heroLead: 'Montevideo, Costa de Oro and trips to Punta del Este or Colonia. Quiet, comfortable and on time — request a quote on WhatsApp.',
-      chips: ['100% electric', 'Quiet ride', 'Climate control', 'Room for luggage', 'Sliding door', 'Spacious seats'],
+      chip0: '100% electric',
+      chip1: 'Quiet ride',
+      chip2: 'Climate control',
+      chip3: 'Room for luggage',
+      chip4: 'Sliding door',
+      chip5: 'Spacious seats',
       hubPaseosTitle: 'Tours',
       hubPaseosDesc: 'Experiences across Uruguay at your pace.',
       hubTrasladosTitle: 'Transfers',
@@ -54,9 +146,67 @@
       hubContactoTitle: 'Contact',
       hubContactoDesc: 'Message Adrián on WhatsApp.',
       backHome: 'Home',
-      titlePaseos: 'Tours',
-      titleTraslados: 'Transfers',
-      titleContacto: 'Contact',
+      backGallery: 'Gallery',
+      paseosKicker: 'Gallery',
+      paseosTitle: 'Tours and experiences',
+      paseosIntro: 'Tap a tour to see the places included. Each view shows only that route.',
+      seePlaces: 'See places',
+      paseoKicker: 'Tour',
+      gCostaTitle: 'Coast and hotels',
+      gCostaSub: 'Punta del Este · La Barra · José Ignacio',
+      gMvdTitle: 'Montevideo',
+      gMvdSub: 'Centenario · Rambla · Parque Rodó · Mercado del Puerto',
+      gEvtTitle: 'Events',
+      gEvtSub: 'Weddings · Venues · Conferences',
+      gBodTitle: 'Wineries',
+      gBodSub: 'Juanicó · Garzón · Carmelo',
+      dCostaIntro: 'Hotel arrivals and East Coast routes: beach, bridge and lighthouse along the way.',
+      sCostaHotelsTitle: 'Punta del Este · hotels',
+      sCostaHotelsDesc: 'Door-to-door transfers to Playa Brava and Mansa hotels — no street-side luggage drop.',
+      sCostaBarraTitle: 'La Barra',
+      sCostaBarraDesc: 'The iconic bridge and beach town: perfect for a morning or unhurried sunset.',
+      sCostaJiTitle: 'José Ignacio',
+      sCostaJiDesc: 'Quieter coast, lighthouse and boutique stays — the long stretch without changing cars.',
+      dMvdIntro: 'A circuit of city icons: stadium, rambla, park and market, with comfortable stops.',
+      sMvdCentTitle: 'Estadio Centenario',
+      sMvdCentDesc: 'A stop at the world football landmark in Parque Batlle.',
+      sMvdRamblaTitle: 'Rambla',
+      sMvdRamblaDesc: 'The coastal promenade of Pocitos and Punta Carretas: light, river and city in one stretch.',
+      sMvdRodoTitle: 'Parque Rodó',
+      sMvdRodoDesc: 'Park, lake and weekend vibe minutes from downtown.',
+      sMvdMercTitle: 'Mercado del Puerto',
+      sMvdMercDesc: 'Ciudad Vieja: the iron market and the port grills.',
+      dEvtIntro: 'We take guests or teams to venues, weddings and conferences: punctuality and luggage space.',
+      sEvtBodaTitle: 'Weddings',
+      sEvtBodaDesc: 'Bride, groom and guest arrivals to estates and venues, on a coordinated schedule.',
+      sEvtSalonTitle: 'Venues',
+      sEvtSalonDesc: 'Social and corporate events: door to door without hunting for parking.',
+      sEvtCongTitle: 'Conferences',
+      sEvtCongDesc: 'Transfers to auditoriums and convention centers in the city or on the coast.',
+      dBodIntro: 'Wine routes without driving: Juanicó, Garzón and Carmelo with time to taste.',
+      sBodJuanTitle: 'Juanicó',
+      sBodJuanDesc: 'Canelones, near Montevideo: vineyards and historic cellar — a full day.',
+      sBodGarTitle: 'Garzón',
+      sBodGarDesc: 'Maldonado: modern winery among the hills, ideal with the coast.',
+      sBodCarTitle: 'Carmelo',
+      sBodCarDesc: 'Colonia: vineyards by the Uruguay River — a longer, slower trip.',
+      trasladosKicker: 'Popular destinations',
+      trasladosIntro: 'Ideal for airport arrivals, short stays or door-to-door transfers. No public fixed rates: ask about your route.',
+      destPuntaTitle: 'Punta del Este',
+      destPuntaS0: 'La Mano',
+      destPuntaS1: 'Playa Brava',
+      destPuntaS2: 'Puerto de Punta',
+      destColoniaTitle: 'Colonia del Sacramento',
+      destColoniaS0: 'Historic Quarter',
+      destColoniaS1: 'Colonia Lighthouse',
+      destColoniaS2: 'Calle de los Suspiros',
+      destMvdTitle: 'Montevideo',
+      destMvdS0: 'Carrasco Airport',
+      destMvdS1: 'Downtown',
+      destMvdS2: 'Rambla',
+      destMvdS3: 'Mercado del Puerto',
+      wantGo: 'I want to go',
+      waWantGo: 'Hi Adrián, I want to go to {place}. Could you quote a transfer?',
       contactKicker: "Let's talk",
       contactIntro: 'Tell Adrián the destination, time and number of passengers. Reply on WhatsApp.',
       driverRole: 'Professional driver. Montevideo and the Coast',
@@ -71,13 +221,26 @@
       updateAction: 'Update now'
     },
     pt: {
+      langGroup: 'Idioma',
+      navSections: 'Seções',
+      hubAria: 'Menu principal',
+      chipRowAria: 'Comodidades do veículo',
+      vehicleAria: 'Bestune NAT elétrico',
+      waAria: 'Abrir chat do WhatsApp com Adrián Pereda',
       role: 'Motorista profissional',
       navPaseos: 'Passeios',
       navTraslados: 'Transfers',
       navContacto: 'Contato',
+      whatsapp: 'WhatsApp',
+      eyebrow: 'Bestune NAT · 100% elétrico',
       heroTitle: 'Transfers com motorista profissional',
       heroLead: 'Montevidéu, Costa de Oro e trajetos a Punta del Este ou Colonia. Viagem silenciosa, confortável e pontual — peça orçamento no WhatsApp.',
-      chips: ['100% elétrico', 'Viagem silenciosa', 'Climatização', 'Porta-malas amplo', 'Porta deslizante', 'Assentos espaçosos'],
+      chip0: '100% elétrico',
+      chip1: 'Viagem silenciosa',
+      chip2: 'Climatização',
+      chip3: 'Porta-malas amplo',
+      chip4: 'Porta deslizante',
+      chip5: 'Assentos espaçosos',
       hubPaseosTitle: 'Passeios',
       hubPaseosDesc: 'Experiências pelo Uruguai no seu ritmo.',
       hubTrasladosTitle: 'Transfers',
@@ -85,9 +248,67 @@
       hubContactoTitle: 'Contato',
       hubContactoDesc: 'Fale com Adrián pelo WhatsApp.',
       backHome: 'Início',
-      titlePaseos: 'Passeios',
-      titleTraslados: 'Transfers',
-      titleContacto: 'Contato',
+      backGallery: 'Galeria',
+      paseosKicker: 'Galeria',
+      paseosTitle: 'Passeios e experiências',
+      paseosIntro: 'Toque um passeio para ver os lugares incluídos. Cada vista mostra só aquele percurso.',
+      seePlaces: 'Ver lugares',
+      paseoKicker: 'Passeio',
+      gCostaTitle: 'Costa e hotéis',
+      gCostaSub: 'Punta del Este · La Barra · José Ignacio',
+      gMvdTitle: 'Montevidéu',
+      gMvdSub: 'Centenario · Rambla · Parque Rodó · Mercado del Puerto',
+      gEvtTitle: 'Eventos',
+      gEvtSub: 'Casamentos · Salões · Congressos',
+      gBodTitle: 'Vinícolas',
+      gBodSub: 'Juanicó · Garzón · Carmelo',
+      dCostaIntro: 'Chegadas a hotéis e percursos pela costa Leste: praia, ponte e farol no trajeto.',
+      sCostaHotelsTitle: 'Punta del Este · hotéis',
+      sCostaHotelsDesc: 'Transfers porta a porta a hotéis de Playa Brava e Mansa, sem descarregar na rua.',
+      sCostaBarraTitle: 'La Barra',
+      sCostaBarraDesc: 'A ponte emblemática e o vilarejo: ideal para uma manhã ou um entardecer sem pressa.',
+      sCostaJiTitle: 'José Ignacio',
+      sCostaJiDesc: 'Costa mais quieta, farol e boutique: o trecho longo sem trocar de veículo.',
+      dMvdIntro: 'Um circuito pelos ícones da cidade: estádio, rambla, parque e mercado, com paradas confortáveis.',
+      sMvdCentTitle: 'Estádio Centenario',
+      sMvdCentDesc: 'Parada no monumento do futebol mundial no Parque Batlle.',
+      sMvdRamblaTitle: 'Rambla',
+      sMvdRamblaDesc: 'O passeio costeiro de Pocitos e Punta Carretas: luz, rio e cidade num só trecho.',
+      sMvdRodoTitle: 'Parque Rodó',
+      sMvdRodoDesc: 'Parque, lago e clima de fim de semana a minutos do centro.',
+      sMvdMercTitle: 'Mercado del Puerto',
+      sMvdMercDesc: 'Ciudad Vieja: o mercado de ferro e as parrillas do porto.',
+      dEvtIntro: 'Levamos convidados ou equipes a salões, casamentos e congressos: pontualidade e espaço para bagagem.',
+      sEvtBodaTitle: 'Casamentos',
+      sEvtBodaDesc: 'Chegada de noivos e convidados a sítios e salões, com horário coordenado.',
+      sEvtSalonTitle: 'Salões',
+      sEvtSalonDesc: 'Eventos sociais e corporativos: porta a porta sem procurar estacionamento.',
+      sEvtCongTitle: 'Congressos',
+      sEvtCongDesc: 'Transfers a auditórios e centros de convenções na cidade ou na costa.',
+      dBodIntro: 'Rotas de vinho sem dirigir: Juanicó, Garzón e Carmelo com tempo para degustar.',
+      sBodJuanTitle: 'Juanicó',
+      sBodJuanDesc: 'Canelones, perto de Montevidéu: vinhas e cave histórica num dia completo.',
+      sBodGarTitle: 'Garzón',
+      sBodGarDesc: 'Maldonado: vinícola moderna entre morros, ideal combinada com a costa.',
+      sBodCarTitle: 'Carmelo',
+      sBodCarDesc: 'Colonia: vinhedos junto ao rio Uruguai — um trajeto mais longo e pausado.',
+      trasladosKicker: 'Destinos frequentes',
+      trasladosIntro: 'Ideal para chegadas ao aeroporto, estadias curtas ou transfers porta a porta. Sem tarifas públicas fixas: consulte o seu percurso.',
+      destPuntaTitle: 'Punta del Este',
+      destPuntaS0: 'La Mano',
+      destPuntaS1: 'Playa Brava',
+      destPuntaS2: 'Porto de Punta',
+      destColoniaTitle: 'Colonia del Sacramento',
+      destColoniaS0: 'Bairro Histórico',
+      destColoniaS1: 'Farol de Colonia',
+      destColoniaS2: 'Calle de los Suspiros',
+      destMvdTitle: 'Montevidéu',
+      destMvdS0: 'Aeroporto Carrasco',
+      destMvdS1: 'Centro',
+      destMvdS2: 'Rambla',
+      destMvdS3: 'Mercado del Puerto',
+      wantGo: 'Quero ir',
+      waWantGo: 'Olá Adrián, quero ir a {place}. Pode cotar um transfer?',
       contactKicker: 'Vamos conversar',
       contactIntro: 'Conte a Adrián destino, horário e número de passageiros. Resposta no WhatsApp.',
       driverRole: 'Motorista profissional. Montevidéu e a Costa',
@@ -103,13 +324,6 @@
     }
   };
 
-  function $(id) { return document.getElementById(id); }
-
-  function setText(id, value) {
-    var el = $(id);
-    if (el) el.textContent = value;
-  }
-
   function detectLanguage() {
     var stored = localStorage.getItem(LANG_STORAGE_KEY);
     if (stored && T[stored]) return stored;
@@ -119,112 +333,42 @@
     return 'es';
   }
 
-  function setChipText(chip, label) {
-    var svg = chip.querySelector('svg');
-    chip.textContent = '';
-    if (svg) chip.appendChild(svg);
-    chip.appendChild(document.createTextNode(label));
+  function waUrl(text) {
+    return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(text || '');
+  }
+
+  function updateDestLinks(lang) {
+    var t = T[lang];
+    document.querySelectorAll('.dest-go[data-dest]').forEach(function (link) {
+      var key = link.getAttribute('data-dest');
+      var place = (DEST_NAMES[key] && DEST_NAMES[key][lang]) || key;
+      var msg = (t.waWantGo || '').replace('{place}', place);
+      link.href = waUrl(msg);
+    });
   }
 
   function applyLang(lang) {
     if (!T[lang]) return;
     var t = T[lang];
+    activeLang = lang;
     document.documentElement.lang = lang;
     localStorage.setItem(LANG_STORAGE_KEY, lang);
 
-    setText('header-subtitle', t.role);
-    setText('hero-title', t.heroTitle);
-    setText('hero-lead', t.heroLead);
-    setText('update-gate-title', t.updateTitle);
-    setText('update-gate-text', t.updateText);
-    setText('update-gate-btn', t.updateAction);
-
-    document.querySelectorAll('.header-nav [data-open-screen]').forEach(function (btn) {
-      var id = btn.getAttribute('data-open-screen');
-      if (id === 'paseos') btn.textContent = t.navPaseos;
-      if (id === 'traslados') btn.textContent = t.navTraslados;
-      if (id === 'contacto') btn.textContent = t.navContacto;
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n');
+      if (key && typeof t[key] === 'string') el.textContent = t[key];
     });
 
-    document.querySelectorAll('.chip-row .chip').forEach(function (chip, i) {
-      if (t.chips[i]) setChipText(chip, t.chips[i]);
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n-aria');
+      if (key && typeof t[key] === 'string') el.setAttribute('aria-label', t[key]);
     });
-
-    var hubs = {
-      paseos: [t.hubPaseosTitle, t.hubPaseosDesc],
-      traslados: [t.hubTrasladosTitle, t.hubTrasladosDesc],
-      contacto: [t.hubContactoTitle, t.hubContactoDesc]
-    };
-    Object.keys(hubs).forEach(function (key) {
-      var copy = document.querySelector('.hub-btn[data-open-screen="' + key + '"] .hub-copy');
-      if (!copy) return;
-      var strong = copy.querySelector('strong');
-      var span = copy.querySelector('span');
-      if (strong) strong.textContent = hubs[key][0];
-      if (span) span.textContent = hubs[key][1];
-    });
-
-    var titles = { paseos: t.titlePaseos, traslados: t.titleTraslados, contacto: t.titleContacto };
-    Object.keys(titles).forEach(function (key) {
-      var screen = document.querySelector('[data-screen="' + key + '"]');
-      if (!screen) return;
-      screen.setAttribute('aria-label', titles[key]);
-      var bar = screen.querySelector(':scope > .screen-bar .screen-bar-title');
-      if (bar) bar.textContent = titles[key];
-      /* Keep exported section headlines (e.g. "Paseos y experiencias"); only sync Contacto h2. */
-      if (key === 'contacto') {
-        var headTitle = screen.querySelector('.section-title');
-        if (headTitle) headTitle.textContent = titles[key];
-      }
-    });
-
-    document.querySelectorAll('.screen-back[data-close-screen]').forEach(function (btn) {
-      var svg = btn.querySelector('svg');
-      btn.textContent = '';
-      if (svg) btn.appendChild(svg);
-      btn.appendChild(document.createTextNode(t.backHome));
-    });
-
-    var contact = document.querySelector('[data-screen="contacto"]');
-    if (contact) {
-      var kicker = contact.querySelector('.section-kicker');
-      var intro = contact.querySelector('.section-intro');
-      var role = contact.querySelector('.profile p');
-      var lis = contact.querySelectorAll('.info-list li');
-      var qrP = contact.querySelector('.qr-block > p:not(.phone)');
-      var waBtn = contact.querySelector('.btn-wa-lg');
-      var note = contact.querySelector('.note');
-      if (kicker) kicker.textContent = t.contactKicker;
-      if (intro) intro.textContent = t.contactIntro;
-      if (role) role.textContent = t.driverRole;
-      if (lis[0]) {
-        var s0 = lis[0].querySelector('svg');
-        lis[0].textContent = '';
-        if (s0) lis[0].appendChild(s0);
-        lis[0].appendChild(document.createTextNode(t.contactCoverage));
-      }
-      if (lis[1]) {
-        var s1 = lis[1].querySelector('svg');
-        lis[1].textContent = '';
-        if (s1) lis[1].appendChild(s1);
-        lis[1].appendChild(document.createTextNode(t.contactVehicle));
-      }
-      if (qrP) qrP.textContent = t.qrLabel;
-      if (waBtn) {
-        var wsvg = waBtn.querySelector('svg');
-        waBtn.textContent = '';
-        if (wsvg) waBtn.appendChild(wsvg);
-        waBtn.appendChild(document.createTextNode(t.qrAction));
-      }
-      if (note) note.textContent = t.contactNote;
-    }
-
-    var footer = document.querySelector('footer .shell');
-    if (footer) footer.textContent = t.footer;
 
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
       btn.setAttribute('aria-pressed', String(btn.getAttribute('data-lang') === lang));
     });
+
+    updateDestLinks(lang);
   }
 
   function clearCachesAndReload() {
@@ -252,8 +396,8 @@
   }
 
   function showUpdateGate(registration) {
-    var gate = $('update-gate');
-    var btn = $('update-gate-btn');
+    var gate = document.getElementById('update-gate');
+    var btn = document.getElementById('update-gate-btn');
     if (!gate || gate.hidden === false) return;
     swRegistration = registration;
     gate.hidden = false;
@@ -311,215 +455,210 @@
   }
 
   function initUi() {
+    var imgs = Array.prototype.slice.call(document.querySelectorAll('#vehicle-rotator img'));
+    var idx = 0;
+    var timer = null;
+    var ROTATE_MS = 7000;
 
-          var imgs = Array.prototype.slice.call(document.querySelectorAll("#vehicle-rotator img"));
-          var idx = 0;
-          var timer = null;
-          var ROTATE_MS = 7000;
+    function show(i) {
+      idx = (i + imgs.length) % imgs.length;
+      imgs.forEach(function (img, n) {
+        img.classList.toggle('is-active', n === idx);
+      });
+    }
 
-          function show(i) {
-            idx = (i + imgs.length) % imgs.length;
-            imgs.forEach(function (img, n) {
-              img.classList.toggle("is-active", n === idx);
-            });
-          }
+    function start() {
+      stop();
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      timer = window.setInterval(function () { show(idx + 1); }, ROTATE_MS);
+    }
 
-          function start() {
-            stop();
-            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-            timer = window.setInterval(function () { show(idx + 1); }, ROTATE_MS);
-          }
+    function stop() {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+    }
 
-          function stop() {
-            if (timer) window.clearInterval(timer);
-            timer = null;
-          }
+    var stage = document.querySelector('.vehicle-stage');
+    if (stage) {
+      stage.addEventListener('mouseenter', stop);
+      stage.addEventListener('mouseleave', start);
+      stage.addEventListener('focusin', stop);
+      stage.addEventListener('focusout', start);
+    }
 
-          var stage = document.querySelector(".vehicle-stage");
-          if (stage) {
-            stage.addEventListener("mouseenter", stop);
-            stage.addEventListener("mouseleave", start);
-            stage.addEventListener("focusin", stop);
-            stage.addEventListener("focusout", start);
-          }
+    show(0);
+    start();
 
-          show(0);
-          start();
+    var screens = Array.prototype.slice.call(document.querySelectorAll('[data-screen]'));
+    var openers = Array.prototype.slice.call(document.querySelectorAll('[data-open-screen]'));
+    var closers = Array.prototype.slice.call(document.querySelectorAll('[data-close-screen]'));
+    var activeScreen = null;
 
-          /* Full-screen panels: only one visible at a time */
-          var screens = Array.prototype.slice.call(document.querySelectorAll("[data-screen]"));
-          var openers = Array.prototype.slice.call(document.querySelectorAll("[data-open-screen]"));
-          var closers = Array.prototype.slice.call(document.querySelectorAll("[data-close-screen]"));
-          var activeScreen = null;
+    var homeRoot = document.querySelector('main.home');
+    var siteHeader = document.querySelector('.site-header');
+    var siteFooter = document.querySelector('footer');
 
-          var homeRoot = document.querySelector("main.home");
-          var siteHeader = document.querySelector(".site-header");
-          var siteFooter = document.querySelector("footer");
+    function setHomeInert(on) {
+      [homeRoot, siteHeader, siteFooter].forEach(function (el) {
+        if (!el) return;
+        if (on) el.setAttribute('inert', '');
+        else el.removeAttribute('inert');
+        el.setAttribute('aria-hidden', on ? 'true' : 'false');
+      });
+    }
 
-          function setHomeInert(on) {
-            [homeRoot, siteHeader, siteFooter].forEach(function (el) {
-              if (!el) return;
-              if (on) el.setAttribute("inert", "");
-              else el.removeAttribute("inert");
-              el.setAttribute("aria-hidden", on ? "true" : "false");
-            });
-          }
+    function closeScreen() {
+      screens.forEach(function (el) {
+        el.classList.remove('is-open');
+        el.setAttribute('aria-hidden', 'true');
+        el.setAttribute('inert', '');
+        el.hidden = true;
+        el.removeAttribute('aria-modal');
+      });
+      document.body.classList.remove('screen-open');
+      setHomeInert(false);
+      activeScreen = null;
+      if (location.hash && /^#(paseos|traslados|contacto)$/.test(location.hash)) {
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+      start();
+    }
 
-          function closeScreen() {
-            screens.forEach(function (el) {
-              el.classList.remove("is-open");
-              el.setAttribute("aria-hidden", "true");
-              el.setAttribute("inert", "");
-              el.hidden = true;
-              el.removeAttribute("aria-modal");
-            });
-            document.body.classList.remove("screen-open");
-            setHomeInert(false);
-            activeScreen = null;
-            if (location.hash && /^#(paseos|traslados|contacto)$/.test(location.hash)) {
-              history.replaceState(null, "", location.pathname + location.search);
-            }
-            start();
-          }
+    function openScreen(id) {
+      var target = document.querySelector('[data-screen="' + id + '"]');
+      if (!target) return;
+      screens.forEach(function (el) {
+        el.classList.remove('is-open');
+        el.setAttribute('aria-hidden', 'true');
+        el.setAttribute('inert', '');
+        el.hidden = true;
+        el.removeAttribute('aria-modal');
+      });
+      target.hidden = false;
+      target.removeAttribute('inert');
+      target.classList.add('is-open');
+      target.setAttribute('aria-hidden', 'false');
+      target.setAttribute('aria-modal', 'true');
+      document.body.classList.add('screen-open');
+      setHomeInert(true);
+      activeScreen = id;
+      stop();
+      var body = target.querySelector('.screen-body');
+      if (body) body.scrollTop = 0;
+      var back = target.querySelector('[data-close-screen]');
+      if (back) back.focus();
+      if (location.hash !== '#' + id) {
+        history.replaceState(null, '', '#' + id);
+      }
+    }
 
-          function openScreen(id) {
-            var target = document.querySelector('[data-screen="' + id + '"]');
-            if (!target) return;
-            /* Close every screen first — no mixed content, no double-open */
-            screens.forEach(function (el) {
-              el.classList.remove("is-open");
-              el.setAttribute("aria-hidden", "true");
-              el.setAttribute("inert", "");
-              el.hidden = true;
-              el.removeAttribute("aria-modal");
-            });
-            target.hidden = false;
-            target.removeAttribute("inert");
-            target.classList.add("is-open");
-            target.setAttribute("aria-hidden", "false");
-            target.setAttribute("aria-modal", "true");
-            document.body.classList.add("screen-open");
-            setHomeInert(true);
-            activeScreen = id;
-            stop();
-            var body = target.querySelector(".screen-body");
-            if (body) body.scrollTop = 0;
-            var back = target.querySelector("[data-close-screen]");
-            if (back) back.focus();
-            if (location.hash !== "#" + id) {
-              history.replaceState(null, "", "#" + id);
-            }
-          }
+    openers.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openScreen(btn.getAttribute('data-open-screen'));
+      });
+    });
 
-          openers.forEach(function (btn) {
-            btn.addEventListener("click", function () {
-              openScreen(btn.getAttribute("data-open-screen"));
-            });
-          });
+    closers.forEach(function (btn) {
+      btn.addEventListener('click', closeScreen);
+    });
 
-          closers.forEach(function (btn) {
-            btn.addEventListener("click", closeScreen);
-          });
+    var paseoDetails = Array.prototype.slice.call(document.querySelectorAll('[data-paseo]'));
+    var paseoOpeners = Array.prototype.slice.call(document.querySelectorAll('[data-open-paseo]'));
+    var paseoClosers = Array.prototype.slice.call(document.querySelectorAll('[data-close-paseo]'));
+    var paseosMain = document.querySelector('.screen-paseos-main');
+    var paseosOuterBar = document.querySelector('#screen-paseos > .screen-bar');
+    var activePaseo = null;
 
-          /* Nested paseo details inside Paseos screen */
-          var paseoDetails = Array.prototype.slice.call(document.querySelectorAll("[data-paseo]"));
-          var paseoOpeners = Array.prototype.slice.call(document.querySelectorAll("[data-open-paseo]"));
-          var paseoClosers = Array.prototype.slice.call(document.querySelectorAll("[data-close-paseo]"));
-          var paseosMain = document.querySelector(".screen-paseos-main");
-          var paseosOuterBar = document.querySelector("#screen-paseos > .screen-bar");
-          var activePaseo = null;
+    function closePaseoDetail() {
+      paseoDetails.forEach(function (el) {
+        el.classList.remove('is-open');
+        el.setAttribute('aria-hidden', 'true');
+        el.setAttribute('inert', '');
+        el.hidden = true;
+      });
+      if (paseosMain) {
+        paseosMain.removeAttribute('aria-hidden');
+        paseosMain.removeAttribute('inert');
+      }
+      if (paseosOuterBar) {
+        paseosOuterBar.removeAttribute('aria-hidden');
+        paseosOuterBar.removeAttribute('inert');
+        paseosOuterBar.hidden = false;
+      }
+      activePaseo = null;
+    }
 
-          function closePaseoDetail() {
-            paseoDetails.forEach(function (el) {
-              el.classList.remove("is-open");
-              el.setAttribute("aria-hidden", "true");
-              el.setAttribute("inert", "");
-              el.hidden = true;
-            });
-            if (paseosMain) {
-              paseosMain.removeAttribute("aria-hidden");
-              paseosMain.removeAttribute("inert");
-            }
-            if (paseosOuterBar) {
-              paseosOuterBar.removeAttribute("aria-hidden");
-              paseosOuterBar.removeAttribute("inert");
-              paseosOuterBar.hidden = false;
-            }
-            activePaseo = null;
-          }
+    function openPaseoDetail(id) {
+      var target = document.querySelector('[data-paseo="' + id + '"]');
+      if (!target) return;
+      if (activeScreen !== 'paseos') openScreen('paseos');
+      paseoDetails.forEach(function (el) {
+        el.classList.remove('is-open');
+        el.setAttribute('aria-hidden', 'true');
+        el.setAttribute('inert', '');
+        el.hidden = true;
+      });
+      if (paseosMain) {
+        paseosMain.setAttribute('aria-hidden', 'true');
+        paseosMain.setAttribute('inert', '');
+      }
+      if (paseosOuterBar) {
+        paseosOuterBar.setAttribute('aria-hidden', 'true');
+        paseosOuterBar.setAttribute('inert', '');
+        paseosOuterBar.hidden = true;
+      }
+      target.hidden = false;
+      target.removeAttribute('inert');
+      target.classList.add('is-open');
+      target.setAttribute('aria-hidden', 'false');
+      activePaseo = id;
+      var body = target.querySelector('.screen-body');
+      if (body) body.scrollTop = 0;
+      var back = target.querySelector('[data-close-paseo]');
+      if (back) back.focus();
+    }
 
-          function openPaseoDetail(id) {
-            var target = document.querySelector('[data-paseo="' + id + '"]');
-            if (!target) return;
-            if (activeScreen !== "paseos") openScreen("paseos");
-            paseoDetails.forEach(function (el) {
-              el.classList.remove("is-open");
-              el.setAttribute("aria-hidden", "true");
-              el.setAttribute("inert", "");
-              el.hidden = true;
-            });
-            if (paseosMain) {
-              paseosMain.setAttribute("aria-hidden", "true");
-              paseosMain.setAttribute("inert", "");
-            }
-            if (paseosOuterBar) {
-              paseosOuterBar.setAttribute("aria-hidden", "true");
-              paseosOuterBar.setAttribute("inert", "");
-              paseosOuterBar.hidden = true;
-            }
-            target.hidden = false;
-            target.removeAttribute("inert");
-            target.classList.add("is-open");
-            target.setAttribute("aria-hidden", "false");
-            activePaseo = id;
-            var body = target.querySelector(".screen-body");
-            if (body) body.scrollTop = 0;
-            var back = target.querySelector("[data-close-paseo]");
-            if (back) back.focus();
-          }
+    paseoOpeners.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openPaseoDetail(btn.getAttribute('data-open-paseo'));
+      });
+    });
 
-          paseoOpeners.forEach(function (btn) {
-            btn.addEventListener("click", function () {
-              openPaseoDetail(btn.getAttribute("data-open-paseo"));
-            });
-          });
+    paseoClosers.forEach(function (btn) {
+      btn.addEventListener('click', closePaseoDetail);
+    });
 
-          paseoClosers.forEach(function (btn) {
-            btn.addEventListener("click", closePaseoDetail);
-          });
+    var _openScreen = openScreen;
+    openScreen = function (id) {
+      closePaseoDetail();
+      _openScreen(id);
+    };
 
-          var _openScreen = openScreen;
-          openScreen = function (id) {
-            closePaseoDetail();
-            _openScreen(id);
-          };
+    var _closeScreen = closeScreen;
+    closeScreen = function () {
+      closePaseoDetail();
+      _closeScreen();
+    };
 
-          var _closeScreen = closeScreen;
-          closeScreen = function () {
-            closePaseoDetail();
-            _closeScreen();
-          };
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (activePaseo) {
+        closePaseoDetail();
+        var backHome = document.querySelector('#screen-paseos > .screen-bar [data-close-screen]');
+        if (backHome) backHome.focus();
+        return;
+      }
+      if (activeScreen) closeScreen();
+    });
 
-          document.addEventListener("keydown", function (e) {
-            if (e.key !== "Escape") return;
-            if (activePaseo) {
-              closePaseoDetail();
-              var backHome = document.querySelector("#screen-paseos > .screen-bar [data-close-screen]");
-              if (backHome) backHome.focus();
-              return;
-            }
-            if (activeScreen) closeScreen();
-          });
+    function syncFromHash() {
+      var id = (location.hash || '').replace(/^#/, '');
+      if (id === 'paseos' || id === 'traslados' || id === 'contacto') openScreen(id);
+      else if (activeScreen) closeScreen();
+    }
 
-          function syncFromHash() {
-            var id = (location.hash || "").replace(/^#/, "");
-            if (id === "paseos" || id === "traslados" || id === "contacto") openScreen(id);
-            else if (activeScreen) closeScreen();
-          }
-
-          window.addEventListener("hashchange", syncFromHash);
-          syncFromHash();
-    
+    window.addEventListener('hashchange', syncFromHash);
+    syncFromHash();
   }
 
   document.querySelectorAll('.lang-btn').forEach(function (btn) {
